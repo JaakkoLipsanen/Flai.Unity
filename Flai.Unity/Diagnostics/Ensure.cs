@@ -38,6 +38,12 @@ namespace Flai // do.not.care
             Ensure.Null(value, "");
         }
 
+        public static void Null(object value, object value2)
+        {
+            Ensure.Null(value, "");
+            Ensure.Null(value2, "");
+        }
+
         public static void Null(object value, string message)
         {
             if (value != null)
@@ -49,6 +55,19 @@ namespace Flai // do.not.care
         public static void NotNull(object value)
         {
             Ensure.NotNull(value, "");
+        }
+
+        public static void NotNull(object value, object value2)
+        {
+            Ensure.NotNull(value, "");
+            Ensure.NotNull(value2, "");
+        }
+
+        public static void NotNull(object value, object value2, object value3)
+        {
+            Ensure.NotNull(value, "");
+            Ensure.NotNull(value2, "");
+            Ensure.NotNull(value3, "");
         }
 
         public static void NotNull(object value, string message)

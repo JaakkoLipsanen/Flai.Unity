@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FlaiScript.cs" />
+    <Compile Include="Graphics\ColorF.cs" />
     <Compile Include="Input\FlaiInput.cs" />
     <Compile Include="Math\Alignment.cs" />
     <Compile Include="Data Structures\Bag.cs" />

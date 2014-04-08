@@ -2,8 +2,8 @@
 
 namespace Flai
 {
-    public abstract class Singleton<T> : MonoBehaviour
-        where T : MonoBehaviour
+    public abstract class Singleton<T> : FlaiScript
+        where T : FlaiScript
     {
         private static readonly object _lock = new object();
         private static T _instance;
@@ -14,11 +14,11 @@ namespace Flai
             get
             {
                 /* TEST */
-                if (false && _applicationIsQuitting)
+                if (_applicationIsQuitting)
                 {
                     Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed on application quit." + " Won't create again - returning null.");
                     return null;
-                }
+                } 
 
                 lock (_lock)
                 {
@@ -56,6 +56,8 @@ namespace Flai
             }
         }
 
+        public bool IsPreservingInstance = false;
+
         /// <summary>
         /// When Unity quits, it destroys objects in a random order.
         /// In principle, a Singleton is only destroyed when application quits.
@@ -64,7 +66,7 @@ namespace Flai
         ///   even after stopping playing the Application. Really bad!
         /// So, this was made to be sure we're not creating that buggy ghost object.
         /// </summary>
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _applicationIsQuitting = true;
         }

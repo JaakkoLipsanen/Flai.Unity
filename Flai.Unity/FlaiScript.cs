@@ -103,6 +103,7 @@ namespace Flai
 
         protected virtual void Awake() { }
         protected virtual void Start() { }
+        protected virtual void OnDestroy() { }
 
         protected virtual void Update() { }
         protected virtual void FixedUpdate() { }
@@ -117,5 +118,6 @@ namespace Flai
         protected virtual void OnTriggerExit2D(Collider2D other) { }
 
         protected virtual void OnDrawGizmos() { }
+        protected virtual void OnGUI() { }
     }
 }

@@ -8,7 +8,7 @@ namespace Flai.Editor
     {
         public static Color32 GetColor32(string key)
         {
-            return ColorHelper.IntToColor32(EditorPrefs.GetInt(key));
+            return ColorHelper.IntToColorF(EditorPrefs.GetInt(key));
         }
 
         public static Color32 GetColor32OrDefault(string key, Color32 defaultColor)
@@ -18,7 +18,7 @@ namespace Flai.Editor
 
         public static void SetColor32(string key, Color32 color)
         {
-            EditorPrefs.SetInt(key, ColorHelper.Color32ToInt(color));
+            EditorPrefs.SetInt(key, ColorHelper.ColorFToInt(color));
         }
     }
 }

@@ -41,6 +41,7 @@ using System.Collections;
 using UnityEngine;
 using Object = System.Object;
 
+#pragma warning disable 169
 namespace Flai.Tween
 {
     /**

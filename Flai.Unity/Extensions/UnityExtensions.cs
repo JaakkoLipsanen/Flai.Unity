@@ -139,6 +139,11 @@ public static class GameObjectExtensions
 
     #region Destroy
 
+    public static void DontDestroyOnLoad(this UnityObject obj)
+    {
+        UnityObject.DontDestroyOnLoad(obj);
+    }
+
     public static void Destroy(this GameObject gameObject)
     {
         GameObject.Destroy(gameObject);
@@ -530,7 +535,32 @@ public static class ColorExtensions
 {
     public static int ToInt(this Color32 color)
     {
-        return ColorHelper.Color32ToInt(color);
+        return ColorHelper.ColorFToInt(color);
+    }
+
+    public static Color32[] ToColor32(this ColorF[] array)
+    {
+        return ColorHelper.ConvertToColor32(array);
+    }
+
+    public static ColorF[] ToColorF(this Color32[] array)
+    {
+        return ColorHelper.ConvertToColorF(array);
+    }
+
+    public static bool Equals(this Color32 color, Color32 other)
+    {
+        return color.r == other.r && color.g == other.g && color.b == other.b && color.a == other.a;
+    }
+
+    public static bool Equals(this Color color, Color other)
+    {
+        return color.r == other.r && color.g == other.g && color.b == other.b && color.a == other.a;
+    }
+
+    public static Color32 MultiplyAlpha(this Color32 color, float alpha)
+    {
+        return new Color32(color.r, color.g, color.b, (byte)FlaiMath.Clamp(color.a * alpha, 0, 255));
     }
 }
 

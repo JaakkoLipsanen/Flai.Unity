@@ -6,50 +6,101 @@ namespace Flai.Graphics
     public static class ColorHelper
     {
         [StructLayout(LayoutKind.Explicit)]
-        private struct Color32Converter
+        private struct ColorFToIntConverter
         {
             [FieldOffset(0)]
-            public readonly Color32 Color;
+            public readonly ColorF Color;
 
             [FieldOffset(0)]
             public readonly int PackedValue;
 
-            public Color32Converter(Color32 color) 
+            public ColorFToIntConverter(ColorF color)
                 : this()
             {
                 this.Color = color;
             }
 
-            public Color32Converter(int packedValue)
+            public ColorFToIntConverter(int packedValue)
                 : this()
             {
                 this.PackedValue = packedValue;
             }
         }
 
-        public static Color32 IntToColor32(int packedValue)
+        [StructLayout(LayoutKind.Explicit)]
+        private struct ColorFToUintConverter
         {
-            return new Color32Converter(packedValue).Color;
+            [FieldOffset(0)]
+            public readonly ColorF Color;
+
+            [FieldOffset(0)]
+            public readonly uint PackedValue;
+
+            public ColorFToUintConverter(ColorF color)
+                : this()
+            {
+                this.Color = color;
+            }
+
+            public ColorFToUintConverter(uint packedValue)
+                : this()
+            {
+                this.PackedValue = packedValue;
+            }
         }
 
-        public static int Color32ToInt(Color32 color)
+        [StructLayout(LayoutKind.Explicit)]
+        private struct ColorFArrayToColor32ArrayConverter
         {
-            return new Color32Converter(color).PackedValue;
+            [FieldOffset(0)]
+            public readonly ColorF[] ColorF;
+
+            [FieldOffset(0)]
+            public readonly Color32[] Color32;
+
+            public ColorFArrayToColor32ArrayConverter(Color32[] colors)
+                : this()
+            {
+                this.Color32 = colors;
+            }
+
+            public ColorFArrayToColor32ArrayConverter(ColorF[] colors)
+                : this()
+            {
+                this.ColorF = colors;
+            }
         }
 
-        public static bool Equals(Color32 color, Color32 other)
+        public static ColorF IntToColorF(int packedValue)
         {
-            return color.r == other.r && color.g == other.g && color.b == other.b && color.a == other.a;
+            return new ColorFToIntConverter(packedValue).Color;
         }
 
-        public static bool Equals(Color color, Color other)
+        public static int ColorFToInt(ColorF color)
         {
-            return color.r == other.r && color.g == other.g && color.b == other.b && color.a == other.a;
+            return new ColorFToIntConverter(color).PackedValue;
         }
 
-        public static Color32 MultiplyAlpha(this Color32 color, float alpha)
+        public static ColorF UIntToColorF(uint packedValue)
         {
-            return new Color32(color.r, color.g, color.b, (byte)FlaiMath.Clamp(color.a * alpha, 0, 255));
+            return new ColorFToUintConverter(packedValue).Color;
+        }
+
+        public static uint ColorFToUInt(ColorF color)
+        {
+            return new ColorFToUintConverter(color).PackedValue;
+        }
+
+        public static Color32[] ConvertToColor32(ColorF[] colors)
+        {
+            Ensure.NotNull(colors);
+            return new ColorFArrayToColor32ArrayConverter(colors).Color32;
+        }
+
+        public static ColorF[] ConvertToColorF(Color32[] colors)
+        {
+            Ensure.NotNull(colors);
+            return new ColorFArrayToColor32ArrayConverter(colors).ColorF;
         }
     }
 }
