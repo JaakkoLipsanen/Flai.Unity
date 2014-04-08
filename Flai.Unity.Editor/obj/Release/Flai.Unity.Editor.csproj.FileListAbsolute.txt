@@ -1,0 +1,12 @@
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\obj\Release\Flai.Unity.Editor.csprojResolveAssemblyReference.cache
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\Flai.Unity.Editor.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\Flai.Unity.Editor.pdb
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\Flai.Unity.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\UnityEditor.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\UnityEngine.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\Mono.Cecil.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\nunit.framework.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\Unity.DataContract.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\bin\Release\ICSharpCode.NRefactory.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\obj\Release\Flai.Unity.Editor.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.Editor\obj\Release\Flai.Unity.Editor.pdb

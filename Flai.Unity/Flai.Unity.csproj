@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B9402CC-C735-4A7D-974C-776F22E3A29F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Flai</RootNamespace>
+    <AssemblyName>Flai.Unity</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\Dressrosa\Assets\DLL</OutputPath>
+    <DefineConstants>DEBUG;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>F:\Program Files %28x86%29\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FlaiScript.cs" />
+    <Compile Include="Input\FlaiInput.cs" />
+    <Compile Include="Math\Alignment.cs" />
+    <Compile Include="Data Structures\Bag.cs" />
+    <Compile Include="Data Structures\BinaryHeap.cs" />
+    <Compile Include="Data Structures\CircularBuffer.cs" />
+    <Compile Include="Data Structures\CircularQueue.cs" />
+    <Compile Include="Data Structures\DynamicArray.cs" />
+    <Compile Include="Data Structures\ExtendableList.cs" />
+    <Compile Include="Data Structures\HashSet.cs" />
+    <Compile Include="Data Structures\HeapType.cs" />
+    <Compile Include="Data Structures\ICustomQueue.cs" />
+    <Compile Include="Data Structures\ObjectPool.cs" />
+    <Compile Include="Data Structures\PriorityDirection.cs" />
+    <Compile Include="Data Structures\PriorityQueue.cs" />
+    <Compile Include="Data Structures\PropertyCollection.cs" />
+    <Compile Include="Data Structures\QuaternaryHeap.cs" />
+    <Compile Include="Data Structures\ReadOnlyArray.cs" />
+    <Compile Include="Data Structures\ReadOnlyDictionary.cs" />
+    <Compile Include="Data Structures\ReadOnlyQueue.cs" />
+    <Compile Include="Data Structures\ReadOnlySet.cs" />
+    <Compile Include="Data Structures\SizedQueue.cs" />
+    <Compile Include="Data Structures\UndoRedoStack.cs" />
+    <Compile Include="Data Structures\ValueStack.cs" />
+    <Compile Include="Diagnostics\FlaiDebug.cs" />
+    <Compile Include="Math\Direction.cs" />
+    <Compile Include="Extensions\CSharpExtensions.cs" />
+    <Compile Include="Math\FlaiRandom.cs" />
+    <Compile Include="General\ArrayHelper.cs" />
+    <Compile Include="General\ComparisonComparer.cs" />
+    <Compile Include="General\ComparisonEqualityComparer.cs" />
+    <Compile Include="General\EnumHelper.cs" />
+    <Compile Include="General\FlaiTuple.cs" />
+    <Compile Include="General\Lock.cs" />
+    <Compile Include="General\Pair.cs" />
+    <Compile Include="General\PersistentManager.cs" />
+    <Compile Include="Math\RoundingOptions.cs" />
+    <Compile Include="General\TypeID.cs" />
+    <Compile Include="General\TypeMask.cs" />
+    <Compile Include="General\TypeMaskHelper.cs" />
+    <Compile Include="GenericEvent.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="Graphics\ColorHelper.cs" />
+    <Compile Include="Graphics\TextureHelper.cs" />
+    <Compile Include="Math\TransformedRectangleF.cs" />
+    <Compile Include="Math\Vector2f.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Diagnostics\Assert.cs" />
+    <Compile Include="Diagnostics\Check.cs" />
+    <Compile Include="Diagnostics\Ensure.cs" />
+    <Compile Include="Extensions\UnityExtensions.cs" />
+    <Compile Include="Math\FlaiMath.cs" />
+    <Compile Include="IO\AssemblyHelper.cs" />
+    <Compile Include="IO\AttributeHelper.cs" />
+    <Compile Include="IO\DirectoryHelper.cs" />
+    <Compile Include="IO\IBinarySerializable.cs" />
+    <Compile Include="IO\OperatingSystemHelper.cs" />
+    <Compile Include="IO\ReflectionHelper.cs" />
+    <Compile Include="IO\TypeHelper.cs" />
+    <Compile Include="Math\Range.cs" />
+    <Compile Include="Math\RangeInt.cs" />
+    <Compile Include="Math\RectangleF.cs" />
+    <Compile Include="Math\Sign.cs" />
+    <Compile Include="Singleton.cs" />
+    <Compile Include="Math\Size.cs" />
+    <Compile Include="Tween\Tween.cs" />
+    <Compile Include="Tween\TweenAction.cs" />
+    <Compile Include="Tween\TweenBezier.cs" />
+    <Compile Include="Tween\TweenBezierPath.cs" />
+    <Compile Include="Tween\TweenDescription.cs" />
+    <Compile Include="Tween\TweenEvent.cs" />
+    <Compile Include="Tween\TweenGUI.cs" />
+    <Compile Include="Tween\TweenRectangle.cs" />
+    <Compile Include="Tween\TweenSpline.cs" />
+    <Compile Include="Tween\TweenType.cs" />
+    <Compile Include="UI\FlaiGUI.cs" />
+    <Compile Include="Math\Vector2b.cs" />
+    <Compile Include="Math\Vector2i.cs" />
+    <Compile Include="Math\Vector3b.cs" />
+    <Compile Include="Math\Vector3i.cs" />
+    <Compile Include="Physics\PhysicsHelper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup />
+</Project>

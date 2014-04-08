@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flai.Unity", "Flai.Unity\Flai.Unity.csproj", "{6B9402CC-C735-4A7D-974C-776F22E3A29F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flai.Unity.Editor", "Flai.Unity.Editor\Flai.Unity.Editor.csproj", "{5EC7658D-63A9-4F3C-A810-767B992088CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flai.Unity.Tiled", "Flai.Unity.Tiled\Flai.Unity.Tiled.csproj", "{7C090F0A-B4F4-489B-85EE-08CBBF671866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flai.Unity.CopyDLL", "Flai.Unity.CopyDLL\Flai.Unity.CopyDLL.csproj", "{31B18A65-A90E-4E4F-B4C9-B57F1987556B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B9402CC-C735-4A7D-974C-776F22E3A29F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B9402CC-C735-4A7D-974C-776F22E3A29F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B9402CC-C735-4A7D-974C-776F22E3A29F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B9402CC-C735-4A7D-974C-776F22E3A29F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EC7658D-63A9-4F3C-A810-767B992088CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EC7658D-63A9-4F3C-A810-767B992088CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EC7658D-63A9-4F3C-A810-767B992088CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EC7658D-63A9-4F3C-A810-767B992088CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C090F0A-B4F4-489B-85EE-08CBBF671866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C090F0A-B4F4-489B-85EE-08CBBF671866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C090F0A-B4F4-489B-85EE-08CBBF671866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C090F0A-B4F4-489B-85EE-08CBBF671866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B18A65-A90E-4E4F-B4C9-B57F1987556B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B18A65-A90E-4E4F-B4C9-B57F1987556B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B18A65-A90E-4E4F-B4C9-B57F1987556B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B18A65-A90E-4E4F-B4C9-B57F1987556B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Flai.Unity\Flai.Unity.csproj
+	EndGlobalSection
+EndGlobal
