@@ -103,6 +103,7 @@
     <Compile Include="Math\RectangleF.cs" />
     <Compile Include="Math\Sign.cs" />
     <Compile Include="Scene\Fade.cs" />
+    <Compile Include="Scene\Scene.cs" />
     <Compile Include="Scene\SceneDescription.cs" />
     <Compile Include="Scene\SceneFader.cs" />
     <Compile Include="Scripts\OnTopMover.cs" />

@@ -81,6 +81,15 @@ namespace Flai.Diagnostics
             Debug.DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color);
         }
 
+        public static void DrawRectangleOutlines(RectangleF rectangle, Color color, float time)
+        {
+            Ensure.True(time >= 0);
+            Debug.DrawLine(rectangle.TopLeft, rectangle.TopRight, color, time);
+            Debug.DrawLine(rectangle.TopRight, rectangle.BottomRight, color, time);
+            Debug.DrawLine(rectangle.BottomRight, rectangle.BottomLeft, color, time);
+            Debug.DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color, time);
+        }
+
         public static void DrawTransformedRectangleOutlines(TransformedRectangleF rectangle)
         {
             Debug.DrawLine(rectangle.TopLeft, rectangle.TopRight);
@@ -89,12 +98,21 @@ namespace Flai.Diagnostics
             Debug.DrawLine(rectangle.BottomLeft, rectangle.TopLeft);
         }
 
-        public static void DrawRectangleOutlines(TransformedRectangleF rectangle, Color color)
+        public static void DrawTransformedRectangleOutlines(TransformedRectangleF rectangle, Color color)
         {
             Debug.DrawLine(rectangle.TopLeft, rectangle.TopRight, color);
             Debug.DrawLine(rectangle.TopRight, rectangle.BottomRight, color);
             Debug.DrawLine(rectangle.BottomRight, rectangle.BottomLeft, color);
             Debug.DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color);
+        }
+
+        public static void DrawTransformedRectangleOutlines(TransformedRectangleF rectangle, Color color, float time)
+        {
+            Ensure.True(time >= 0);
+            Debug.DrawLine(rectangle.TopLeft, rectangle.TopRight, color, time);
+            Debug.DrawLine(rectangle.TopRight, rectangle.BottomRight, color, time);
+            Debug.DrawLine(rectangle.BottomRight, rectangle.BottomLeft, color, time);
+            Debug.DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color, time);
         }
 
         #endregion

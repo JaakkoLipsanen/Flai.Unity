@@ -16,6 +16,8 @@ namespace Flai.Scripts
 
         private float _scaleMultiplier = 1f;
 
+        public Direction2D AllowedDirection { get; set; }
+
         public bool HasAny
         {
             get { return _gameObjectsOnTop.Count > 0; }
@@ -64,7 +66,7 @@ namespace Flai.Scripts
 
         protected override void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.contacts.Any(contact => contact.normal == Vector2f.Down))
+            if (collision.contacts.Any(contact => contact.normal == this.AllowedDirection.ToUnitVector()))
             {
                 _gameObjectsOnTop.Add(collision.gameObject);
             }

@@ -47,10 +47,10 @@ namespace Flai
                 case Direction2D.Left:
                     return -Vector2i.UnitX;
 
-                case Direction2D.Down:
+                case Direction2D.Up:
                     return Vector2i.UnitY;
 
-                case Direction2D.Up:
+                case Direction2D.Down:
                     return -Vector2i.UnitY;
 
                 default:

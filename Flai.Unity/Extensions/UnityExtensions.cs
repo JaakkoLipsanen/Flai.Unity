@@ -8,8 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Flai;
 using Flai.Diagnostics;
 using Flai.Graphics;
@@ -348,6 +350,16 @@ public static class GameObjectExtensions
     public static void SetPosition2D(this Transform transform, Vector2 position)
     {
         transform.position = new Vector3(position.x, position.y, transform.position.z);
+    }
+
+    public static void SetPosition2D(this Component component, float x, float y)
+    {
+        component.transform.position = new Vector3(x, y, component.transform.position.z);
+    }
+
+    public static void SetPosition2D(this Component component, Vector2 position)
+    {
+        component.transform.position = new Vector3(position.x, position.y, component.transform.position.z);
     }
 
     public static void SetPosition2D(this GameObject gameObject, float x, float y)
