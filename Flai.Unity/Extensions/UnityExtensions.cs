@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Flai;
 using Flai.Diagnostics;
 using Flai.Graphics;
@@ -239,6 +240,28 @@ public static class GameObjectExtensions
         }
     }
 
+    public static GameObject GetParent(this GameObject gameObject)
+    {
+        var parentTransform = gameObject.transform.parent;
+        if (parentTransform != null)
+        {
+            return parentTransform.gameObject;
+        }
+
+        return null;
+    }
+
+    public static GameObject GetParent(this Transform transform)
+    {
+        var parentTransform = transform.parent;
+        if (parentTransform != null)
+        {
+            return parentTransform.gameObject;
+        }
+
+        return null;
+    }
+
     public static void SetParent(this GameObject gameObject, GameObject parent)
     {
         gameObject.transform.parent = (parent == null) ? null : parent.transform;
@@ -428,6 +451,36 @@ public static class GameObjectExtensions
     public static void SetPositionZ(this Transform transform, float value)
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, value);
+    }
+
+    public static void SetRotationX(this Transform transform, float value)
+    {
+        transform.eulerAngles = new Vector3(value, transform.eulerAngles.y, transform.eulerAngles.z);
+    }
+
+    public static void SetRotationY(this Transform transform, float value)
+    {
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, value, transform.eulerAngles.z);
+    }
+
+    public static void SetRotationZ(this Transform transform, float value)
+    {
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, value);
+    }
+
+    public static void SetLocalRotationX(this Transform transform, float value)
+    {
+        transform.localEulerAngles = new Vector3(value, transform.localEulerAngles.y, transform.localEulerAngles.z);
+    }
+
+    public static void SetLocalRotationY(this Transform transform, float value)
+    {
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, value, transform.localEulerAngles.z);
+    }
+
+    public static void SetLocalRotationZ(this Transform transform, float value)
+    {
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, value);
     }
 
     #endregion

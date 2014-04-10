@@ -29,8 +29,8 @@ namespace Flai
 
         public Vector2 LocalPosition2D
         {
-            get { return this.Transform.GetPosition2D(); }
-            set { this.Transform.SetPosition2D(value); }
+            get { return this.Transform.GetLocalPosition2D(); }
+            set { this.Transform.SetLocalPosition2D(value); }
         }
 
         public Vector3 Position
@@ -48,7 +48,7 @@ namespace Flai
         public float LocalRotation2D
         {
             get { return this.Transform.GetLocalRotation2D(); }
-            set { this.Transform.SetRotation2D(value); }
+            set { this.Transform.SetLocalRotation2D(value); }
         }
 
         public Vector3 Rotation
@@ -89,7 +89,13 @@ namespace Flai
 
         public GameObject Parent
         {
-            get { return this.Transform.parent.gameObject; }
+            get { return this.Transform.GetParent(); }
+            set { this.Transform.SetParent(value != null ? value.transform : null); }
+        }
+
+        public GameObject RootParent
+        {
+            get { return this.Transform.root.gameObject; }
         }
 
         public IEnumerable<GameObject> Children

@@ -9,10 +9,10 @@ namespace Flai
         Right = 1,
     }
 
-    public enum VerticalDirection 
+    public enum VerticalDirection
     {
-        Up = -1, // Up == -1 is a bit questionable, but in XNA (2D) the coordinates go so that the upper you go, lower the Y-value is.. so yup
-        Down = 1,
+        Up = 1, // different than in XNA
+        Down = -1,
     }
 
     public enum Direction2D // : byte // maybe I shouldn't use byte's after all.. int's are a bit more efficient and the memory difference
@@ -177,6 +177,20 @@ namespace Flai
                 default:
                     throw new ArgumentException("Invalid direction!");
             }
+        }
+
+        #endregion
+
+        #region VerticalDirection/HorizontalDirection Extensions
+
+        public static Vector2f ToUnitVector(this VerticalDirection verticalDirection)
+        {
+            return (verticalDirection == VerticalDirection.Down) ? Vector2f.Down : Vector2f.Up;
+        }
+
+        public static Vector2f ToUnitVector(this HorizontalDirection verticalDirection)
+        {
+            return (verticalDirection == HorizontalDirection.Left) ? Vector2f.Left : Vector2f.Right;
         }
 
         #endregion

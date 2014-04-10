@@ -48,6 +48,7 @@
     <Compile Include="FlaiEditorPrefs.cs" />
     <Compile Include="FlaiHandles.cs" />
     <Compile Include="InspectorBase.cs" />
+    <Compile Include="Inspectors\OnTopMoverInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

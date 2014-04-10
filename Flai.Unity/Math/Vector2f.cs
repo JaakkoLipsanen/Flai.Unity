@@ -134,6 +134,11 @@ namespace Flai
             return FlaiMath.Sqrt(Vector2f.DistanceSquared(value1, value2));
         }
 
+        public static Vector2f Abs(Vector2f value)
+        {
+            return new Vector2f(FlaiMath.Abs(value.X), FlaiMath.Abs(value.Y));
+        }
+
         public static Vector2f Min(Vector2f value1, Vector2f value2)
         {
             return new Vector2f(FlaiMath.Min(value1.X, value2.X), FlaiMath.Min(value1.Y, value2.Y));
