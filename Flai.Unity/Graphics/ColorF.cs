@@ -59,6 +59,14 @@ namespace Flai
             this = ColorHelper.UIntToColorF(packedValue);
         }
 
+        public ColorF(byte value)
+        {
+            this.R = value;
+            this.G = value;
+            this.B = value;
+            this.A = 255;
+        }
+
         public ColorF(byte r, byte g, byte b)
         {
             this.R = r;

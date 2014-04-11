@@ -41,5 +41,49 @@ namespace Flai.Scene
         {
             return GameObject.FindGameObjectsWithTag(tag);
         }
+
+        public static void Destroy(ref GameObject gameObject)
+        {
+            gameObject.DestroyIfNotNull();
+            gameObject = null;
+        }
+
+        public static void Destroy(GameObject gameObject)
+        {
+            gameObject.DestroyIfNotNull();
+        }
+
+        public static void DestroyGameObject<T>(ref T component)
+            where T : Component
+        {
+            if (component == null)
+            {
+                component = null;
+                return;
+            }
+
+            component.gameObject.DestroyIfNotNull();
+            component = null;
+        }
+
+        public static void DestroyGameObject<T>(T component)
+            where T : Component
+        {
+            if (component != null)
+            {
+                component.gameObject.DestroyIfNotNull();
+            }
+        }
+
+        public static void DestroyImmediate(ref GameObject gameObject)
+        {
+            gameObject.DestroyImmediateIfNotNull();
+            gameObject = null;
+        }
+
+        public static void DestroyImmediate(GameObject gameObject)
+        {
+            gameObject.DestroyImmediateIfNotNull();
+        }
     }
 }

@@ -117,6 +117,11 @@ namespace Flai
             return this;
         }
 
+        public Vector3 ToVector3()
+        {
+            return this;
+        }
+
         #endregion
 
         #region Static Methods
@@ -372,6 +377,10 @@ namespace Flai
             return new Vector2f(-a.X, -a.Y);
         }
 
+        #endregion
+
+        #region Implicit/Explicit Operators
+
         public static implicit operator Vector2f(Vector2 v)
         {
             return new Vector2f { X = v.x, Y = v.y };
@@ -390,6 +399,11 @@ namespace Flai
         public static implicit operator Vector2f(Vector3 v)
         {
             return new Vector2f { X = v.x, Y = v.y };
+        }
+
+        public static implicit operator Vector2f(Vector2i v)
+        {
+            return new Vector2f { X = v.X, Y = v.Y };
         }
 
         public static explicit operator Vector2i(Vector2f v)

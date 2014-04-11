@@ -1,6 +1,7 @@
 ﻿using Flai.Diagnostics;
 using Flai.Graphics;
 using System;
+using Flai.Tween;
 using UnityEngine;
 
 namespace Flai.Scene
@@ -13,6 +14,7 @@ namespace Flai.Scene
         private Fade _fadeOut;
         private float _alpha;
         private int _framesUntilLoad = -1;
+        private TweenDescription _currentFadeTween;
 
         public bool IsFadingIn
         {
@@ -60,13 +62,13 @@ namespace Flai.Scene
         {
             if (this.IsFading)
             {
-                FlaiDebug.LogErrorWithTypeTag<SceneFader>("Error: Can't start a new fade. There is already another fade in progress", this);
-                throw new ArgumentException("Error: Can't start a new fade. There is already another fade in progress");
+                FlaiDebug.LogWarningWithTypeTag<SceneFader>("Can't start a new fade. There is already another fade in progress", this);
+                return;
             }
             else if (this.IsFadeDelayRunning)
             {
-                FlaiDebug.LogErrorWithTypeTag<SceneFader>("Error: Can't start a new fade. There is already another fade pending (delay: " + _fadeDelay.Value + "}", this);
-                throw new ArgumentException("Error: Can't start a new fade. There is already another fade pending (delay: " + _fadeDelay.Value + "}");
+                FlaiDebug.LogWarningWithTypeTag<SceneFader>("Can't start a new fade. There is already another fade pending (delay: " + _fadeDelay.Value + "}", this);
+                return;
             }
 
             _fadeIn = fadeIn;
@@ -139,7 +141,7 @@ namespace Flai.Scene
 
         private void StartFade(Fade fade, float from, float to)
         {
-            Flai.Tween.Tween.Value(this.GameObject, this.OnTweenUpdate, from, to, fade.Time).SetEase(fade.TweenType).SetOnComplete(this.OnTweenCompleted);
+            _currentFadeTween = Flai.Tween.Tween.Value(this.GameObject, this.OnTweenUpdate, from, to, fade.Time).SetEase(fade.TweenType).SetOnComplete(this.OnTweenCompleted);
             _alpha = from;
         }
 

@@ -40,6 +40,7 @@
     <Compile Include="FlaiScript.cs" />
     <Compile Include="Graphics\ColorF.cs" />
     <Compile Include="Input\FlaiInput.cs" />
+    <Compile Include="LayerMaskF.cs" />
     <Compile Include="Math\Alignment.cs" />
     <Compile Include="Data Structures\Bag.cs" />
     <Compile Include="Data Structures\BinaryHeap.cs" />

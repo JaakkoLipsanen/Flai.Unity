@@ -308,6 +308,16 @@ public static class GameObjectExtensions
         return gameObject.transform.GetLocalPosition2D();
     }
 
+    public static Vector2f GetPosition2D(this Component component)
+    {
+        return component.transform.GetPosition2D();
+    }
+
+    public static Vector2f GetLocalPosition2D(this Component component)
+    {
+        return component.transform.GetLocalPosition2D();
+    }
+
     public static Vector2f GetScale2D(this Transform transform)
     {
         return new Vector2f(transform.localScale.x, transform.localScale.y);
@@ -316,6 +326,11 @@ public static class GameObjectExtensions
     public static Vector2f GetScale2D(this GameObject gameObject)
     {
         return gameObject.transform.GetScale2D();
+    }
+
+    public static Vector2f GetScale2D(this Component component)
+    {
+        return component.transform.GetScale2D();
     }
 
     public static float GetRotation2D(this Transform transform)
@@ -336,6 +351,16 @@ public static class GameObjectExtensions
     public static float GetLocalRotation2D(this GameObject gameObject)
     {
         return gameObject.transform.GetLocalRotation2D();
+    }
+
+    public static float GetRotation2D(this Component component)
+    {
+        return component.transform.eulerAngles.z;
+    }
+
+    public static float GetLocalRotation2D(this Component component)
+    {
+        return component.transform.localEulerAngles.z;
     }
 
     #endregion
@@ -670,10 +695,11 @@ public static class PhysicsExtensions
             BoxCollider2D boxCollider = collider as BoxCollider2D;
             Vector2f size = collider.gameObject.GetScale2D() * boxCollider.size;
             Vector2f origin = Vector2f.One * 0.5f - boxCollider.center.ToVector2f();
-            origin = Vector2f.Rotate(origin, FlaiMath.ToRadians(rotation), Vector2f.Zero);
+            //   origin = Vector2f.Rotate(origin, FlaiMath.ToRadians(rotation), Vector2f.Zero);
             Vector2f startPosition = collider.gameObject.GetPosition2D() - origin * size;
 
-            return TransformedRectangleF.CreateRotated(new RectangleF(startPosition.X, startPosition.Y, size.X, size.Y), origin + startPosition, rotation).Bounds;
+            TransformedRectangleF transformedBounds = TransformedRectangleF.CreateRotated(new RectangleF(startPosition.X, startPosition.Y, size.X, size.Y), origin * size + startPosition, rotation);
+            return transformedBounds.Bounds;
         }
 
         throw new NotImplementedException("");

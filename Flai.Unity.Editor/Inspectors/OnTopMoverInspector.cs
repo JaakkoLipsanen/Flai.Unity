@@ -8,6 +8,7 @@ namespace Flai.Editor.Inspectors
     {
         public override void OnInspectorGUI()
         {
+            this.Target.AllowedDirection = (Direction2D)EditorGUILayout.EnumPopup("Allowed Direction", this.Target.AllowedDirection);
             EditorGUILayout.IntField("Count", this.Target.Count);
         }
     }

@@ -160,6 +160,12 @@ namespace Flai
             return new RectangleF(this.X - horizontalAmount, this.Y - verticalAmount, this.Width + horizontalAmount * 2, this.Height + verticalAmount * 2);
         }
 
+        // dunno if this is a good name
+        public RectangleF AsInflated(float amount)
+        {
+            return new RectangleF(this.X - amount, this.Y - amount, this.Width + amount * 2, this.Height + amount * 2);
+        }
+
         #endregion
 
         #region Contains

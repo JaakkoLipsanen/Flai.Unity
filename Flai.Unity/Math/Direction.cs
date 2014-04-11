@@ -33,6 +33,17 @@ namespace Flai
         Backward = 5,
     }
 
+    public static class DirectionHelper
+    {
+        public static Direction2D FromRotation(float degrees)
+        {
+            degrees = FlaiMath.RealModulus(degrees, 360);
+
+            int step = (int)FlaiMath.Round(degrees/90);
+            return (Direction2D) step;
+        }
+    }
+
     public static class DirectionExtensions
     {
         #region Direction2D Extensions
@@ -191,6 +202,16 @@ namespace Flai
         public static Vector2f ToUnitVector(this HorizontalDirection verticalDirection)
         {
             return (verticalDirection == HorizontalDirection.Left) ? Vector2f.Left : Vector2f.Right;
+        }
+
+        public static VerticalDirection Opposite(this VerticalDirection verticalDirection)
+        {
+            return (verticalDirection == VerticalDirection.Down) ? VerticalDirection.Up : VerticalDirection.Down;
+        }
+
+        public static HorizontalDirection Opposite(this HorizontalDirection horizontalDirection)
+        {
+            return (horizontalDirection == HorizontalDirection.Left) ? HorizontalDirection.Right : HorizontalDirection.Left;
         }
 
         #endregion
