@@ -1618,6 +1618,19 @@ namespace Flai //.Extensions
 
             return default(Y);
         }
+
+        public static TValue GetOrAddDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+            where TValue : new()
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                return dictionary[key];
+            }
+
+            TValue value = new TValue();
+            dictionary.Add(key, value);
+            return value;
+        }
     }
 
     #endregion

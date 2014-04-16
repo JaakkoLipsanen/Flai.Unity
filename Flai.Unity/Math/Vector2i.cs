@@ -29,6 +29,11 @@ namespace Flai
             this.Y = (int)vector2.y;
         }
 
+        public Vector2i FlippedAxis
+        {
+            get { return new Vector2i(this.Y, this.X); }
+        }
+
         #region IEquatable<Vector2i> Members
 
         public bool Equals(Vector2i other)
@@ -62,7 +67,6 @@ namespace Flai
         {
             return (axis == Axis.Horizontal) ? this.X : this.Y;
         }
-
 
         #region Static Methods
 

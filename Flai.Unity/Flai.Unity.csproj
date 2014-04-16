@@ -65,6 +65,7 @@
     <Compile Include="Data Structures\UndoRedoStack.cs" />
     <Compile Include="Data Structures\ValueStack.cs" />
     <Compile Include="Diagnostics\FlaiDebug.cs" />
+    <Compile Include="Math\Circle.cs" />
     <Compile Include="Math\Direction.cs" />
     <Compile Include="Extensions\CSharpExtensions.cs" />
     <Compile Include="Math\FlaiRandom.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Global.cs" />
     <Compile Include="Graphics\ColorHelper.cs" />
     <Compile Include="Graphics\TextureHelper.cs" />
+    <Compile Include="Math\Segment2D.cs" />
     <Compile Include="Math\TransformedRectangleF.cs" />
     <Compile Include="Math\Vector2f.cs" />
     <Compile Include="Physics\Physics2Df.cs" />

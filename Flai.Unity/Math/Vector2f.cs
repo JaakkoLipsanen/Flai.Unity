@@ -379,6 +379,11 @@ namespace Flai
             return new Vector2f(a.X * multiplier, a.Y * multiplier);
         }
 
+        public static Vector2f operator *(float multiplier, Vector2f a)
+        {
+            return new Vector2f(a.X * multiplier, a.Y * multiplier);
+        }
+
         public static Vector2f operator /(Vector2f a, int divider)
         {
             return new Vector2f(a.X / divider, a.Y / divider);

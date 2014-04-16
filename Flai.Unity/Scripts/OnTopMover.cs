@@ -8,7 +8,8 @@ namespace Flai.Scripts
     // todo: awful name, name it better
     public class OnTopMover : FlaiScript
     {
-        public Direction2D AllowedDirection = Direction2D.Down;
+        [SerializeField]
+        public Direction2D AllowedDirection = Direction2D.Up;
         public bool DrawDebug = true;
 
         private HashSet<GameObject> _gameObjectsOnTop = new HashSet<GameObject>();
