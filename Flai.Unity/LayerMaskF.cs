@@ -2,12 +2,50 @@
 
 namespace Flai
 {
+    public static class Layer
+    {
+        public static string NameFromIndex(int index)
+        {
+            return LayerMask.LayerToName(index);
+        }
+
+        public static int IndexFromName(string name)
+        {
+            return LayerMask.NameToLayer(name);
+        }
+
+        public static LayerMaskF MaskFromIndex(int index)
+        {
+            return new LayerMaskF(index);
+        }
+
+        public static LayerMaskF MaskFromName(string name)
+        {
+            return LayerMaskF.FromName(name);
+        }
+
+        public static LayerMaskF MaskFromNames(string name1, string name2)
+        {
+            return LayerMaskF.FromNames(name1, name2);
+        }
+
+        public static LayerMaskF MaskFromNames(string name1, string name2, string name3)
+        {
+            return LayerMaskF.FromNames(name1, name2, name3);
+        }
+    }
+
     public struct LayerMaskF
     {
         public readonly int Mask;
         public LayerMaskF Inverse
         {
             get { return ~this.Mask; }
+        }
+
+        public string Name
+        {
+            get { return LayerMask.LayerToName(this.Mask); }
         }
 
         public LayerMaskF(int layerMask)

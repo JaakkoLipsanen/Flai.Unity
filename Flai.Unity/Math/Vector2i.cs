@@ -58,6 +58,12 @@ namespace Flai
             return this.X + ", " + this.Y;
         }
 
+        public int GetAxis(Axis axis)
+        {
+            return (axis == Axis.Horizontal) ? this.X : this.Y;
+        }
+
+
         #region Static Methods
 
         public static int DistanceSquared(Vector2i value1, Vector2i value2)
@@ -122,7 +128,7 @@ namespace Flai
             return new Vector2i(a.X * multiplier, a.Y * multiplier);
         }
 
-        public static Vector2 operator *(Vector2i a, float multiplier)
+        public static Vector2f operator *(Vector2i a, float multiplier)
         {
             return new Vector2(a.X * multiplier, a.Y * multiplier);
         }
@@ -132,7 +138,7 @@ namespace Flai
             return new Vector2i(a.X / divider, a.Y / divider);
         }
 
-        public static Vector2 operator /(Vector2i a, float divider)
+        public static Vector2f operator /(Vector2i a, float divider)
         {
             return new Vector2(a.X / divider, a.Y / divider);
         }
@@ -162,11 +168,6 @@ namespace Flai
             return new Vector2i(a.X * b.X, a.Y * b.Y);
         }
 
-        public static implicit operator Vector2(Vector2i v)
-        {
-            return new Vector2 { x = v.X, y = v.Y };
-        }
-
         public static explicit operator Vector2i(Vector2 v)
         {
             return new Vector2i { X = (int)v.x, Y = (int)v.y };
@@ -182,6 +183,11 @@ namespace Flai
         public Vector2 ToVector2()
         {
             return new Vector2(this.X, this.Y);
+        }
+
+        public Vector2f ToVector2f()
+        {
+            return new Vector2f(this.X, this.Y);
         }
 
         public static Vector2i Zero

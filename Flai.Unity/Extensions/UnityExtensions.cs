@@ -551,6 +551,30 @@ public static class GameObjectExtensions
     }
 
     #endregion
+
+    #region Layer Stuff
+
+    public static int GetLayer(this GameObject gameObject)
+    {
+        return gameObject.layer;
+    }
+
+    public static string GetLayerName(this GameObject gameObject)
+    {
+        return new LayerMaskF(gameObject.layer).Name;
+    }
+
+    public static void SetLayer(this GameObject gameObject, string layer)
+    {
+        gameObject.layer = Layer.IndexFromName(layer);
+    }
+
+    public static void SetLayer(this GameObject gameObject, int layerId)
+    {
+        gameObject.layer = layerId;
+    }
+
+    #endregion
 }
 
 #endregion
@@ -559,6 +583,12 @@ public static class GameObjectExtensions
 
 public static class VectorExtensions
 {
+    public static float GetAxis(this Vector2 v, Axis axis)
+    {
+        return (axis == Axis.Horizontal) ? v.x : v.y;
+    }
+
+
     public static float Length(this Vector2 vector)
     {
         return vector.magnitude;
@@ -676,6 +706,11 @@ public static class RectExtensions
     {
         return new Rect(rect.x - amount, rect.y - amount, rect.width + amount * 2, rect.height + amount * 2);
     }
+
+    public static RectangleF ToRectangleF(this Rect rect)
+    {
+        return rect;
+    }
 }
 
 #endregion
@@ -685,7 +720,6 @@ public static class RectExtensions
 public static class PhysicsExtensions
 {
     // really hacked, collider2D.bounds is coming in Unity 4.5
-    // todo: THIS DOES NOT WORK PROPERLY WITH ROTATED BOXCOLLIDERS
     public static RectangleF GetBoundsHack(this Collider2D collider)
     {
         Ensure.NotNull(collider);

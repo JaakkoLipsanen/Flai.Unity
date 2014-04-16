@@ -1,6 +1,7 @@
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Flai.Unity.CopyDLL.exe.config
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Flai.Unity.CopyDLL.exe
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Flai.Unity.CopyDLL.pdb
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Flai.Unity.CopyDLL.exe.config
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Microsoft.WindowsAPICodePack.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Microsoft.WindowsAPICodePack.Shell.dll
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\MainWindow.baml
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\MainWindow.g.cs
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\App.g.cs
@@ -10,6 +11,5 @@ C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\Flai.Unity.CopyDLL.Pr
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\Flai.Unity.CopyDLL.csproj.GenerateResource.Cache
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\Flai.Unity.CopyDLL.exe
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\Flai.Unity.CopyDLL.pdb
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Microsoft.WindowsAPICodePack.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\bin\Release\Flai.Unity.CopyDLL.pdb
 C:\Koodaus\Unity\Flai.Unity\Flai.Unity.CopyDLL\obj\Release\Flai.Unity.CopyDLL.csprojResolveAssemblyReference.cache

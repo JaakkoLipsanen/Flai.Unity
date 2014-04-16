@@ -59,10 +59,10 @@ namespace Flai
                     return -Vector2i.UnitX;
 
                 case Direction2D.Up:
-                    return Vector2i.UnitY;
+                    return -Vector2i.UnitY;
 
                 case Direction2D.Down:
-                    return -Vector2i.UnitY;
+                    return Vector2i.UnitY;
 
                 default:
                     throw new ArgumentException("Value \"" + direction + "\" not recognized");
@@ -149,14 +149,14 @@ namespace Flai
             return FlaiMath.ToRadians(direction.ToDegrees());
         }
 
-        public static Alignment ToAlignment(this Direction2D direction)
+        public static Axis ToAlignment(this Direction2D direction)
         {
             if (direction == Direction2D.Left || direction == Direction2D.Right)
             {
-                return Alignment.Horizontal;
+                return Axis.Horizontal;
             }
 
-            return Alignment.Vertical;
+            return Axis.Vertical;
         }
 
         public static int Sign(this Direction2D direction)

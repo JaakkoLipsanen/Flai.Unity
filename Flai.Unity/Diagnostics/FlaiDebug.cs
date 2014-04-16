@@ -155,7 +155,7 @@ namespace Flai.Diagnostics
 
         public static void LogWarning(string format, params object[] parameters)
         {
-            Debug.Log(string.Format(format, parameters));
+            Debug.LogWarning(string.Format(format, parameters));
         }
 
         public static void LogWarning(object message, UnityObject context)
@@ -170,7 +170,7 @@ namespace Flai.Diagnostics
 
         public static void LogError(string format, params object[] parameters)
         {
-            Debug.Log(string.Format(format, parameters));
+            Debug.LogError(string.Format(format, parameters));
         }
 
         public static void LogError(object message, UnityObject context)

@@ -22,6 +22,11 @@ namespace Flai
             get { return this.X * this.X + this.Y * this.Y; }
         }
 
+        public Vector2f FlippedAxis
+        {
+            get { return new Vector2f(this.Y, this.X); }
+        }
+
         public Vector2f(float value)
         {
             this.X = value;
@@ -120,6 +125,23 @@ namespace Flai
         public Vector3 ToVector3()
         {
             return this;
+        }
+
+        public float GetAxis(Axis axis)
+        {
+            return (axis == Axis.Horizontal) ? this.X : this.Y;
+        }
+
+        public void SetAxis(Axis axis, float value)
+        {
+            if (axis == Axis.Horizontal)
+            {
+                this.X = value;
+            }
+            else
+            {
+                this.Y = value;
+            }
         }
 
         #endregion

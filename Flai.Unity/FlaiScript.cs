@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Flai.DataStructures;
+﻿using Flai.General;
+using System.Collections.Generic;
 // ReSharper disable ConvertConditionalTernaryToNullCoalescing
 using UnityEngine;
-using SystemObject = System.Object;
 
 namespace Flai
 {
@@ -16,10 +15,21 @@ namespace Flai
             get { return _gameObject == null ? (_gameObject = gameObject) : _gameObject; }
         }
 
+        #region Components
+
         public Transform Transform
         {
             get { return _transform == null ? (_transform = transform) : _transform; }
         }
+
+        public BoxCollider2D BoxCollider2D
+        {
+            get { return this.Get<BoxCollider2D>(); }
+        }
+
+        #endregion
+
+        #region Position/Rotation/Scale
 
         public Vector2f Position2D
         {
@@ -87,6 +97,10 @@ namespace Flai
             set { this.Transform.localScale = value; }
         }
 
+        #endregion
+
+        #region Parent/Childs
+
         public GameObject Parent
         {
             get { return this.Transform.GetParent(); }
@@ -102,6 +116,24 @@ namespace Flai
         {
             get { return this.GetAllChildren(); }
         }
+
+        #endregion
+
+        #region Layer
+
+        public int LayerIndex
+        {
+            get { return this.GameObject.layer; }
+            set { this.GameObject.layer = value; }
+        }
+
+        public string LayerName
+        {
+            get { return Layer.NameFromIndex(this.LayerIndex); }
+            set { this.LayerIndex = Layer.IndexFromName(value); }
+        }
+
+        #endregion
 
         protected FlaiScript()
         {

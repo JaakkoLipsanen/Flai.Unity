@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // From Nuclex originally IIRC
@@ -127,6 +128,27 @@ namespace Flai
         {
             this.X += offsetX;
             this.Y += offsetY;
+        }
+
+        public void Offset(float offset)
+        {
+            this.X += offset;
+            this.Y += offset;
+        }
+
+        public RectangleF AsOffsetted(float offsetX, float offsetY)
+        {
+            return new RectangleF(this.X + offsetX, this.Y + offsetY, this.Width, this.Height);
+        }
+
+        public RectangleF AsOffsetted(Vector2f amount)
+        {
+            return new RectangleF(this.X + amount.X, this.Y + amount.Y, this.Width, this.Height);
+        }
+
+        public RectangleF AsOffsetted(float offset)
+        {
+            return new RectangleF(this.X + offset, this.Y + offset, this.Width, this.Height);
         }
 
         #endregion
@@ -323,22 +345,22 @@ namespace Flai
             return new Vector2f(depthX, depthY);
         }
 
-        public bool GetIntersectionDepth(RectangleF other, Alignment alignment, out float depth)
+        public bool GetIntersectionDepth(RectangleF other, Axis axis, out float depth)
         {
-            Vector2f depthVector = this.GetIntersectionDepth(other, alignment);
-            depth = (alignment == Alignment.Horizontal) ? depthVector.X : depthVector.Y;
+            Vector2f depthVector = this.GetIntersectionDepth(other, axis);
+            depth = (axis == Axis.Horizontal) ? depthVector.X : depthVector.Y;
             return depth != 0f;
         }
 
-        public bool GetIntersectionDepth(RectangleF other, Alignment alignment, out Vector2f depth)
+        public bool GetIntersectionDepth(RectangleF other, Axis axis, out Vector2f depth)
         {
-            depth = this.GetIntersectionDepth(other, alignment);
+            depth = this.GetIntersectionDepth(other, axis);
             return depth.X != 0 || depth.Y != 0;
         }
 
-        public Vector2f GetIntersectionDepth(RectangleF other, Alignment alignment)
+        public Vector2f GetIntersectionDepth(RectangleF other, Axis axis)
         {
-            return alignment == Alignment.Vertical ?
+            return axis == Axis.Vertical ?
                 new Vector2f(0, this.GetVerticalIntersectionDepth(other)) :
                 new Vector2f(this.GetHorizontalIntersectionDepth(other), 0);
         }
@@ -593,6 +615,31 @@ namespace Flai
         public static implicit operator RectangleF(Rect rect)
         {
             return new RectangleF(rect.x, rect.y, rect.width, rect.height);
+        }
+
+        public static RectangleF operator *(RectangleF rectangle, float multiplier)
+        {
+            Ensure.True(multiplier >= 0);
+            return new RectangleF(rectangle.X * multiplier, rectangle.Y * multiplier, rectangle.Width * multiplier, rectangle.Height * multiplier);
+        }
+
+        public static RectangleF operator *(RectangleF rectangle, Vector2f multiplier)
+        {
+            Ensure.True(multiplier.X >= 0 && multiplier.Y >= 0);
+            return new RectangleF(rectangle.X * multiplier.X, rectangle.Y * multiplier.Y, rectangle.Width * multiplier.X, rectangle.Height * multiplier.Y);
+        }
+
+        public static RectangleF operator /(RectangleF rectangle, float divider)
+        {
+            Ensure.True(divider > 0);
+            return new RectangleF(rectangle.X / divider, rectangle.Y / divider, rectangle.Width / divider, rectangle.Height / divider);
+        }
+
+
+        public static RectangleF operator /(RectangleF rectangle, Vector2f divider)
+        {
+            Ensure.True(divider.X > 0 && divider.Y > 0);
+            return new RectangleF(rectangle.X / divider.X, rectangle.Y / divider.Y, rectangle.Width / divider.X, rectangle.Height / divider.Y);
         }
 
         #endregion
