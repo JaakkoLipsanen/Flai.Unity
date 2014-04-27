@@ -1,14 +1,15 @@
-﻿using Flai.General;
-using System.Collections.Generic;
+﻿
 // ReSharper disable ConvertConditionalTernaryToNullCoalescing
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Flai
 {
-    public abstract class FlaiScript : MonoBehaviour
+    // lightweight extension of MonoBehaviour, use in cases where you have a tons of components. Doesn't implement any methods (Awake, Update, Collision etc)
+    public abstract class ExtendedMonoBehaviour : MonoBehaviour
     {
-        private GameObject _gameObject = null;
-        private Transform _transform = null;
+        internal GameObject _gameObject = null;
+        internal Transform _transform = null;
 
         public GameObject GameObject
         {
@@ -25,6 +26,16 @@ namespace Flai
         public BoxCollider2D BoxCollider2D
         {
             get { return this.Get<BoxCollider2D>(); }
+        }
+
+        public SpriteRenderer SpriteRenderer
+        {
+            get { return this.Get<SpriteRenderer>(); }
+        }
+
+        public Animator Animator
+        {
+            get { return this.Get<Animator>(); }
         }
 
         #endregion
@@ -59,6 +70,16 @@ namespace Flai
         {
             get { return this.Transform.GetLocalRotation2D(); }
             set { this.Transform.SetLocalRotation2D(value); }
+        }
+
+        public Vector2f RotationDirection2D
+        {
+            get { return FlaiMath.GetAngleVectorDeg(this.Rotation2D); }
+            set
+            {
+                Ensure.True(value != Vector2f.Zero);
+                this.Rotation2D = FlaiMath.GetAngleDeg(value);
+            }
         }
 
         public Vector3 Rotation
@@ -134,7 +155,10 @@ namespace Flai
         }
 
         #endregion
+    }
 
+    public abstract class FlaiScript : ExtendedMonoBehaviour
+    {
         protected FlaiScript()
         {
         }

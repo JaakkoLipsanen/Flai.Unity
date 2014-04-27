@@ -10,6 +10,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Flai;
@@ -178,6 +179,38 @@ public static class GameObjectExtensions
         GameObject.DestroyImmediate(component.gameObject);
     }
 
+    public static void Destroy(this Component component)
+    {
+        Component.Destroy(component);
+    }
+
+    public static void DestroyImmediate(this Component component)
+    {
+        Component.DestroyImmediate(component);
+    }
+
+    public static bool IsDestroyed(this UnityObject obj)
+    {
+        // unity overloads the == operator on UnityEngine.Object and returns null if it is destroyed
+        return obj == null;
+    }
+
+    public static void DestroyAllChildren(this GameObject gameObject)
+    {
+        foreach (var child in gameObject.GetAllChildren().ToArray()) // toarray necessary?
+        {
+            child.DestroyIfNotNull();
+        }
+    }
+
+    public static void DestroyAllChildrenImmediate(this GameObject gameObject)
+    {
+        foreach (var child in gameObject.GetAllChildren().ToArray()) // toarray necessary?
+        {
+            child.DestroyImmediateIfNotNull();
+        }
+    }
+
     #endregion
 
     #region Child / Parent stuff
@@ -290,7 +323,12 @@ public static class GameObjectExtensions
 
     public static Vector2f GetPosition2D(this Transform transform)
     {
-        return (Vector2f)transform.position;
+        return (Vector2f) transform.position;
+    }
+
+    public static Vector3 GetPosition(this GameObject gameObject)
+    {
+        return gameObject.transform.position;
     }
 
     public static Vector2f GetLocalPosition2D(this Transform transform)
@@ -470,6 +508,40 @@ public static class GameObjectExtensions
     }
 
     #endregion
+
+    #endregion
+
+    #region Add XXX
+
+    public static Vector2f AddPosition2D(this Transform transform, Vector2f amount)
+    {
+        transform.position += amount.ToVector3();
+        return transform.position;
+    }
+
+    public static Vector2f AddPosition2D(this GameObject gameObject, Vector2f amount)
+    {
+        return gameObject.transform.AddPosition2D(amount);
+    }
+
+    #endregion
+
+    #region Set Scale X Y Z
+
+    public static void SetScaleX(this Transform transform, float value)
+    {
+        transform.localScale = new Vector3(value, transform.localScale.y, transform.localScale.z);
+    }
+
+    public static void SetScaleY(this Transform transform, float value)
+    {
+        transform.localScale = new Vector3(transform.localScale.x, value, transform.localScale.z);
+    }
+
+    public static void SetScaleZ(this Transform transform, float value)
+    {
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, value);
+    }
 
     #endregion
 
@@ -727,9 +799,10 @@ public static class PhysicsExtensions
         {
             float rotation = collider.transform.GetRotation2D();
             BoxCollider2D boxCollider = collider as BoxCollider2D;
+
             Vector2f size = collider.gameObject.GetScale2D() * boxCollider.size;
-            Vector2f origin = Vector2f.One * 0.5f - boxCollider.center.ToVector2f();
-            //   origin = Vector2f.Rotate(origin, FlaiMath.ToRadians(rotation), Vector2f.Zero);
+            Vector2f center = boxCollider.center.ToVector2f() / boxCollider.size;
+            Vector2f origin = Vector2f.One * 0.5f - center;
             Vector2f startPosition = collider.gameObject.GetPosition2D() - origin * size;
 
             TransformedRectangleF transformedBounds = TransformedRectangleF.CreateRotated(new RectangleF(startPosition.X, startPosition.Y, size.X, size.Y), origin * size + startPosition, rotation);
@@ -752,6 +825,12 @@ public static class PhysicsExtensions
         }
 
         throw new NotImplementedException("");
+    }
+
+    public static Bounds AsExpanded(this Bounds bounds, float amount)
+    {
+        bounds.Expand(amount);
+        return bounds;
     }
 }
 

@@ -199,9 +199,19 @@ namespace Flai
             return (verticalDirection == VerticalDirection.Down) ? Vector2f.Down : Vector2f.Up;
         }
 
-        public static Vector2f ToUnitVector(this HorizontalDirection verticalDirection)
+        public static Vector2f ToUnitVector(this HorizontalDirection horizontalDirection)
         {
-            return (verticalDirection == HorizontalDirection.Left) ? Vector2f.Left : Vector2f.Right;
+            return (horizontalDirection == HorizontalDirection.Left) ? Vector2f.Left : Vector2f.Right;
+        }
+
+        public static int ToInt(this VerticalDirection verticalDirection)
+        {
+            return (verticalDirection == VerticalDirection.Down) ? -1 : 1;
+        }
+
+        public static int ToInt(this HorizontalDirection horizontalDirection)
+        {
+            return (horizontalDirection == HorizontalDirection.Left) ? -1 : 1;
         }
 
         public static VerticalDirection Opposite(this VerticalDirection verticalDirection)

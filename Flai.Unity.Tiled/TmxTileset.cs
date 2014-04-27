@@ -19,7 +19,7 @@ namespace Flai.Unity.Tiled
             this.ImageSize = imageSize;
         }
 
-        internal static TmxTileset Parse(XElement element)
+        internal static TmxTileset  Parse(XElement element)
         {
             int firstGid = int.Parse(element.Attribute("firstgid").Value);
             string name = element.Attribute("name").Value;

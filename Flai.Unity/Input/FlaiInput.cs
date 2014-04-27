@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityInput = UnityEngine.Input;
 
 namespace Flai.Input
@@ -27,9 +28,19 @@ namespace Flai.Input
             get { return UnityInput.inputString; }
         }
 
-        public static Vector2 MousePosition
+        public static Vector2f MousePosition
         {
             get { return UnityInput.mousePosition; }
+        }
+
+        public static Vector2f MousePositionInWorld2D
+        {
+            get { return Camera.main.ScreenToWorldPoint(FlaiInput.MousePosition); }
+        }
+
+        public static Ray MouseToWorldRay
+        {
+            get { return Camera.main.ScreenPointToRay(FlaiInput.MousePosition); }
         }
 
         #region Axis
@@ -139,6 +150,83 @@ namespace Flai.Input
         public static bool IsNewMouseButtonRelease(MouseButton mouseButton)
         {
             return UnityInput.GetMouseButtonUp((int)mouseButton);
+        }
+
+        #endregion
+
+        #region Button & Key Combined ("Safeguard")
+
+        // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
+        public static bool IsButtonOrKeyPressed(string buttonName, KeyCode alternativeKey)
+        {
+            if (FlaiInput.IsButtonSetUp(buttonName))
+            {
+                return FlaiInput.IsButtonPressed(buttonName);
+            }
+
+            return FlaiInput.IsKeyPressed(alternativeKey);
+        }
+
+        // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
+        public static bool IsButtonOrKeyReleased(string buttonName, KeyCode alternativeKey)
+        {
+            if (FlaiInput.IsButtonSetUp(buttonName))
+            {
+                return FlaiInput.IsButtonReleased(buttonName);
+            }
+
+            return FlaiInput.IsKeyReleased(alternativeKey);
+        }
+
+        // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
+        public static bool IsNewButtonOrKeyPress(string buttonName, KeyCode alternativeKey)
+        {
+            if (FlaiInput.IsButtonSetUp(buttonName))
+            {
+                return FlaiInput.IsNewButtonPress(buttonName);
+            }
+
+            return FlaiInput.IsNewKeyPress(alternativeKey);
+        }
+
+        // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
+        public static bool IsNewButtonOrKeyRelease(string buttonName, KeyCode alternativeKey)
+        {
+            if (FlaiInput.IsButtonSetUp(buttonName))
+            {
+                return FlaiInput.IsNewButtonRelease(buttonName);
+            }
+
+            return FlaiInput.IsNewKeyRelease(alternativeKey);
+        }
+
+        #endregion
+
+        #region Misc
+
+        private static readonly Dictionary<string, bool> _buttonExistsMap = new Dictionary<string, bool>(); 
+        // does a button with a name of 'name' exist?
+        public static bool IsButtonSetUp(string name)
+        {
+            if (_buttonExistsMap.ContainsKey(name))
+            {
+                return _buttonExistsMap[name];
+            }
+
+            bool exists;
+            // this is a really horrible way to do this since throwing exceptions "for no reason" sucks...
+            try
+            {
+                UnityInput.GetButton(name);
+                exists = true;
+            }
+            catch
+            {
+                exists = false;
+            }
+
+            _buttonExistsMap.Add(name, exists);
+            return exists;
         }
 
         #endregion

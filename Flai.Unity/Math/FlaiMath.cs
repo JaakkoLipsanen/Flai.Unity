@@ -57,12 +57,22 @@ namespace Flai
             return (float)Math.Atan2(vector.y, vector.x);
         }
 
+        public static float GetAngleDeg(Vector2 vector)
+        {
+            return FlaiMath.ToDegrees(FlaiMath.GetAngle(vector));
+        }
+
         public static Vector2 GetAngleVector(float radians)
         {
             Vector2 result = new Vector2((float) Math.Cos(radians), (float) Math.Sin(radians));
             result.Normalize();
 
             return result;
+        }
+
+        public static Vector2 GetAngleVectorDeg(float degrees)
+        {
+            return FlaiMath.GetAngleVector(FlaiMath.ToRadians(degrees));
         }
 
         #endregion
@@ -320,6 +330,16 @@ namespace Flai
         {
             double num = FlaiMath.Clamp(amount, 0f, 1f);
             return FlaiMath.Lerp(value1, value2, num * num * (3f - 2f * num));
+        }
+
+        public static float Lerp(LerpType lerpType, float value1, float value2, float amount)
+        {
+            if (lerpType == LerpType.Lerp)
+            {
+                return FlaiMath.Lerp(value1, value2, amount);
+            }
+
+            return FlaiMath.SmoothStep(value1, value2, amount);
         }
 
         #endregion

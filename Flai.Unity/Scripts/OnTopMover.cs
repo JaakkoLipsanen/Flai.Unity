@@ -50,11 +50,8 @@ namespace Flai.Scripts
             float changeInUnitsPosition = (this.Position2D.Y - _previousPositionY);
             float changeInUnits = changeInUnitsScale + changeInUnitsPosition;
 
-            const float HorizontalInflateAmount = 0.05f;
-            const float VerticalInflateAmount = 0.15f;
-            Rect currentBounds = this.collider2D.GetBoundsHack().AsInflated(HorizontalInflateAmount, VerticalInflateAmount);
             _gameObjectsOnTop.RemoveWhere(go => go == null);
-            _gameObjectsOnTop.RemoveWhere(go => !go.collider2D.GetBoundsHack().AsInflated(HorizontalInflateAmount, VerticalInflateAmount).Overlaps(currentBounds));
+            _gameObjectsOnTop.RemoveWhere(go => !PhysicsHelper.Intersects(this.collider2D, go.collider2D, 0.2f));
 
             foreach (GameObject other in _gameObjectsOnTop)
             {
@@ -66,7 +63,7 @@ namespace Flai.Scripts
 
             if (this.DrawDebug)
             {
-                FlaiDebug.DrawRectangleOutlines(currentBounds);
+                FlaiDebug.DrawRectangleOutlines(this.collider2D.GetBoundsHack());
             }
         }
 

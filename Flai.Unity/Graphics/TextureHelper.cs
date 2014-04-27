@@ -19,5 +19,21 @@ namespace Flai.Graphics
                 return _blankTexture;
             }
         }
+
+        private static Texture2D _emptyTexture;
+        public static Texture2D EmptyTexture
+        {
+            get
+            {
+                if (_emptyTexture == null)
+                {
+                    _emptyTexture = new Texture2D(1, 1);
+                    _emptyTexture.SetPixel(0, 0, ColorF.Transparent);
+                    _emptyTexture.Apply();
+                }
+
+                return _emptyTexture;
+            }
+        }
     }
 }

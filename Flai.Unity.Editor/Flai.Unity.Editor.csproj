@@ -49,6 +49,8 @@
     <Compile Include="FlaiHandles.cs" />
     <Compile Include="InspectorBase.cs" />
     <Compile Include="Inspectors\OnTopMoverInspector.cs" />
+    <Compile Include="Inspectors\TilemapContainerInspector.cs" />
+    <Compile Include="Inspectors\TilemapSpriteManagerInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

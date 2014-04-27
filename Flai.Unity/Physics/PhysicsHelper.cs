@@ -7,6 +7,8 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
+using Flai.Diagnostics;
 using UnityEngine;
 
 namespace Flai
@@ -51,6 +53,18 @@ namespace Flai
         }
 
         #endregion
+
+        public static bool Intersects(Collider first, Collider second, float biasAmount = 0.01f)
+        {
+            // todo: in Unity >= 4.5, Collider2D should have .bounds property. use it!!
+            return first.bounds.AsExpanded(biasAmount).Intersects(second.bounds.AsExpanded(biasAmount));
+        }
+
+        public static bool Intersects(Collider2D first, Collider2D second, float biasAmount = 0.01f)
+        {
+            // todo: in Unity >= 4.5, Collider2D should have .bounds property. use it!!
+            return first.GetBoundsHack().AsInflated(biasAmount).Intersects(second.GetBoundsHack().AsInflated(biasAmount));
+        }
 
         public static float CalculateJumpVelocity(float targetJumpHeight, float gravity)
         {

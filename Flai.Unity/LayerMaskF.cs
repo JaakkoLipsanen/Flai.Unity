@@ -58,6 +58,11 @@ namespace Flai
             return new LayerMaskF(1 << LayerMask.NameToLayer(name));
         }
 
+        public static LayerMaskF FromNames(string name1)
+        {
+            return LayerMaskF.FromName(name1);
+        }
+
         public static LayerMaskF FromNames(string name1, string name2)
         {
             return LayerMaskF.FromName(name1) | LayerMaskF.FromName(name2);
@@ -68,9 +73,29 @@ namespace Flai
             return LayerMaskF.FromName(name1) | LayerMaskF.FromName(name2) | LayerMaskF.FromName(name3);
         }
 
+        public static LayerMaskF FromNames(string name1, string name2, string name3, string name4)
+        {
+            return LayerMaskF.FromName(name1) | LayerMaskF.FromName(name2) | LayerMaskF.FromName(name3) | LayerMaskF.FromName(name4);
+        }
+
+        public static LayerMaskF FromNames(string name1, string name2, string name3, string name4, string name5)
+        {
+            return LayerMaskF.FromName(name1) | LayerMaskF.FromName(name2) | LayerMaskF.FromName(name3) | LayerMaskF.FromName(name4) | LayerMaskF.FromName(name5);
+        }
+
+        public static LayerMaskF FromNames(string name1, string name2, string name3, string name4, string name5, string name6)
+        {
+            return LayerMaskF.FromName(name1) | LayerMaskF.FromName(name2) | LayerMaskF.FromName(name3) | LayerMaskF.FromName(name4) | LayerMaskF.FromName(name5) | LayerMaskF.FromName(name6);
+        }
+
         public static LayerMaskF Combine(LayerMaskF a, LayerMaskF b)
         {
             return a | b;
+        }
+
+        public LayerMaskF Combine(LayerMaskF other)
+        {
+            return LayerMaskF.Combine(this, other);
         }
 
         public static LayerMaskF operator |(LayerMaskF a, LayerMaskF b)

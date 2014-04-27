@@ -1,4 +1,5 @@
 ﻿using Flai.IO;
+using Flai.Scripts;
 using System;
 using System.IO;
 using UnityEngine;
@@ -272,7 +273,6 @@ namespace Flai
             return Vector2.Angle(left, right); // meh
         }
 
-
         public static float Dot(Vector2f left, Vector2f right)
         {
             return Vector2.Dot(left, right); // meh
@@ -280,7 +280,7 @@ namespace Flai
 
         public static Vector2f MoveTowards(Vector2f current, Vector2f target, float maxDistanceDelta)
         {
-            return Vector2f.Zero; // Vector2.MoveTowards(current, target, maxDistanceDelta);
+            return Vector2.MoveTowards(current, target, maxDistanceDelta);
         }
 
         public static Vector2f Lerp(Vector2f current, Vector2f target, float amount)
@@ -288,9 +288,19 @@ namespace Flai
             return new Vector2f { X = FlaiMath.Lerp(current.X, target.X, amount), Y = FlaiMath.Lerp(current.Y, target.Y, amount) };
         }
 
-        public static Vector2f SmoothLerp(Vector2f current, Vector2f target, float amount)
+        public static Vector2f SmoothStep(Vector2f current, Vector2f target, float amount)
         {
             return new Vector2f { X = FlaiMath.SmoothStep(current.X, target.X, amount), Y = FlaiMath.SmoothStep(current.Y, target.Y, amount) };
+        }
+
+        public static Vector2f Lerp(LerpType lerpType, Vector2f current, Vector2f target, float amount)
+        {
+            if (lerpType == LerpType.Lerp)
+            {
+                return Vector2f.Lerp(current, target, amount);
+            }
+
+            return Vector2f.SmoothStep(current, target, amount);
         }
 
         public static Vector2f Rotate(Vector2f point, float radians)

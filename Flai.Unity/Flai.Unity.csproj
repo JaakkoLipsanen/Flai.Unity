@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="ComponentHelper.cs" />
     <Compile Include="FlaiScript.cs" />
+    <Compile Include="General\Timer.cs" />
     <Compile Include="Graphics\ColorF.cs" />
     <Compile Include="Input\FlaiInput.cs" />
     <Compile Include="LayerMaskF.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="General\Lock.cs" />
     <Compile Include="General\Pair.cs" />
     <Compile Include="General\PersistentManager.cs" />
+    <Compile Include="Math\LerpType.cs" />
     <Compile Include="Math\RoundingOptions.cs" />
     <Compile Include="General\TypeID.cs" />
     <Compile Include="General\TypeMask.cs" />
@@ -111,9 +113,27 @@
     <Compile Include="Scene\Scene.cs" />
     <Compile Include="Scene\SceneDescription.cs" />
     <Compile Include="Scene\SceneFader.cs" />
+    <Compile Include="Scripts\ConstantSpeed2D.cs" />
+    <Compile Include="Scripts\ConstantVelocity.cs" />
+    <Compile Include="Scripts\CursorSetter.cs" />
+    <Compile Include="Scripts\LifeTime.cs" />
+    <Compile Include="Scripts\DestroyOnTrigger.cs" />
+    <Compile Include="Scripts\DestroyWhenParticleSystemFinished.cs" />
+    <Compile Include="Scripts\MouseFollower2D.cs" />
     <Compile Include="Scripts\OnTopMover.cs" />
+    <Compile Include="Scripts\Rendering\SortingOrderSetter.cs" />
+    <Compile Include="Scripts\SceneStateManager.cs" />
+    <Compile Include="Scripts\TargetFollower.cs" />
+    <Compile Include="Scripts\GameSettings.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Math\Size.cs" />
+    <Compile Include="Tilemap\Serializing\Tileset.cs" />
+    <Compile Include="Tilemap\Serializing\TilesetManager.cs" />
+    <Compile Include="Tilemap\Serializing\TmxAsset.cs" />
+    <Compile Include="Tilemap\Serializing\TilemapData.cs" />
+    <Compile Include="Tilemap\Tilemap.cs" />
+    <Compile Include="Tilemap\TilemapContainer.cs" />
+    <Compile Include="Tilemap\TilemapSpriteManager.cs" />
     <Compile Include="Tween\Tween.cs" />
     <Compile Include="Tween\TweenAction.cs" />
     <Compile Include="Tween\TweenBezier.cs" />
