@@ -107,7 +107,7 @@ namespace Flai.Tween
                 _tweenEmpty.AddComponent(typeof(Tween));
                 _tweenEmpty.isStatic = true;
 #if !UNITY_EDITOR
-                _tweenEmpty.hideFlags = HideFlags.HideAndDontSave;
+                _tweenEmpty.hideFlags = HideFlags.None;
 #endif
                 DontDestroyOnLoad(_tweenEmpty);
                 for (int i = 0; i < maxTweens; i++)

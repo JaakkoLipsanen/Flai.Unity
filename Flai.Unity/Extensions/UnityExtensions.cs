@@ -237,6 +237,25 @@ public static class GameObjectExtensions
         return transform.gameObject;
     }
 
+    public static GameObject GetChildRecursively(this Component component, string name)
+    {
+        foreach (var child in component.GetAllChildren())
+        {
+            if (child.gameObject.name == name)
+            {
+                return child;
+            }
+
+            var go = child.GetChildRecursively(name);
+            if (go != null)
+            {
+                return go;
+            }
+        }
+
+        return null;
+    }
+
     public static GameObject GetChild(this GameObject gameObject, string name)
     {
         Transform transform = gameObject.transform.FindChild(name);
@@ -246,6 +265,25 @@ public static class GameObjectExtensions
         }
 
         return transform.gameObject;
+    }
+
+    public static GameObject GetChildRecursively(this GameObject gameObject, string name)
+    {
+        foreach (var child in gameObject.GetAllChildren())
+        {
+            if (child.name == name)
+            {
+                return child;
+            }
+
+            var go = child.GetChildRecursively(name);
+            if (go != null)
+            {
+                return go;
+            }
+        }
+
+        return null;
     }
 
     public static IEnumerable<GameObject> GetAllChildren(this GameObject gameObject)
@@ -647,6 +685,34 @@ public static class GameObjectExtensions
     }
 
     #endregion
+
+    public static void SetIsRendererEnabledRecursively(this GameObject gameObject, bool enabled)
+    {
+        var r = gameObject.renderer;
+        if (r != null)
+        {
+            r.enabled = enabled;
+        }
+
+        foreach (GameObject child in gameObject.GetAllChildren())
+        {
+            child.SetIsRendererEnabledRecursively(enabled);
+        }
+    }
+
+    public static void SetIsRendererEnabledRecursively(this Component component, bool enabled)
+    {
+        var r = component.renderer;
+        if (r != null)
+        {
+            r.enabled = enabled;
+        }
+
+        foreach (GameObject child in component.GetAllChildren())
+        {
+            child.SetIsRendererEnabledRecursively(enabled);
+        }
+    }
 }
 
 #endregion

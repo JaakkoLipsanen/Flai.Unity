@@ -11,6 +11,7 @@ namespace Flai.Scripts
         public bool Z = true;
         public bool FollowInEditMode = false;
         public LerpType LerpType = LerpType.Lerp;
+        public bool UseFixedUpdate = false;
 
         public GameObject Target;
         public float Power = 1;
@@ -25,15 +26,24 @@ namespace Flai.Scripts
 
         protected override void LateUpdate()
         {
+            if (this.Target == null)
+            {
+                return;
+            }
+
             if (!Application.isPlaying && this.FollowInEditMode)
             {
                 this.Follow(0.016f);
+            }
+            else if (!this.UseFixedUpdate)
+            {
+                this.Follow();
             }
         }
 
         protected override void FixedUpdate()
         {
-            if (this.Target == null)
+            if (this.Target == null || !this.UseFixedUpdate)
             {
                 return;
             }
@@ -43,7 +53,7 @@ namespace Flai.Scripts
 
         private void Follow(float? delta = null)
         {
-            float deltaTime = delta ?? Time.deltaTime;
+            float deltaTime = delta ?? ((Time.deltaTime + Time.smoothDeltaTime) * 0.5f);
             Vector3 current = this.Position;
             Vector3 target = this.Target.GetPosition();
 

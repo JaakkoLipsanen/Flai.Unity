@@ -48,7 +48,7 @@ namespace Flai
             set { this.Transform.SetPosition2D(value); }
         }
 
-        public Vector2 LocalPosition2D
+        public Vector2f LocalPosition2D
         {
             get { return this.Transform.GetLocalPosition2D(); }
             set { this.Transform.SetLocalPosition2D(value); }

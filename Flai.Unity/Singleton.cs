@@ -40,14 +40,16 @@ namespace Flai
                         {
                             GameObject singleton = new GameObject();
                             _instance = singleton.AddComponent<T>();
-                            singleton.name = "[Singleton] " + typeof(T).Name;
+                            singleton.name = "~" + typeof(T).Name;
 
                             Singleton<T>.DontDestroyOnLoad(singleton);
                             Debug.Log("[Singleton] An instance of " + typeof(T) + " is needed in the scene, so '" + singleton + "' was created with DontDestroyOnLoad.");
                         }
                         else
                         {
-                            Debug.Log("[Singleton] Using instance already created: " + _instance.gameObject.name);
+                            /* !!!!! */
+                            // okay this might be useful, but meh. this happens everytime the scripts are recompiled and i dont really care
+                         //   Debug.Log("[Singleton] Using instance already created: " + _instance.gameObject.name);
                         }
                     }
 

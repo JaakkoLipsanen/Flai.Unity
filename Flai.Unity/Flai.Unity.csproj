@@ -121,7 +121,9 @@
     <Compile Include="Scripts\DestroyWhenParticleSystemFinished.cs" />
     <Compile Include="Scripts\MouseFollower2D.cs" />
     <Compile Include="Scripts\OnTopMover.cs" />
+    <Compile Include="Scripts\Rendering\MaterialUvOffsetter.cs" />
     <Compile Include="Scripts\Rendering\SortingOrderSetter.cs" />
+    <Compile Include="Scripts\Response.cs" />
     <Compile Include="Scripts\SceneStateManager.cs" />
     <Compile Include="Scripts\TargetFollower.cs" />
     <Compile Include="Scripts\GameSettings.cs" />
