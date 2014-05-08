@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Flai.Diagnostics;
 using UnityEngine;
 
@@ -96,13 +98,25 @@ namespace Flai
         [Conditional("DEBUG")]
         public static void IsPlaying()
         {
-            Ensure.True(Application.isPlaying);
+            Assert.True(Application.isPlaying);
         }
 
         [Conditional("DEBUG")]
         public static void IsEditor()
         {
-            Ensure.True(Application.isEditor);
+            Assert.True(Application.isEditor);
+        }
+
+        [Conditional("DEBUG")]
+        public static void Empty<T>(IEnumerable<T> enumerable)
+        {
+            Assert.True(!enumerable.Any());
+        }
+
+        [Conditional("DEBUG")]
+        public static void NotEmpty<T>(IEnumerable<T> enumerable)
+        {
+            Assert.True(enumerable.Any());
         }
     }
 }

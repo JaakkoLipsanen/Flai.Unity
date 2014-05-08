@@ -5,7 +5,6 @@ namespace Flai.Scripts
     public class CursorSetter : FlaiScript
     {
         public Texture2D CursorTexture;
-
         protected override void Awake()
         {
         }

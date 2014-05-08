@@ -1,4 +1,4 @@
-﻿    
+﻿#if ENABLE_STUFF    
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using Flai.DataStructures;
 namespace Flai.IO
 {
     public static class AssemblyHelper
-    {
+    { 
 #if !WINDOWS_PHONE
         public static readonly Assembly EntryAssembly = Assembly.GetEntryAssembly();
 #endif
@@ -34,3 +34,4 @@ namespace Flai.IO
         }
     }
 }
+#endif

@@ -1,10 +1,11 @@
-﻿using Flai.Tween;
+﻿using Flai.Tweening;
 
 namespace Flai.Scene
 {
     // this isn't really "Scene"-spefic, so this could be in Flai.General maybe..
     public class Fade
     {
+        public static readonly Fade Default = Fade.Create();
         public static readonly ColorF DefaultColor = ColorF.Black;
         public static readonly TweenType DefaulTween = TweenType.Linear;
 

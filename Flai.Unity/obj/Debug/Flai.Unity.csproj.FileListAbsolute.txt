@@ -1,8 +1,0 @@
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\bin\Debug\Flai.Unity.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\bin\Debug\Flai.Unity.pdb
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\bin\Debug\UnityEngine.dll
-C:\Koodaus\Unity\Dressrosa\Assets\DLL\Flai.Unity.dll
-C:\Koodaus\Unity\Dressrosa\Assets\DLL\Flai.Unity.pdb
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\obj\Debug\Flai.Unity.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\obj\Debug\Flai.Unity.pdb
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\obj\Debug\Flai.Unity.csprojResolveAssemblyReference.cache

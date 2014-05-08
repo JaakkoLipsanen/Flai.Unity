@@ -9,6 +9,27 @@ namespace Flai.Scene
 {
     public static class Scene
     {
+        #region Properties
+
+        public static int CurrentSceneIndex
+        {
+            get { return Application.loadedLevel; }
+        }
+
+        public static string CurrentSceneName
+        {
+            get { return Application.loadedLevelName; }
+        }
+
+        public static SceneDescription CurrentSceneDescription
+        {
+            get { return SceneDescription.FromIndex(Scene.CurrentSceneIndex); }
+        }
+
+        #endregion
+
+        #region Find
+
         public static T FindOfType<T>()
            where T : UnityObject
         {
@@ -41,6 +62,10 @@ namespace Flai.Scene
         {
             return GameObject.FindGameObjectsWithTag(tag);
         }
+
+        #endregion
+
+        #region Destroy
 
         public static void Destroy(ref GameObject gameObject)
         {
@@ -85,5 +110,67 @@ namespace Flai.Scene
         {
             gameObject.DestroyImmediateIfNotNull();
         }
+
+        #endregion
+
+        #region Get Components
+
+        public static T GetComponentInChildren<T>(Transform transform, bool searchRecursively)
+           where T : Component
+        {
+            int childCount = transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = transform.GetChild(i);
+                var component = child.TryGet<T>();
+                if (component != null)
+                {
+                    return component;
+                }
+
+                if (searchRecursively)
+                {
+                    var result = GetComponentInChildren<T>(child, true);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static List<T> GetComponentsInChildren<T>(Transform transform, bool searchRecursively = true)
+            where T : Component
+        {
+            List<T> list = new List<T>();
+            Scene.GetComponentsInChildren(transform, list, searchRecursively);
+            return list;
+        }
+
+        public static ICollection<T> GetComponentsInChildren<T>(Transform transform, ICollection<T> collection, bool searchRecursively = true)
+            where T : Component
+        {
+            int childCount = transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = transform.GetChild(i);
+                var component = child.TryGet<T>();
+                if (component != null)
+                {
+                    collection.Add(component);
+                }
+
+                if (searchRecursively)
+                {
+                    GetComponentsInChildren(child, collection, true);
+                }
+            }
+
+            return collection;
+        }
+
+        #endregion
     }
 }

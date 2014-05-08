@@ -38,6 +38,11 @@ namespace Flai
             get { return this.Get<Animator>(); }
         }
 
+        public Rigidbody2D Rigidbody2D
+        {
+            get { return this.Get<Rigidbody2D>(); }
+        }
+
         #endregion
 
         #region Position/Rotation/Scale
@@ -135,7 +140,7 @@ namespace Flai
 
         public IEnumerable<GameObject> Children
         {
-            get { return this.GetAllChildren(); }
+            get { return this.GetChildren(); }
         }
 
         #endregion

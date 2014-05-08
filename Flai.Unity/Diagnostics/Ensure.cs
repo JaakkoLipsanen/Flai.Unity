@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Flai.Diagnostics;
 using UnityEngine;
 
@@ -189,6 +191,16 @@ namespace Flai // do.not.care
         public static void IsEditor()
         {
             Ensure.True(Application.isEditor);
+        }
+
+        public static void Empty<T>(IEnumerable<T> enumerable)
+        {
+            Ensure.True(!enumerable.Any());
+        }
+
+        public static void NotEmpty<T>(IEnumerable<T> enumerable)
+        {
+            Ensure.True(enumerable.Any());
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Flai.Tilemap
             catch
             {
                 FlaiDebug.LogErrorWithTypeTag<Tilemap>("Error Creating Mesh - aborting");
+                throw;
             }
 
             foreach (EdgeCollider2D collider in this.GetComponents<EdgeCollider2D>())
@@ -60,6 +61,7 @@ namespace Flai.Tilemap
                 catch
                 {
                     FlaiDebug.LogErrorWithTypeTag<Tilemap>("Error Creating Colliders - aborting");
+                    throw;
                 }
             }
         }

@@ -1,8 +1,9 @@
 ﻿using Flai.Diagnostics;
 using Flai.Graphics;
-using System;
-using Flai.Tween;
+using Flai.Tweening;
 using UnityEngine;
+
+using FadeClass = Flai.Scene.Fade;
 
 namespace Flai.Scene
 {
@@ -51,8 +52,10 @@ namespace Flai.Scene
              this.DontDestroyOnLoad();
         }
 
-        public static void Fade(SceneDescription newScene, Fade fadeIn, Fade fadeOut, float delay = 0)
+        public static void Fade(SceneDescription newScene, Fade fadeIn = null, Fade fadeOut = null, float delay = 0)
         {
+            fadeIn = fadeIn ?? FadeClass.Default;
+            fadeOut = fadeOut ?? FadeClass.Default;
             Ensure.NotNull(newScene, fadeIn, fadeOut);
             Ensure.True(delay >= 0f);
             SceneFader.Instance.StartFade(newScene, fadeIn, fadeOut, delay);
@@ -141,7 +144,7 @@ namespace Flai.Scene
 
         private void StartFade(Fade fade, float from, float to)
         {
-            _currentFadeTween = Flai.Tween.Tween.Value(this.GameObject, this.OnTweenUpdate, from, to, fade.Time).SetEase(fade.TweenType).SetOnComplete(this.OnTweenCompleted);
+            _currentFadeTween = Tween.Value(this.GameObject, this.OnTweenUpdate, from, to, fade.Time).SetEase(fade.TweenType).SetOnComplete(this.OnTweenCompleted);
             _alpha = from;
         }
 

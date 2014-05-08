@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Flai.Editor.Inspectors
 {
-    public class TilemapContainerInspector : InspectorBase<TilemapContainer>
+    public class TilemapContainerInspector : ProxyInspector<TilemapContainer>
     {
         public override void OnInspectorGUI()
         {

@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using Flai;
 using Flai.Diagnostics;
 using Flai.Graphics;
+using Flai.Scene;
 using UnityEngine;
 
 using UnityObject = UnityEngine.Object;
@@ -139,6 +140,43 @@ public static class GameObjectExtensions
         return true;
     }
 
+    public static T GetComponentInChildren<T>(this GameObject gameObject, bool searchRecursively)
+        where T : Component
+    {
+        return Scene.GetComponentInChildren<T>(gameObject.transform, searchRecursively);
+    }
+
+    public static T GetComponentInChildren<T>(this Component component, bool searchRecursively)
+        where T : Component
+    {
+        return Scene.GetComponentInChildren<T>(component.transform, searchRecursively);
+    }
+
+    public static T GetComponentInChildren<T>(this Transform transform, bool searchRecursively)
+        where T : Component
+    {
+        return Scene.GetComponentInChildren<T>(transform, searchRecursively);
+    }
+
+
+    public static void GetComponentsInChildren<T>(this GameObject gameObject, ICollection<T> collection, bool searchRecursively = true)
+        where T : Component
+    {
+        Scene.GetComponentsInChildren<T>(gameObject.transform, collection, searchRecursively);
+    }
+
+    public static void GetComponentsInChildren<T>(this Component component, ICollection<T> collection, bool searchRecursively = true)
+        where T : Component
+    {
+        Scene.GetComponentsInChildren<T>(component.transform, collection, searchRecursively);
+    }
+
+    public static void GetComponentsInChildren<T>(this Transform transform, ICollection<T> collection, bool searchRecursively = true)
+        where T : Component
+    {
+        Scene.GetComponentsInChildren<T>(transform, collection, searchRecursively);
+    }
+
     #endregion
 
     #region Destroy
@@ -197,7 +235,7 @@ public static class GameObjectExtensions
 
     public static void DestroyAllChildren(this GameObject gameObject)
     {
-        foreach (var child in gameObject.GetAllChildren().ToArray()) // toarray necessary?
+        foreach (var child in gameObject.GetChildren().ToArray()) // toarray necessary?
         {
             child.DestroyIfNotNull();
         }
@@ -205,7 +243,7 @@ public static class GameObjectExtensions
 
     public static void DestroyAllChildrenImmediate(this GameObject gameObject)
     {
-        foreach (var child in gameObject.GetAllChildren().ToArray()) // toarray necessary?
+        foreach (var child in gameObject.GetChildren().ToArray()) // toarray necessary?
         {
             child.DestroyImmediateIfNotNull();
         }
@@ -215,103 +253,172 @@ public static class GameObjectExtensions
 
     #region Child / Parent stuff
 
+    #region GetChild/GetChildren
+
+    #region GetChild/GetChildRecursively
+
     public static GameObject GetChild(this FlaiScript flaiScript, string name)
     {
-        Transform transform = flaiScript.Transform.FindChild(name);
-        if (transform == null)
-        {
-            return null;
-        }
-
-        return transform.gameObject;
+        return flaiScript.Transform.GetChild(name);
     }
 
     public static GameObject GetChild(this Component component, string name)
     {
-        Transform transform = component.transform.FindChild(name);
-        if (transform == null)
-        {
-            return null;
-        }
-
-        return transform.gameObject;
-    }
-
-    public static GameObject GetChildRecursively(this Component component, string name)
-    {
-        foreach (var child in component.GetAllChildren())
-        {
-            if (child.gameObject.name == name)
-            {
-                return child;
-            }
-
-            var go = child.GetChildRecursively(name);
-            if (go != null)
-            {
-                return go;
-            }
-        }
-
-        return null;
+        return component.transform.GetChild(name);
     }
 
     public static GameObject GetChild(this GameObject gameObject, string name)
     {
-        Transform transform = gameObject.transform.FindChild(name);
-        if (transform == null)
+        return gameObject.transform.GetChild(name);
+    }
+
+    public static GameObject GetChild(this Transform transform, string name)
+    {
+        Transform child = transform.FindChild(name);
+        if (child == null)
         {
             return null;
         }
 
-        return transform.gameObject;
+        return child.gameObject;
+    }
+
+    public static GameObject GetChildRecursively(this Component component, string name)
+    {
+        return component.transform.GetChildRecursively(name);
     }
 
     public static GameObject GetChildRecursively(this GameObject gameObject, string name)
     {
-        foreach (var child in gameObject.GetAllChildren())
+        return gameObject.transform.GetChildRecursively(name);
+    }
+
+    public static GameObject GetChildRecursively(this Transform transform, string name)
+    {
+        for (int i = 0; i < transform.childCount; i++)
         {
+            var child = transform.GetChild(i);
             if (child.name == name)
             {
-                return child;
+                return child.gameObject;
             }
 
-            var go = child.GetChildRecursively(name);
-            if (go != null)
+            var result = child.GetChildRecursively(name);
+            if (result != null)
             {
-                return go;
+                return result;
             }
         }
 
         return null;
     }
 
-    public static IEnumerable<GameObject> GetAllChildren(this GameObject gameObject)
+    #endregion
+
+    #region GetChildrenTransforms / GetChildrensTransformsRecursively
+
+    // faster
+    public static IEnumerable<Transform> GetChildrenTransforms(this GameObject gameObject)
     {
-        Transform transform = gameObject.transform;
+        return gameObject.transform.GetChildrenTransforms();
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransforms(this Component component)
+    {
+        return component.transform.GetChildrenTransforms();
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransforms(this FlaiScript flaiScript)
+    {
+        return flaiScript.Transform.GetChildrenTransforms();
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransforms(this Transform transform)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            yield return transform.GetChild(i);
+        }
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransformsRecursively(this GameObject gameObject)
+    {
+        return gameObject.transform.GetChildrenTransformsRecursively();
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransformsRecursively(this Component component)
+    {
+        return component.transform.GetChildrenTransformsRecursively();
+    }
+
+    public static IEnumerable<Transform> GetChildrenTransformsRecursively(this Transform transform)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            yield return child;
+            foreach (var other in child.GetChildrenTransformsRecursively())
+            {
+                yield return other;
+            }
+        }
+    }
+
+    #endregion
+
+    #region GetChildren/GetChildrenRecursively
+
+    public static IEnumerable<GameObject> GetChildren(this GameObject gameObject)
+    {
+        return gameObject.transform.GetChildren();
+    }
+
+    public static IEnumerable<GameObject> GetChildren(this Component component)
+    {
+        return component.transform.GetChildren();
+    }
+
+    public static IEnumerable<GameObject> GetChildren(this FlaiScript flaiScript)
+    {
+        return flaiScript.Transform.GetChildren();
+    }
+
+    public static IEnumerable<GameObject> GetChildren(this Transform transform)
+    {
         for (int i = 0; i < transform.childCount; i++)
         {
             yield return transform.GetChild(i).gameObject;
         }
     }
 
-    public static IEnumerable<GameObject> GetAllChildren(this Component component)
+    public static IEnumerable<GameObject> GetChildrenRecursively(this GameObject gameObject)
     {
-        Transform transform = component.transform;
+        return gameObject.transform.GetChildrenRecursively();
+    }
+
+    public static IEnumerable<GameObject> GetChildrenRecursively(this Component component)
+    {
+        return component.transform.GetChildrenRecursively();
+    }
+
+    public static IEnumerable<GameObject> GetChildrenRecursively(this Transform transform)
+    {
         for (int i = 0; i < transform.childCount; i++)
         {
-            yield return transform.GetChild(i).gameObject;
+            Transform child = transform.GetChild(i);
+            yield return child.gameObject;
+            foreach (GameObject other in child.GetChildrenRecursively())
+            {
+                yield return other;
+            }
         }
     }
 
-    public static IEnumerable<GameObject> GetAllChildren(this FlaiScript flaiScript)
-    {
-        Transform transform = flaiScript.Transform;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            yield return transform.GetChild(i).gameObject;
-        }
-    }
+    #endregion
+
+    #endregion
+
+    #region Other
 
     public static GameObject GetParent(this GameObject gameObject)
     {
@@ -357,11 +464,13 @@ public static class GameObjectExtensions
 
     #endregion
 
+    #endregion
+
     #region Get Position/Scale/Rotation 2D
 
     public static Vector2f GetPosition2D(this Transform transform)
     {
-        return (Vector2f) transform.position;
+        return (Vector2f)transform.position;
     }
 
     public static Vector3 GetPosition(this GameObject gameObject)
@@ -654,9 +763,60 @@ public static class GameObjectExtensions
         return (GameObject)GameObject.Instantiate(gameObject, position, Quaternion.Euler(0, 0, rotation2D));
     }
 
-    public static UnityObject Instantiate<T>(this T obj)
+    public static T Instantiate<T>(this T obj)
         where T : UnityObject
     {
+        return (T)UnityObject.Instantiate(obj);
+    }
+
+    public static GameObject InstantiateIfNotNull(this GameObject gameObject)
+    {
+        if (gameObject == null)
+        {
+            return null;
+        }
+
+        return (GameObject)GameObject.Instantiate(gameObject);
+    }
+
+    public static GameObject InstantiateIfNotNull(this GameObject gameObject, Vector3 position)
+    {
+        if (gameObject == null)
+        {
+            return null;
+        }
+
+        return (GameObject)GameObject.Instantiate(gameObject, position, Quaternion.identity);
+    }
+
+    public static GameObject InstantiateIfNotNull(this GameObject gameObject, Vector3 position, Quaternion rotation)
+    {
+        if (gameObject == null)
+        {
+            return null;
+        }
+
+        return (GameObject)GameObject.Instantiate(gameObject, position, rotation);
+    }
+
+    public static GameObject InstantiateIfNotNull(this GameObject gameObject, Vector2 position, float rotation2D)
+    {
+        if (gameObject == null)
+        {
+            return null;
+        }
+
+        return (GameObject)GameObject.Instantiate(gameObject, position, Quaternion.Euler(0, 0, rotation2D));
+    }
+
+    public static T InstantiateIfNotNull<T>(this T obj)
+        where T : UnityObject
+    {
+        if (obj == null)
+        {
+            return null;
+        }
+
         return (T)UnityObject.Instantiate(obj);
     }
 
@@ -694,7 +854,7 @@ public static class GameObjectExtensions
             r.enabled = enabled;
         }
 
-        foreach (GameObject child in gameObject.GetAllChildren())
+        foreach (GameObject child in gameObject.GetChildren())
         {
             child.SetIsRendererEnabledRecursively(enabled);
         }
@@ -708,7 +868,7 @@ public static class GameObjectExtensions
             r.enabled = enabled;
         }
 
-        foreach (GameObject child in component.GetAllChildren())
+        foreach (GameObject child in component.GetChildren())
         {
             child.SetIsRendererEnabledRecursively(enabled);
         }
@@ -831,6 +991,18 @@ public static class TextureExtensions
     public static Size GetSize(this Texture2D texture)
     {
         return new Size(texture.width, texture.height);
+    }
+}
+
+#endregion
+
+#region Sprite Extensions
+
+public static class SpriteExtensions
+{
+    public static SizeF GetSize(this Sprite sprite)
+    {
+        return new SizeF(sprite.rect.width, sprite.rect.height);
     }
 }
 

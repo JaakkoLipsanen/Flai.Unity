@@ -23,21 +23,25 @@ namespace Flai
         public float Left
         {
             get { return this.X; }
+            set { this.X += value - this.Left; }
         }
 
         public float Right
         {
             get { return this.X + this.Width; }
+            set { this.X += value - this.Right; }
         }
 
         public float Top
         {
             get { return this.Y; }
+            set { this.Y += value - this.Top; }
         }
 
         public float Bottom
         {
             get { return this.Y + this.Height; }
+            set { this.Y += value - this.Bottom; }
         }
 
         public Vector2f TopLeft

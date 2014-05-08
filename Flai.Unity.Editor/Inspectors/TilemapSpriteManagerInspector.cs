@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Flai.Editor.Inspectors
 {
-    public class TilemapSpriteManagerInspector : InspectorBase<TilemapSpriteManager>
+    public class TilemapSpriteManagerInspector : ProxyInspector<TilemapSpriteManager>
     {
         private bool _toggled = false;
         public override void OnInspectorGUI()

@@ -67,6 +67,25 @@ namespace Flai //.Extensions
             return str ?? "";
         }
 
+        public static bool IsNullOrWhiteSpace(this string str)
+        {
+            if (str == null)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                char c = str[i];
+                if (c != ' ' && c != '\t' && c != 'n' && c != '\r' && c != '\v')
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static T Cast<T>(this object value)
             where T : class
         {
@@ -1115,12 +1134,12 @@ namespace Flai //.Extensions
             return comparable.CompareTo(other) < 0;
         }
 
-        public static T Clamp<T>(this T value, T min, T max) 
+        public static T Clamp<T>(this T value, T min, T max)
             where T : IComparable<T>
         {
             if (value.IsLessThan(min))
             {
-                return min;           
+                return min;
             }
 
             if (value.IsGreaterThan(max))
@@ -1166,6 +1185,11 @@ namespace Flai //.Extensions
         public static HashSet<T> ToSet<T>(this IEnumerable<T> enumerable)
         {
             return new HashSet<T>(enumerable);
+        }
+
+        public static IEnumerable<T> AsEnumerable<T>(this T value)
+        {
+            yield return value;
         }
     }
 
@@ -1630,6 +1654,25 @@ namespace Flai //.Extensions
             TValue value = new TValue();
             dictionary.Add(key, value);
             return value;
+        }
+    }
+
+    #endregion
+
+    #region Reflection Extensions
+
+    public static class ReflectionExtensions
+    {
+        public static bool HasCustomAttribute<T>(this MemberInfo memberInfo)
+           where T : Attribute
+        {
+            return Attribute.IsDefined(memberInfo, typeof (T));
+        }
+
+        public static T GetCustomAttribute<T>(this MemberInfo memberInfo)
+            where T : Attribute
+        {
+            return (T)Attribute.GetCustomAttribute(memberInfo, typeof (T));
         }
     }
 

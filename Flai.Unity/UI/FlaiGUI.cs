@@ -6,6 +6,7 @@ namespace Flai.UI
 {
     public static class FlaiGUI
     {
+        private static ValueStackAggregator<bool> _isGuiEnabledAggregator = new ValueStackAggregator<bool>(true, (a, b) => a && b); 
         public static void DrawTexture(RectangleF area, Texture texture)
         {
             GUI.DrawTexture(area, texture);
@@ -17,6 +18,18 @@ namespace Flai.UI
             GUI.color = color;
             FlaiGUI.DrawTexture(area, texture);
 			GUI.color = previousColor;
+        }
+
+        public static void PushGuiEnabled(bool isEnabled)
+        {
+            _isGuiEnabledAggregator.Push(isEnabled);
+            GUI.enabled = _isGuiEnabledAggregator.CurrentValue;
+        }
+
+        public static void PopGuiEnabled()
+        {
+            _isGuiEnabledAggregator.Pop();
+            GUI.enabled = _isGuiEnabledAggregator.CurrentValue;
         }
     }
 

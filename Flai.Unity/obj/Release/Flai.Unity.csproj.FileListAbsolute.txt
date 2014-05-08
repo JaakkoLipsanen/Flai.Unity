@@ -1,5 +1,0 @@
-C:\Koodaus\Unity\Dressrosa\Assets\DLL\Flai.Unity.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\bin\Release\Flai.Unity.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\bin\Release\UnityEngine.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\obj\Release\Flai.Unity.dll
-C:\Koodaus\Unity\Flai.Unity\Flai.Unity\obj\Release\Flai.Unity.csprojResolveAssemblyReference.cache

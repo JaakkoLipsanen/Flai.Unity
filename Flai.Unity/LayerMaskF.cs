@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Flai
 {
@@ -56,6 +57,17 @@ namespace Flai
         public static LayerMaskF FromName(string name)
         {
             return new LayerMaskF(1 << LayerMask.NameToLayer(name));
+        }
+
+        public static LayerMaskF FromNames(IEnumerable<string> layers)
+        {
+            LayerMaskF mask = new LayerMaskF();
+            foreach (string name in layers)
+            {
+                mask |= LayerMaskF.FromName(name);
+            }
+
+            return mask;
         }
 
         public static LayerMaskF FromNames(string name1)

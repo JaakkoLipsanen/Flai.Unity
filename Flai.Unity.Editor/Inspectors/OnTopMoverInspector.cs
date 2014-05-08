@@ -4,7 +4,7 @@ using UnityEditor;
 namespace Flai.Editor.Inspectors
 {
  // [CustomEditor(typeof(OnTopMover))]
-    public class OnTopMoverInspector : InspectorBase<OnTopMover>
+    public class OnTopMoverInspector : ProxyInspector<OnTopMover>
     {
         public override void OnInspectorGUI()
         {

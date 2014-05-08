@@ -11,6 +11,11 @@ namespace Flai.Tilemap
         public GameObject TilemapPrefab;
         public TmxAsset TmxAsset;
 
+        public Size Size
+        {
+            get { return (this.TmxAsset == null) ? Size.Empty : this.TmxAsset.Size; }
+        }
+
         public ReadOnlyList<TilemapData> Tilemaps
         {
             get { return this.TmxAsset.Tilemaps; }
@@ -62,6 +67,7 @@ namespace Flai.Tilemap
                 catch
                 {
                     FlaiDebug.LogErrorWithTypeTag<TilemapContainer>("Error - Aborting");
+                    throw;
                 }
 
                 this.TmxAsset.NeedsRefresh = false;
