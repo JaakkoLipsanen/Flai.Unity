@@ -17,10 +17,10 @@ namespace Flai
 
     public enum Direction2D // : byte // maybe I shouldn't use byte's after all.. int's are a bit more efficient and the memory difference
     {                                 // in level files or in runtime is so small
-        Up = 0,
-        Right = 1,
-        Down = 2,
-        Left = 3,
+        Right = 0,
+        Up = 1,
+        Left = 2,
+        Down = 3,
     }
 
     public enum Direction3D
@@ -35,12 +35,12 @@ namespace Flai
 
     public static class DirectionHelper
     {
-        public static Direction2D FromRotation(float degrees)
+        public static Direction2D FromRotation(float degrees, Direction2D startDirection = Direction2D.Right) // 
         {
             degrees = FlaiMath.RealModulus(degrees, 360);
 
-            int step = (int)FlaiMath.Round(degrees/90);
-            return (Direction2D) step;
+            int step = (int)FlaiMath.Round(degrees / 90);
+            return (Direction2D)FlaiMath.RealModulus((int)(step + startDirection), 4);
         }
     }
 
@@ -59,10 +59,10 @@ namespace Flai
                     return -Vector2i.UnitX;
 
                 case Direction2D.Up:
-                    return -Vector2i.UnitY;
+                    return Vector2i.UnitY;
 
                 case Direction2D.Down:
-                    return Vector2i.UnitY;
+                    return -Vector2i.UnitY;
 
                 default:
                     throw new ArgumentException("Value \"" + direction + "\" not recognized");
@@ -127,17 +127,17 @@ namespace Flai
         {
             switch (direction)
             {
-                case Direction2D.Up:
-                    return 270;
-
                 case Direction2D.Right:
                     return 0;
 
-                case Direction2D.Down:
+                case Direction2D.Up:
                     return 90;
 
                 case Direction2D.Left:
                     return 180;
+
+                case Direction2D.Down:
+                    return 270;
 
                 default:
                     throw new ArgumentException("Direction is invalid");

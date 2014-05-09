@@ -7,6 +7,7 @@ namespace Flai.Scripts.Character
     public class CharacterController2D : FlaiScript
     {
         #region Fields
+
         protected float _timeInAir = float.MaxValue / 2f; // really big value at the start so that it is larger than JumpTimeBias
         protected bool _isJumping = false;
 
@@ -180,7 +181,7 @@ namespace Flai.Scripts.Character
             _isJumping = true;
         }
 
-        private void SetFacingDirection(float moveForce)
+        protected virtual void SetFacingDirection(float moveForce)
         {
             if (moveForce != 0)
             {
@@ -188,21 +189,26 @@ namespace Flai.Scripts.Character
             }
         }
 
-        private void SetGroundDirection()
+        protected virtual void SetGroundDirection()
         {
             int multiplier = (this.GroundDirection == VerticalDirection.Down) ? 1 : -1;
             this.Scale2D = new Vector2f(this.Scale2D.X, FlaiMath.Abs(this.Scale2D.Y) * multiplier);
         }
 
-        private void ApplyHorizontalVelocity(float force)
+        protected virtual void ApplyHorizontalVelocity(float force)
         {
-            this.Rigidbody2D.velocity += Vector2f.UnitX.ToVector2() * force * Time.deltaTime * this.AccelerationPower;
+            this.Rigidbody2D.velocity += Vector2f.UnitX.ToVector2() * force * this.AccelerationPower * Time.deltaTime;
             this.Rigidbody2D.velocity = Vector2f.ClampX(this.Rigidbody2D.velocity, -this.Speed, this.Speed);
+        }
+
+        protected virtual float CalculateHorizontalSpeedDrag()
+        {
+            return this.HorizontalSpeedDrag;
         }
 
         private void ApplyHorizontalSpeedDrag()
         {
-            this.Rigidbody2D.velocity *= new Vector2f(this.HorizontalSpeedDrag, 1);
+            this.Rigidbody2D.velocity *= new Vector2f(this.CalculateHorizontalSpeedDrag(), 1);
         }
     }
 }

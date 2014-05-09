@@ -8,9 +8,10 @@ namespace Flai.Scripts
     // todo: awful name, name it better
     public class OnTopMover : FlaiScript
     {
-        [SerializeField]
         public Direction2D AllowedDirection = Direction2D.Up;
         public bool DrawDebug = true;
+        public bool SetDirectionAutomatically = true;
+        public Direction2D AutomaticSetDefaultDirection = Direction2D.Down;
 
         private HashSet<GameObject> _gameObjectsOnTop = new HashSet<GameObject>();
         private float _previousScaleY;
@@ -34,6 +35,11 @@ namespace Flai.Scripts
 
         protected override void Awake()
         {
+            if (this.SetDirectionAutomatically)
+            {
+                this.AllowedDirection = DirectionHelper.FromRotation(this.Rotation2D, Direction2D.Down);
+            }
+
             _previousScaleY = this.Scale2D.Y;
             _previousPositionY = this.Position2D.Y;
 
