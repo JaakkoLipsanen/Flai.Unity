@@ -6,12 +6,12 @@ namespace Flai.Scripts.Responses
     // executes all responses in children
     public class ExecuteChildrenResponse : Response
     {
-        private static readonly Action<Response> ExecuteOnAction = r => r.Execute();
+        private static readonly Action<Response> ExecuteOnAction = r => r.ExecuteOn();
         private static readonly Action<Response> ExecuteOffAction = r => r.ExecuteOff();
         private static readonly Action<Response> ExecuteToggleAction = r => r.ExecuteToggle();
         public bool SearchRecursively = false; // true == search all children, false == search only one level
 
-        protected override bool ExecuteInner()
+        protected override bool ExecuteOnInner()
         {
             this.Execute(ExecuteChildrenResponse.ExecuteOnAction);
             return true; // returns true always. todo: return only if at least one response was executed?

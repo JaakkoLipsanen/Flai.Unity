@@ -143,6 +143,16 @@ namespace Flai
             get { return this.GetChildren(); }
         }
 
+        public bool HasParent
+        {
+            get { return this.Parent != null; }
+        }
+
+        public bool HasChildren
+        {
+            get { return this.Transform.childCount > 0; }
+        }
+
         #endregion
 
         #region Layer

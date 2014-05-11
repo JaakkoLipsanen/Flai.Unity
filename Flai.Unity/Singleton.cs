@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Flai.Diagnostics;
+using UnityEngine;
 
 namespace Flai
 {
@@ -27,13 +28,13 @@ namespace Flai
                         _instance = (T)Singleton<T>.FindObjectOfType(typeof(T));
                         if (Singleton<T>.FindObjectsOfType(typeof(T)).Length > 1)
                         {
-                            Debug.LogError("[Singleton] Something went really wrong " + " - there should never be more than 1 singleton!" + " Reopenning the scene might fix it.");
+                            FlaiDebug.LogError("[Singleton] Something went really wrong " + " - there should never be more than 1 singleton!" + " Reopenning the scene might fix it.");
                             return _instance;
                         }
 
                         if (typeof (T).IsGenericType)
                         {
-                            Debug.LogWarning("[Singleton] Creating a singleton of type " + typeof(T) + ". Warning: Type is generic!");    
+                            FlaiDebug.LogWarning("[Singleton] Creating a Singleton<{0}>. Warning: type is generic!", typeof(T).Name);    
                         }
 
                         if (_instance == null)
@@ -43,7 +44,7 @@ namespace Flai
                             singleton.name = "~" + typeof(T).Name;
 
                             Singleton<T>.DontDestroyOnLoad(singleton);
-                            Debug.Log("[Singleton] An instance of " + typeof(T) + " is needed in the scene, so '" + singleton + "' was created with DontDestroyOnLoad.");
+                            FlaiDebug.Log("[Singleton] Singleton<{0}> created.", typeof (T).Name);
                         }
                         else
                         {
@@ -56,6 +57,11 @@ namespace Flai
                     return _instance;
                 }
             }
+        }
+
+        public static T EnsureInstanceExists()
+        {
+            return Singleton<T>.Instance;
         }
 
         public bool IsPreservingInstance = false;

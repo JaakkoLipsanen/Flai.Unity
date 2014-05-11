@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityObject = UnityEngine.Object;
 namespace Flai.Editor.Inspectors
 {
- // [CustomEditor(typeof(MonoBehaviour), true)]
+    // [CustomEditor(typeof(MonoBehaviour), true)]
     public abstract class DefaultInspector : InspectorBase<MonoBehaviour>
     {
         private bool _hasSearchedForProxyInspector = false;
@@ -133,11 +133,7 @@ namespace Flai.Editor.Inspectors
             }
             else if (typeof(UnityObject).IsAssignableFrom(property.PropertyType))
             {
-                var value = EditorGUILayout.ObjectField(this.GetName(property, attribute), (UnityObject)property.GetValue(this.Target, null), property.PropertyType, true);
-                if (GUI.changed && property.CanWrite)
-                {
-                    property.SetValue(this.Target, value, null);
-                }
+                this.DrawUnityObject(property, attribute, true);
             }
             else if (property.PropertyType == typeof(Rect))
             {
@@ -165,9 +161,17 @@ namespace Flai.Editor.Inspectors
             }
             else
             {
-                FlaiGUI.PushGuiEnabled(false);
-                this.DrawProperty<object>(property, attribute, (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
-                FlaiGUI.PopGuiEnabled();
+                var value = property.GetValue(this.Target, null);
+                if (value is UnityObject)
+                {
+                    this.DrawUnityObject(property, attribute, false);
+                }
+                else
+                {
+                    FlaiGUI.PushGuiEnabled(false);
+                    this.DrawProperty<object>(property, attribute, (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
+                    FlaiGUI.PopGuiEnabled();
+                }
             }
 
             FlaiGUI.PopGuiEnabled();
@@ -193,6 +197,15 @@ namespace Flai.Editor.Inspectors
             if (GUI.changed && property.CanWrite)
             {
                 property.SetValue(this.Target, newValue, null);
+            }
+        }
+
+        private void DrawUnityObject(PropertyInfo property, ShowInInspectorAttribute attribute, bool usePropertyType)
+        {
+            var value = EditorGUILayout.ObjectField(this.GetName(property, attribute), (UnityObject)property.GetValue(this.Target, null), usePropertyType ? property.PropertyType : typeof(UnityObject), true);
+            if (GUI.changed && property.CanWrite)
+            {
+                property.SetValue(this.Target, value, null);
             }
         }
 

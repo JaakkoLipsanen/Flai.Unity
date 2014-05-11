@@ -14,5 +14,8 @@
     <Setting Name="FlaiUnity" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Koodaus\Unity\Flai.Unity\</Value>
     </Setting>
+    <Setting Name="Preset" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

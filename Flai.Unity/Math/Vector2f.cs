@@ -87,7 +87,12 @@ namespace Flai
 
         public override string ToString()
         {
-            return this.X + ", " + this.Y;
+            return this.ToString("0.00");
+        }
+
+        public string ToString(string floatFormat)
+        {
+            return this.X.ToString(floatFormat) + ", " + this.Y.ToString(floatFormat);
         }
 
         #endregion

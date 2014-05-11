@@ -582,6 +582,21 @@ public static class GameObjectExtensions
         gameObject.transform.SetPosition2D(position);
     }
 
+    public static void SetPosition(this GameObject gameObject, float x, float y, float z)
+    {
+        gameObject.transform.position = new Vector3(x, y, z);
+    }
+
+    public static void SetPosition(this GameObject gameObject, Vector3 position)
+    {
+        gameObject.transform.position = position;
+    }
+
+    public static void SetPosition(this GameObject gameObject, Vector2 position, float z)
+    {
+        gameObject.transform.position = new Vector3(position.x, position.y, z);
+    }
+
     public static void SetScale2D(this Transform transform, float scale)
     {
         transform.localScale = new Vector3(scale, scale, transform.localScale.z);
@@ -642,6 +657,21 @@ public static class GameObjectExtensions
     public static void SetLocalPosition2D(this GameObject gameObject, Vector2 position)
     {
         gameObject.transform.SetLocalPosition2D(position);
+    }
+
+    public static void SetLocalPosition(this GameObject gameObject, float x, float y, float z)
+    {
+        gameObject.transform.localPosition = new Vector3(x, y, z);
+    }
+
+    public static void SetLocalPosition(this GameObject gameObject, Vector3 position)
+    {
+        gameObject.transform.localPosition = position;
+    }
+
+    public static void SetLocalPosition(this GameObject gameObject, Vector2 position, float z)
+    {
+        gameObject.transform.localPosition = new Vector3(position.x, position.y, z);
     }
 
     public static void SetLocalRotation2D(this Transform transform, float rotation)

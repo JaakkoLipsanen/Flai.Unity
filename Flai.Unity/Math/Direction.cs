@@ -149,7 +149,7 @@ namespace Flai
             return FlaiMath.ToRadians(direction.ToDegrees());
         }
 
-        public static Axis ToAlignment(this Direction2D direction)
+        public static Axis ToAxis(this Direction2D direction)
         {
             if (direction == Direction2D.Left || direction == Direction2D.Right)
             {

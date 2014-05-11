@@ -8,7 +8,7 @@ namespace Flai.Scripts.Responses
         public GameObject Prefab;
         public bool DestroyOnExecute = true;
         public bool AllowMultipleExecutes = true;
-        protected override bool ExecuteInner()
+        protected override bool ExecuteOnInner()
         {
             if (!this.AllowMultipleExecutes && _hasExecuted)
             {

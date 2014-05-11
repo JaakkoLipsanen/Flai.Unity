@@ -35,7 +35,7 @@ namespace Flai.Scripts.Responses
             {
                 if (this.Response != null)
                 {
-                    this.Response.Execute();
+                    this.Response.ExecuteOn();
                 }
 
                 _hasTriggered = true;

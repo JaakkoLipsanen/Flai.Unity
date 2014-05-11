@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom;
+using System.Collections.Generic;
+using Flai.Diagnostics;
 using UnityEngine;
 using UnityInput = UnityEngine.Input;
 
@@ -11,8 +13,17 @@ namespace Flai.Input
         Middle = 2,
     }
 
-    public static class FlaiInput
+    public enum PressState
     {
+        None,
+        Pressed,
+        Hold,
+        Released
+    }
+
+    public class FlaiInput : Singleton<FlaiInput>
+    {
+        private static Vector2f? _previousMousePosition;
         public static bool IsAnyKeyPressed
         {
             get { return UnityInput.anyKey; }
@@ -31,6 +42,35 @@ namespace Flai.Input
         public static Vector2f MousePosition
         {
             get { return UnityInput.mousePosition; }
+        }
+
+        public static Vector2f PreviousMousePosition
+        {
+            get { return _previousMousePosition ?? FlaiInput.MousePosition; }
+        }
+
+        public static Vector2f MouseDelta
+        {
+            get
+            {
+                FlaiInput.EnsureInstanceExists();
+                return FlaiInput.MousePosition - FlaiInput.PreviousMousePosition;
+            }
+        }
+
+        public static float ScrollWheelDelta
+        {
+            get
+            {
+                const string ScrollWheelInputName = "Mouse ScrollWheel";
+                if (!FlaiInput.IsInputSetup(ScrollWheelInputName))
+                {
+                    FlaiDebug.LogWarningWithTypeTag<FlaiInput>("'{0}' doesn't exist in InputManager!", ScrollWheelInputName);
+                    return 0;
+                }
+
+                return FlaiInput.GetAxis(ScrollWheelInputName);
+            }
         }
 
         public static Vector2f MousePositionInWorld2D
@@ -152,6 +192,21 @@ namespace Flai.Input
             return UnityInput.GetMouseButtonUp((int)mouseButton);
         }
 
+        public static bool WasMouseButtonPressed(MouseButton mouseButton)
+        {
+            return FlaiInput.IsMouseButtonPressed(mouseButton) && !FlaiInput.IsNewMouseButtonPress(mouseButton);
+        }
+
+        public static PressState GetMouseButtonState(MouseButton mouseButton)
+        {
+            if (FlaiInput.IsMouseButtonPressed(mouseButton))
+            {
+                return FlaiInput.IsNewMouseButtonPress(mouseButton) ? PressState.Pressed : PressState.Hold;
+            }
+
+            return FlaiInput.IsNewMouseButtonRelease(mouseButton) ? PressState.Released : PressState.None;
+        }
+
         #endregion
 
         #region Button & Key Combined ("Safeguard")
@@ -159,7 +214,7 @@ namespace Flai.Input
         // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
         public static bool IsButtonOrKeyPressed(string buttonName, KeyCode alternativeKey)
         {
-            if (FlaiInput.IsButtonSetUp(buttonName))
+            if (FlaiInput.IsInputSetup(buttonName))
             {
                 return FlaiInput.IsButtonPressed(buttonName);
             }
@@ -170,7 +225,7 @@ namespace Flai.Input
         // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
         public static bool IsButtonOrKeyReleased(string buttonName, KeyCode alternativeKey)
         {
-            if (FlaiInput.IsButtonSetUp(buttonName))
+            if (FlaiInput.IsInputSetup(buttonName))
             {
                 return FlaiInput.IsButtonReleased(buttonName);
             }
@@ -181,7 +236,7 @@ namespace Flai.Input
         // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
         public static bool IsNewButtonOrKeyPress(string buttonName, KeyCode alternativeKey)
         {
-            if (FlaiInput.IsButtonSetUp(buttonName))
+            if (FlaiInput.IsInputSetup(buttonName))
             {
                 return FlaiInput.IsNewButtonPress(buttonName);
             }
@@ -192,7 +247,7 @@ namespace Flai.Input
         // not a good name. basically, use button 'buttonName' if it exists, otherwise use 'alternativeKey'
         public static bool IsNewButtonOrKeyRelease(string buttonName, KeyCode alternativeKey)
         {
-            if (FlaiInput.IsButtonSetUp(buttonName))
+            if (FlaiInput.IsInputSetup(buttonName))
             {
                 return FlaiInput.IsNewButtonRelease(buttonName);
             }
@@ -204,13 +259,13 @@ namespace Flai.Input
 
         #region Misc
 
-        private static readonly Dictionary<string, bool> _buttonExistsMap = new Dictionary<string, bool>(); 
+        private static readonly Dictionary<string, bool> _inputExistsMap = new Dictionary<string, bool>(); 
         // does a button with a name of 'name' exist?
-        public static bool IsButtonSetUp(string name)
+        public static bool IsInputSetup(string name)
         {
-            if (_buttonExistsMap.ContainsKey(name))
+            if (_inputExistsMap.ContainsKey(name))
             {
-                return _buttonExistsMap[name];
+                return _inputExistsMap[name];
             }
 
             bool exists;
@@ -225,10 +280,15 @@ namespace Flai.Input
                 exists = false;
             }
 
-            _buttonExistsMap.Add(name, exists);
+            _inputExistsMap.Add(name, exists);
             return exists;
         }
 
         #endregion
+
+        protected override void LateUpdate()
+        {
+            _previousMousePosition = FlaiInput.MousePosition;
+        }
     }
 }

@@ -15,10 +15,10 @@ namespace Flai.Scripts.Responses
 
         public bool Execute(bool executeOn)
         {
-            return executeOn ? this.Execute() : this.ExecuteOff();
+            return executeOn ? this.ExecuteOn() : this.ExecuteOff();
         }
 
-        public bool Execute()
+        public bool ExecuteOn()
         {
             this.OnExecuteOnCalled();
             if (!this.CanExecute)
@@ -26,7 +26,7 @@ namespace Flai.Scripts.Responses
                 return false;
             }
 
-            return this.ExecuteInner();
+            return this.ExecuteOnInner();
         }
 
         public bool ExecuteOff()
@@ -51,7 +51,7 @@ namespace Flai.Scripts.Responses
             return this.ExecuteToggleInner();
         }
 
-        protected abstract bool ExecuteInner();
+        protected abstract bool ExecuteOnInner();
         protected virtual bool ExecuteOffInner()
         {
             return false;
@@ -65,5 +65,15 @@ namespace Flai.Scripts.Responses
         protected virtual void OnExecuteOnCalled() { }
         protected virtual void OnExecuteOffCalled() { }
         protected virtual void OnExecuteToggleCalled() { }
+    }
+
+    public abstract class ToggleableResponse : Response
+    {
+        public sealed override bool IsToggleable
+        {
+            get { return true; }
+        }
+
+        protected abstract override bool ExecuteToggleInner();
     }
 }

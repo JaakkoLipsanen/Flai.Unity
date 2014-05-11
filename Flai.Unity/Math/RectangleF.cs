@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // From Nuclex originally IIRC
@@ -739,6 +738,11 @@ namespace Flai
         public static RectangleF GetRounded(RectangleF rectangle) // should this be non-static?
         {
             return new RectangleF(FlaiMath.Round(rectangle.X), FlaiMath.Round(rectangle.Y), rectangle.Width, rectangle.Height);
+        }
+
+        public static RectangleF FromPoints(Vector2f p1, Vector2f p2)
+        {
+            return new RectangleF(Vector2f.Min(p1, p2), Vector2f.Max(p1, p2));
         }
 
         #endregion
