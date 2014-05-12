@@ -50,6 +50,7 @@
     <Compile Include="InspectorBase.cs" />
     <Compile Include="Inspectors\CameraInspector.cs" />
     <Compile Include="Inspectors\DefaultInspector.cs" />
+    <Compile Include="Inspectors\Internal\InternalPropertyDrawer.cs" />
     <Compile Include="Inspectors\OnTopMoverInspector.cs" />
     <Compile Include="Inspectors\TilemapContainerInspector.cs" />
     <Compile Include="Inspectors\TilemapSpriteManagerInspector.cs" />

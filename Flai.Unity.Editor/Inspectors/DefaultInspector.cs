@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Flai.Diagnostics;
+﻿using Flai.Diagnostics;
+using Flai.Editor.Inspectors.Internal;
 using Flai.Inspector;
-using Flai.IO;
 using Flai.UI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-
 using UnityObject = UnityEngine.Object;
 namespace Flai.Editor.Inspectors
 {
@@ -159,8 +157,19 @@ namespace Flai.Editor.Inspectors
             {
                 this.DrawProperty<Vector4>(property, attribute, EditorGUILayout.Vector4Field);
             }
+            else if (this.TryDrawProperty(property, attribute))
+            {
+                // draw succesful!
+            }
             else
             {
+                DrawFunction drawFunction;
+                if (InternalPropertyDrawer.GetDrawFunction(property, attribute, out drawFunction))
+                {
+                    this.DrawProperty(property, attribute, drawFunction);
+                    return;
+                }
+
                 var value = property.GetValue(this.Target, null);
                 if (value is UnityObject)
                 {
@@ -186,6 +195,15 @@ namespace Flai.Editor.Inspectors
         {
             var newValue = drawFunction(this.GetName(property, attribute), (T)property.GetValue(this.Target, null), null);
             if (GUI.changed && property.CanWrite && !forceReadOnly)
+            {
+                property.SetValue(this.Target, newValue, null);
+            }
+        }
+
+        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction)
+        {
+            var newValue = drawFunction(this.GetName(property, attribute), property.GetValue(this.Target, null), null);
+            if (GUI.changed && property.CanWrite)
             {
                 property.SetValue(this.Target, newValue, null);
             }
@@ -255,6 +273,12 @@ namespace Flai.Editor.Inspectors
         private string GetName(MemberInfo member, ShowInInspectorAttribute attribute)
         {
             return attribute.Name ?? Common.AddSpaceBeforeCaps(member.Name);
+        }
+
+
+        protected virtual bool TryDrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute)
+        {
+            return false;
         }
 
         #region Search For Proxy Inspector

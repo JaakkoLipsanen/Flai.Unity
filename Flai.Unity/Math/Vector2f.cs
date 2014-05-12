@@ -1,5 +1,4 @@
 ﻿using Flai.IO;
-using Flai.Scripts;
 using System;
 using System.IO;
 using UnityEngine;
