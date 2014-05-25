@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlaiEditorGUILayout.cs" />
     <Compile Include="FlaiEditorPrefs.cs" />
     <Compile Include="FlaiHandles.cs" />
     <Compile Include="InspectorBase.cs" />
@@ -55,7 +56,9 @@
     <Compile Include="Inspectors\TilemapContainerInspector.cs" />
     <Compile Include="Inspectors\TilemapSpriteManagerInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestWindow.cs" />
+    <Compile Include="Windows\FlaiEditorWindow.cs" />
+    <Compile Include="Windows\FlaiWindow.cs" />
+    <Compile Include="Windows\ImmediateWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Flai.Unity\Flai.Unity.csproj">
@@ -63,6 +66,7 @@
       <Name>Flai.Unity</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

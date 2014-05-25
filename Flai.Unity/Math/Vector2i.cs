@@ -1,11 +1,12 @@
 ﻿
+using Flai.IO;
 using System;
 using System.IO;
-using Flai.IO;
 using UnityEngine;
 
 namespace Flai
 {
+    [Serializable]
     public struct Vector2i : IEquatable<Vector2i>, IBinarySerializable
     {
         public int X;

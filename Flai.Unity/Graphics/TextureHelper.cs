@@ -35,5 +35,24 @@ namespace Flai.Graphics
                 return _emptyTexture;
             }
         }
+
+        private static Sprite _blankSprite;
+        public static Sprite BlankSprite
+        {
+            get
+            {
+                if (_blankSprite == null)
+                {
+                    _blankSprite = Sprite.Create(TextureHelper.BlankTexture, new Rect(0, 0, 1, 1), Vector2f.One*0.5f, 1);
+                }
+
+                return _blankSprite;
+            }
+        }
+
+        public static RectangleF PixelToUvCoordinates(Texture2D texture, RectangleF pixelCoordinates) // TODO: RectangleF -> Rectangle (int's)
+        {
+            return pixelCoordinates / new Vector2f(texture.width, texture.height);
+        }
     }
 }

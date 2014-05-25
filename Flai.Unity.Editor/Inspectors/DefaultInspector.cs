@@ -69,99 +69,8 @@ namespace Flai.Editor.Inspectors
         private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute)
         {
             FlaiGUI.PushGuiEnabled(!attribute.IsReadOnly && (attribute.IsEditableWhenNotPlaying || Application.isPlaying) && property.CanWrite);
-            if (property.PropertyType.IsEnum)
-            {
-                this.DrawProperty<Enum>(property, attribute, EditorGUILayout.EnumPopup);
-            }
-            else if (property.PropertyType == typeof(bool))
-            {
-                this.DrawProperty<bool>(property, attribute, EditorGUILayout.Toggle);
-            }
-            else if (property.PropertyType == typeof(int))
-            {
-                if (property.HasCustomAttribute<ShowAsIntSliderAttribute>())
-                {
-                    var sliderAttribute = property.GetCustomAttribute<ShowAsIntSliderAttribute>();
-                    this.DrawSlider<int>(property, attribute, sliderAttribute.Min, sliderAttribute.Max, EditorGUILayout.IntSlider);
-                }
-                else if (Attribute.IsDefined(property, typeof(ShowAsLayerAttribute)))
-                {
-                    this.DrawProperty<int>(property, attribute, EditorGUILayout.LayerField);
-                }
-                else
-                {
-                    this.DrawProperty<int>(property, attribute, EditorGUILayout.IntField);
-                }
-            }
-            else if (property.PropertyType == typeof(float))
-            {
-                if (property.HasCustomAttribute<ShowAsFloatSliderAttribute>())
-                {
-                    var sliderAttribute = property.GetCustomAttribute<ShowAsFloatSliderAttribute>();
-                    this.DrawSlider<float>(property, attribute, sliderAttribute.Min, sliderAttribute.Max, EditorGUILayout.Slider);
-                }
-                else
-                {
-                    this.DrawProperty<float>(property, attribute, EditorGUILayout.FloatField);
-                }
-            }
-            else if (property.PropertyType == typeof(double))
-            {
-                this.DrawProperty<double>(property, attribute, (n, v, o) => (double)(EditorGUILayout.FloatField(n, (float)v, o)));
-            }
-            else if (property.PropertyType == typeof(Bounds))
-            {
-                this.DrawProperty<Bounds>(property, attribute, EditorGUILayout.BoundsField);
-            }
-            else if (property.PropertyType == typeof(Color))
-            {
-                this.DrawProperty<Color>(property, attribute, EditorGUILayout.ColorField);
-            }
-            else if (property.PropertyType == typeof(Color32))
-            {
-                this.DrawProperty<Color32>(property, attribute, (n, v, o) => (Color32)(EditorGUILayout.ColorField(n, v, o)));
-            }
-            else if (property.PropertyType == typeof(ColorF))
-            {
-                this.DrawProperty<ColorF>(property, attribute, (n, v, o) => (ColorF)(EditorGUILayout.ColorField(n, v, o)));
-            }
-            else if (property.PropertyType == typeof(AnimationCurve))
-            {
-                this.DrawProperty<AnimationCurve>(property, attribute, EditorGUILayout.CurveField);
-            }
-            else if (typeof(UnityObject).IsAssignableFrom(property.PropertyType))
-            {
-                this.DrawUnityObject(property, attribute, true);
-            }
-            else if (property.PropertyType == typeof(Rect))
-            {
-                this.DrawProperty<Rect>(property, attribute, EditorGUILayout.RectField);
-            }
-            else if (property.PropertyType == typeof(RectangleF))
-            {
-                this.DrawProperty<RectangleF>(property, attribute, (n, v, o) => (RectangleF)(EditorGUILayout.RectField(n, v, o)));
-            }
-            else if (property.PropertyType == typeof(Vector2))
-            {
-                this.DrawProperty<Vector2>(property, attribute, EditorGUILayout.Vector2Field);
-            }
-            else if (property.PropertyType == typeof(Vector2f))
-            {
-                this.DrawProperty<Vector2f>(property, attribute, (n, v, o) => (Vector2f)(EditorGUILayout.Vector2Field(n, v, o)));
-            }
-            else if (property.PropertyType == typeof(Vector3))
-            {
-                this.DrawProperty<Vector3>(property, attribute, EditorGUILayout.Vector3Field);
-            }
-            else if (property.PropertyType == typeof(Vector4))
-            {
-                this.DrawProperty<Vector4>(property, attribute, EditorGUILayout.Vector4Field);
-            }
-            else if (this.TryDrawProperty(property, attribute))
-            {
-                // draw succesful!
-            }
-            else
+            var propertyTyhpe = property.PropertyType;
+            if (!this.TryDrawProperty(property, attribute))
             {
                 DrawFunction drawFunction;
                 if (InternalPropertyDrawer.GetDrawFunction(property, attribute, out drawFunction))
@@ -171,59 +80,33 @@ namespace Flai.Editor.Inspectors
                 }
 
                 var value = property.GetValue(this.Target, null);
-                if (value is UnityObject)
+                if (value is UnityObject) // simple special case.. not sure what I needed this for though... :|
                 {
-                    this.DrawUnityObject(property, attribute, false);
+                    this.DrawProperty(property, attribute, (n, v, o) => EditorGUILayout.ObjectField(n, (UnityObject)v, typeof(UnityObject), true));
                 }
                 else
                 {
                     FlaiGUI.PushGuiEnabled(false);
-                    this.DrawProperty<object>(property, attribute, (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
+                    this.DrawProperty(property, attribute,
+                        (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
                     FlaiGUI.PopGuiEnabled();
                 }
             }
-
             FlaiGUI.PopGuiEnabled();
         }
 
-        private void DrawProperty<T>(PropertyInfo property, ShowInInspectorAttribute attribute, Func<string, T, GUILayoutOption[], T> drawFunction)
+ 
+        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction)
         {
-            this.DrawProperty<T>(property, attribute, drawFunction, false);
+            this.DrawProperty(property, attribute, drawFunction, false);
         }
 
-        private void DrawProperty<T>(PropertyInfo property, ShowInInspectorAttribute attribute, Func<string, T, GUILayoutOption[], T> drawFunction, bool forceReadOnly)
+        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction, bool forceReadOnly)
         {
-            var newValue = drawFunction(this.GetName(property, attribute), (T)property.GetValue(this.Target, null), null);
+            var newValue = drawFunction(this.GetName(property, attribute), property.GetValue(this.Target, null), null);
             if (GUI.changed && property.CanWrite && !forceReadOnly)
             {
                 property.SetValue(this.Target, newValue, null);
-            }
-        }
-
-        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction)
-        {
-            var newValue = drawFunction(this.GetName(property, attribute), property.GetValue(this.Target, null), null);
-            if (GUI.changed && property.CanWrite)
-            {
-                property.SetValue(this.Target, newValue, null);
-            }
-        }
-
-        private void DrawSlider<T>(PropertyInfo property, ShowInInspectorAttribute attribute, T min, T max, Func<string, T, T, T, GUILayoutOption[], T> drawFunction)
-        {
-            var newValue = drawFunction(this.GetName(property, attribute), (T)property.GetValue(this.Target, null), min, max, null);
-            if (GUI.changed && property.CanWrite)
-            {
-                property.SetValue(this.Target, newValue, null);
-            }
-        }
-
-        private void DrawUnityObject(PropertyInfo property, ShowInInspectorAttribute attribute, bool usePropertyType)
-        {
-            var value = EditorGUILayout.ObjectField(this.GetName(property, attribute), (UnityObject)property.GetValue(this.Target, null), usePropertyType ? property.PropertyType : typeof(UnityObject), true);
-            if (GUI.changed && property.CanWrite)
-            {
-                property.SetValue(this.Target, value, null);
             }
         }
 
@@ -274,7 +157,6 @@ namespace Flai.Editor.Inspectors
         {
             return attribute.Name ?? Common.AddSpaceBeforeCaps(member.Name);
         }
-
 
         protected virtual bool TryDrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute)
         {

@@ -103,6 +103,11 @@ namespace Flai //.Extensions
         {
             return (value as T);
         }
+
+        public static int ToInt(this bool value)
+        {
+            return value ? 1 : 0;
+        }
     }
 
     #endregion
@@ -1169,13 +1174,25 @@ namespace Flai //.Extensions
             }
         }
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, params T[] values)
+        {
+            IEqualityComparer<T> equalityComparer = EqualityComparer<T>.Default;
+            HashSet<T> set = new HashSet<T>(values, equalityComparer);
+            foreach (T item in enumerable)
+            {
+                if (!set.Contains(item))
+                {
+                    yield return item;
+                }
+            }
+        }
+
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             if (action == null)
             {
                 return;
             }
-
             foreach (T item in enumerable)
             {
                 action(item);

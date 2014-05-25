@@ -230,7 +230,7 @@ namespace Flai
 
         public static Vector2f ClampLength(Vector2f vec, float max)
         {
-            Ensure.True(max > 0);
+            Ensure.True(max >= 0);
             if (vec.LengthSquared > max * max)
             {
                 vec.Normalize();
@@ -256,7 +256,7 @@ namespace Flai
 
         public static Vector2f ClampLength(Vector2f vec, float min, float max)
         {
-            Ensure.True(max > 0 && min > 0 && min <= max);
+            Ensure.True(max >= 0 && min >= 0 && min <= max);
             float lengthSquared = vec.LengthSquared;
             if (lengthSquared > max * max)
             {

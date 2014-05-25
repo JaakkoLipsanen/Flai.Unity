@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace Flai.Editor
 {
     public class InspectorBase<T> : UnityEditor.Editor
@@ -12,6 +14,11 @@ namespace Flai.Editor
         protected virtual T[] Targets
         {
             get { return (T[])targets; } // probably doesn't work, change to "targets.Cast<T>().ToArray()"
+        }
+
+        protected T DrawField<T>(string label, T value, bool isReadOnly = false, params GUILayoutOption[] parameters)
+        {
+            return FlaiEditorGUILayout.DrawField(label, value, isReadOnly, parameters);
         }
     }
 

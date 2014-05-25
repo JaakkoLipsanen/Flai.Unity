@@ -39,9 +39,9 @@ namespace Flai
             _height = height;
         }
 
-        public static Vector2 operator /(Size size, float value)
+        public static Vector2f operator /(Size size, float value)
         {
-            return new Vector2(size.Width / value, size.Height / value);
+            return new Vector2f(size.Width / value, size.Height / value);
         }
 
         public static bool operator ==(Size size1, Size size2)
@@ -59,9 +59,24 @@ namespace Flai
             return new Vector2i(size.Width, size.Height);
         }
 
+        public static implicit operator Vector2f(Size size)
+        {
+            return new Vector2f(size.Width, size.Height);
+        }
+
+        public static implicit operator Vector2(Size size)
+        {
+            return new Vector2(size.Width, size.Height);
+        }
+
         public Vector2i ToVector2i()
         {
             return new Vector2i(this.Width, this.Height);
+        }
+
+        public Vector2f ToVector2f()
+        {
+            return new Vector2f(this.Width, this.Height);
         }
 
         public bool Equals(Size other)
@@ -151,14 +166,19 @@ namespace Flai
             return new SizeF(size1.Width + size2.Width, size1.Height + size2.Height);
         }
 
-        public static implicit operator Vector2(SizeF size)
+        public static implicit operator Vector2f(SizeF size)
         {
-            return new Vector2(size.Width, size.Height);
+            return new Vector2f(size.Width, size.Height);
         }
 
         public Vector2 ToVector2()
         {
             return new Vector2(this.Width, this.Height);
+        }
+
+        public Vector2f ToVector2f()
+        {
+            return new Vector2f(this.Width, this.Height);
         }
 
         public bool Equals(SizeF other)

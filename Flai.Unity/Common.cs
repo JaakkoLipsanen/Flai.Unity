@@ -315,6 +315,26 @@ namespace Flai
 
         #endregion
 
+        public static int TrueCount(bool b1, bool b2)
+        {
+            return b1.ToInt() + b2.ToInt();
+        }
+
+        public static int TrueCount(bool b1, bool b2, bool b3)
+        {
+            return b1.ToInt() + b2.ToInt() + b3.ToInt();
+        }
+
+        public static int TrueCount(bool b1, bool b2, bool b3, bool b4)
+        {
+            return b1.ToInt() + b2.ToInt() + b3.ToInt() + b4.ToInt();
+        }
+
+        public static int TrueCount(bool b1, bool b2, bool b3, bool b4, bool b5)
+        {
+            return b1.ToInt() + b2.ToInt() + b3.ToInt() + b4.ToInt() + b5.ToInt();
+        }
+
         // http://stackoverflow.com/a/155487
         public static string AddSpaceBeforeCaps(string input)
         {

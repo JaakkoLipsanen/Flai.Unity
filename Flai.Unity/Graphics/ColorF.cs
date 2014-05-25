@@ -5,6 +5,318 @@ using UnityEngine;
 
 namespace Flai
 {
+    [Serializable]
+    public class SerializableColorF : IEquatable<ColorF>, IEquatable<SerializableColorF>
+    {
+        #region Fields and Properties
+
+        [SerializeField]
+        public byte R;
+        [SerializeField]
+        public byte G;
+        [SerializeField]
+        public byte B;
+        [SerializeField]
+        public byte A;
+
+        public float Grayscale
+        {
+            get
+            {
+                float r = this.R * 255f * 0.299f;
+                float g = this.G * 255f * 0.587f;
+                float b = this.B * 0.114f;
+
+                return r + g + b;
+            }
+        }
+
+        public ColorF Linear
+        {
+            get
+            {
+                Color color = this;
+                return new ColorF(Mathf.GammaToLinearSpace(color.r), Mathf.GammaToLinearSpace(color.g), Mathf.GammaToLinearSpace(color.b), color.a);
+            }
+        }
+
+        public ColorF Gamma
+        {
+            get
+            {
+                Color color = this;
+                return new Color(Mathf.LinearToGammaSpace(color.r), Mathf.LinearToGammaSpace(color.g), Mathf.LinearToGammaSpace(color.b), color.a);
+            }
+        }
+
+        public uint PackedValue
+        {
+            get { return ColorHelper.ColorFToUInt(this); }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        public SerializableColorF(byte value)
+        {
+            this.R = value;
+            this.G = value;
+            this.B = value;
+            this.A = 255;
+        }
+
+        public SerializableColorF(byte r, byte g, byte b)
+        {
+            this.R = r;
+            this.G = g;
+            this.B = b;
+            this.A = 255;
+        }
+
+        public SerializableColorF(byte r, byte g, byte b, byte a)
+        {
+            this.R = r;
+            this.G = g;
+            this.B = b;
+            this.A = a;
+        }
+
+        public SerializableColorF(float r, float g, float b)
+        {
+            this.R = FlaiMath.Clamp((byte)(r * 255), byte.MinValue, byte.MaxValue);
+            this.G = FlaiMath.Clamp((byte)(g * 255), byte.MinValue, byte.MaxValue);
+            this.B = FlaiMath.Clamp((byte)(b * 255), byte.MinValue, byte.MaxValue);
+            this.A = 255;
+        }
+
+        public SerializableColorF(float r, float g, float b, float a)
+        {
+            this.R = FlaiMath.Clamp((byte)(r * 255), byte.MinValue, byte.MaxValue);
+            this.G = FlaiMath.Clamp((byte)(g * 255), byte.MinValue, byte.MaxValue);
+            this.B = FlaiMath.Clamp((byte)(b * 255), byte.MinValue, byte.MaxValue);
+            this.A = FlaiMath.Clamp((byte)(a * 255), byte.MinValue, byte.MaxValue);
+        }
+
+        #endregion
+
+        #region Implementations of IEquatable
+
+        public bool Equals(ColorF other)
+        {
+            return R == other.R && G == other.G && B == other.B && A == other.A;
+        }
+
+        public bool Equals(Color32 other)
+        {
+            return this.R == other.r && this.G == other.g && this.B == other.b && this.A == other.a;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public Vector3 ToVector3()
+        {
+            return this;
+        }
+
+        public Vector4 ToVector4()
+        {
+            return this;
+        }
+
+        public Color ToColor()
+        {
+            return this;
+        }
+
+        public Color32 ToColor32()
+        {
+            return this;
+        }
+
+        public ColorF ToColorF()
+        {
+            return this;
+        }
+
+        #endregion
+
+        #region Static Methods
+
+        public static ColorF Lerp(ColorF from, ColorF to, float amount)
+        {
+            // from UnityEngine.Color32
+            amount = FlaiMath.Clamp(amount, 0, 1);
+            return new Color32((byte)(from.R + (to.R - from.R) * amount), (byte)(from.G + (to.G - from.G) * amount), (byte)(from.B + (to.B - from.B) * amount), (byte)(from.A + (to.A - from.A) * amount));
+        }
+
+        // smoothstep
+        public static ColorF Slerp(Color from, Color to, float amount)
+        {
+            amount = FlaiMath.Clamp(amount, 0, 1);
+            return ColorF.Lerp(from, to, amount * amount * (3f - 2f * amount));
+        }
+
+        #endregion
+
+        #region Operators
+
+        public static ColorF operator *(SerializableColorF color, float multiplier)
+        {
+            return new ColorF(color.R, color.G, color.B, (byte)FlaiMath.Clamp(color.A * multiplier, 0, 255));
+        }
+
+        public static ColorF operator +(SerializableColorF a, SerializableColorF b)
+        {
+            return new ColorF
+            {
+                R = (byte)FlaiMath.Min(255, a.R + b.R),
+                G = (byte)FlaiMath.Min(255, a.G + b.G),
+                B = (byte)FlaiMath.Min(255, a.B + b.B),
+                A = (byte)FlaiMath.Min(255, a.A + b.A),
+            };
+        }
+
+        public static ColorF operator -(SerializableColorF a, SerializableColorF b)
+        {
+            return new ColorF
+            {
+                R = (byte)FlaiMath.Max(0, a.R - b.R),
+                G = (byte)FlaiMath.Max(0, a.G - b.G),
+                B = (byte)FlaiMath.Max(0, a.B - b.B),
+                A = (byte)FlaiMath.Max(0, a.A - b.A),
+            };
+        }
+
+        public static ColorF operator *(SerializableColorF a, SerializableColorF b)
+        {
+            return a.ToColor() * b.ToColor(); // meh
+        }
+
+        public static bool operator ==(SerializableColorF a, SerializableColorF b)
+        {
+            return a.R == b.R && a.G == b.G && a.B == b.B && a.A == b.A;
+        }
+
+        public static bool operator !=(SerializableColorF a, SerializableColorF b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator ==(SerializableColorF a, Color32 b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(SerializableColorF a, Color32 b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator ==(SerializableColorF a, ColorF b)
+        {
+            return b.Equals(a.ToColorF());
+        }
+
+        public static bool operator !=(SerializableColorF a, ColorF b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator ==(SerializableColorF a, Color b)
+        {
+            return b.Equals(a.ToColor());
+        }
+
+        public static bool operator !=(SerializableColorF a, Color b)
+        {
+            return !(a == b);
+        }
+
+        public static implicit operator SerializableColorF(Color32 color)
+        {
+            return new SerializableColorF(color.r, color.g, color.b, color.a);
+        }
+
+        public static implicit operator SerializableColorF(ColorF color)
+        {
+            return new SerializableColorF(color.R, color.G, color.B, color.A);
+        }
+
+        public static implicit operator ColorF(SerializableColorF color)
+        {
+            return new ColorF(color.R, color.G, color.B, color.A);
+        }
+
+        public static implicit operator Color32(SerializableColorF color)
+        {
+            return new Color32(color.R, color.G, color.B, color.A);
+        }
+
+        public static implicit operator SerializableColorF(Color color)
+        {
+            return new SerializableColorF(color.r, color.g, color.b, color.a);
+        }
+
+        public static implicit operator Color(SerializableColorF color)
+        {
+            return new Color(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+        }
+
+        public static implicit operator Vector3(SerializableColorF color)
+        {
+            return new Vector3(color.R / 255f, color.G / 255f, color.B / 255f);
+        }
+
+        public static implicit operator Vector4(SerializableColorF color)
+        {
+            return new Vector4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+        }
+
+        #endregion
+
+        #region Object Overrides
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            return obj is ColorF && Equals((ColorF)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = this.R.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.G.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.B.GetHashCode();
+                hashCode = (hashCode * 397) ^ this.A.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public bool Equals(SerializableColorF other)
+        {
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("RGBA({0}, {1}, {2}, {3})",
+                this.R,
+                this.G,
+                this.B,
+                this.A);
+        }
+
+        #endregion
+    }
+
     // fuck... byte vs float..
     public struct ColorF : IEquatable<ColorF>, IEquatable<Color32>
     {

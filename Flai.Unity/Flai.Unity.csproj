@@ -40,6 +40,7 @@
     <Compile Include="ComponentHelper.cs" />
     <Compile Include="FlaiScript.cs" />
     <Compile Include="General\Timer.cs" />
+    <Compile Include="Graphics\CameraHelper.cs" />
     <Compile Include="Graphics\ColorF.cs" />
     <Compile Include="Input\FlaiInput.cs" />
     <Compile Include="Inspector\Attributes.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Scripts\Character\CharacterAnimatorState2D.cs" />
     <Compile Include="Scripts\Character\CharacterController2D.cs" />
     <Compile Include="Scripts\Character\CharacterInput2D.cs" />
+    <Compile Include="Scripts\ConstantRotator2D.cs" />
     <Compile Include="Scripts\ConstantSpeed2D.cs" />
     <Compile Include="Scripts\ConstantVelocity.cs" />
     <Compile Include="Scripts\CursorSetter.cs" />

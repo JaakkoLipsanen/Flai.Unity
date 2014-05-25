@@ -268,12 +268,12 @@ namespace Flai.Tilemap
                     int realY = tilemapData.Height - y - 1;
                     if (this.IsEmpty(tilemapData, x - 1, y))
                     {
-                        sides.Add(new TileSide(new Vector2i(x, realY), Direction2D.Left));
+                        sides.Add(new TileSide(new Vector2i(x, realY + 1), Direction2D.Left));
                     }
 
                     if (this.IsEmpty(tilemapData, x + 1, y))
                     {
-                        sides.Add(new TileSide(new Vector2i(x, realY), Direction2D.Right));
+                        sides.Add(new TileSide(new Vector2i(x, realY + 1), Direction2D.Right));
                     }
 
                     if (this.IsEmpty(tilemapData, x, y - 1))
