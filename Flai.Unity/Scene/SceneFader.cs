@@ -7,6 +7,8 @@ using FadeClass = Flai.Scene.Fade;
 
 namespace Flai.Scene
 {
+    // TODO: Remove Tween dependency from SceneFader
+    // TODO maybe: Scene.Load/Scene.ChangeScene/Scene.Switch. "SceneFader" name isn't that good imo :|
     public class SceneFader : Singleton<SceneFader>
     {
         private float? _fadeDelay = null;
@@ -54,8 +56,9 @@ namespace Flai.Scene
 
         public static void Fade(SceneDescription newScene, Fade fadeIn = null, Fade fadeOut = null, float delay = 0)
         {
-            fadeIn = fadeIn ?? FadeClass.Default;
-            fadeOut = fadeOut ?? FadeClass.Default;
+            // for some reason using FadeClass.Default doesn't work :| todo: fix it?
+            fadeIn = fadeIn ?? FadeClass.Create();
+            fadeOut = fadeOut ?? FadeClass.Create();
             Ensure.NotNull(newScene, fadeIn, fadeOut);
             Ensure.True(delay >= 0f);
             SceneFader.Instance.StartFade(newScene, fadeIn, fadeOut, delay);
@@ -149,7 +152,7 @@ namespace Flai.Scene
         }
 
         private void LoadLevel()
-        {
+        {   
             Ensure.NotNull(_newScene);
             _newScene.Load();
             _newScene = null;

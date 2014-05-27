@@ -82,6 +82,11 @@ namespace Flai.Input
             get { return Camera.main.ScreenPointToRay(FlaiInput.MousePosition); }
         }
 
+        public static bool IsBackButtonPressed
+        {
+            get { return FlaiInput.IsNewKeyPress(KeyCode.Escape); }
+        }
+
         #region Axis
 
         public static float GetAxis(string name)
