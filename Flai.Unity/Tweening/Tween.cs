@@ -115,7 +115,7 @@ namespace Flai.Tweening
                     tweens[i] = new TweenDescription();
                 }
             }
-        }
+        } 
 
         public static void Reset()
         {
@@ -146,7 +146,7 @@ namespace Flai.Tweening
         private static GameObject customTarget;
 
         /* CAN THIS BE CHANGED TO PRIVATE */
-        public static void UpdateInner()
+        private static void UpdateInner()
         {
             if (frameRendered != Time.frameCount)
             {

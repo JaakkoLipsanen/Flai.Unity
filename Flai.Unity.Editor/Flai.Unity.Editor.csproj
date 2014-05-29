@@ -48,6 +48,7 @@
     <Compile Include="FlaiEditorGUILayout.cs" />
     <Compile Include="FlaiEditorPrefs.cs" />
     <Compile Include="FlaiHandles.cs" />
+    <Compile Include="Hierarchy Sorts\SortByName.cs" />
     <Compile Include="InspectorBase.cs" />
     <Compile Include="Inspectors\CameraInspector.cs" />
     <Compile Include="Inspectors\DefaultInspector.cs" />

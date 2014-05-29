@@ -15,11 +15,11 @@ namespace Flai
             get
             {
                 /* TEST */
-              /*  if (_applicationIsQuitting)
-                {
-                    Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed on application quit." + " Won't create again - returning null.");
-                    return null;
-                }  */
+                /*  if (_applicationIsQuitting)
+                  {
+                      Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed on application quit." + " Won't create again - returning null.");
+                      return null;
+                  }  */
 
                 lock (_lock)
                 {
@@ -32,30 +32,65 @@ namespace Flai
                             return _instance;
                         }
 
-                        if (typeof (T).IsGenericType)
+                        if (typeof(T).IsGenericType)
                         {
-                            FlaiDebug.LogWarning("[Singleton] Creating a Singleton<{0}>. Warning: type is generic!", typeof(T).Name);    
+                            FlaiDebug.LogWarning("[Singleton] Creating a Singleton<{0}>. Warning: type is generic!", typeof(T).Name);
                         }
 
                         if (_instance == null)
                         {
-                            GameObject singleton = new GameObject();
-                            _instance = singleton.AddComponent<T>();
-                            singleton.name = "~" + typeof(T).Name;
+                            string singletonName = "~" + typeof(T).Name;
+                            GameObject previous = Scene.Scene.Find(singletonName);
+                            if (previous && previous.Has<T>())
+                            {
+                                _instance = previous.Get<T>();
+                                FlaiDebug.LogWithTypeTag<T>("--WARNING/NOTIFICATION--: Check why this is happening");
+                            }
+                            else
+                            {
+                                GameObject singleton = new GameObject();
+                                _instance = singleton.AddComponent<T>();
+                                singleton.name = singletonName;
 
-                            Singleton<T>.DontDestroyOnLoad(singleton);
-                            FlaiDebug.Log("[Singleton] Singleton<{0}> created.", typeof (T).Name);
+                                Singleton<T>.DontDestroyOnLoad(singleton);
+                                FlaiDebug.Log("[Singleton] Singleton<{0}> created.", typeof(T).Name);
+                            }
                         }
                         else
                         {
                             /* !!!!! */
                             // okay this might be useful, but meh. this happens everytime the scripts are recompiled and i dont really care
-                         //   Debug.Log("[Singleton] Using instance already created: " + _instance.gameObject.name);
+                            //   Debug.Log("[Singleton] Using instance already created: " + _instance.gameObject.name);
                         }
                     }
 
                     return _instance;
                 }
+            }
+        }
+
+        public static bool Exists
+        {
+            get
+            {
+                if (_instance != null)
+                {
+                    return true;
+                }
+
+                if (Singleton<T>.FindObjectOfType(typeof(T)) != null)
+                {
+                    return true;
+                }
+
+                string singletonName = "~" + typeof(T).Name;
+                GameObject previous = Scene.Scene.Find(singletonName);
+                if (previous && previous.Has<T>())
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
 

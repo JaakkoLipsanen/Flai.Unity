@@ -30,5 +30,15 @@ namespace Flai.Scene
             Ensure.NotNull(name);
             return new SceneDescription { _levelName = name };
         }
+
+        public static implicit operator SceneDescription(int index)
+        {
+            return SceneDescription.FromIndex(index);
+        }
+
+        public static implicit operator SceneDescription(string name)
+        {
+            return SceneDescription.FromName(name);
+        }
     }
 }

@@ -172,5 +172,13 @@ namespace Flai.Scene
         }
 
         #endregion
+
+        #region Load/Fade
+
+        public static void LoadScene(SceneDescription description)
+        {
+        }
+
+        #endregion
     }
 }
