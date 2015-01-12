@@ -99,8 +99,6 @@ namespace Flai
             return Singleton<T>.Instance;
         }
 
-        public bool IsPreservingInstance = false;
-
         /// <summary>
         /// When Unity quits, it destroys objects in a random order.
         /// In principle, a Singleton is only destroyed when application quits.

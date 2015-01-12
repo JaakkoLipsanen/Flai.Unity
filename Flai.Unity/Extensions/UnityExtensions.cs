@@ -71,10 +71,34 @@ public static class GameObjectExtensions
         return gameObject.GetComponent<T>();
     }
 
+    public static T GetInChildren<T>(this GameObject gameObject)
+       where T : Component
+    {
+        return gameObject.GetComponentInChildren<T>();
+    }
+
+    public static T GetInParent<T>(this GameObject gameObject)
+      where T : Component
+    {
+        return gameObject.GetComponentInParent<T>();
+    }
+
     public static bool Has<T>(this GameObject gameObject)
         where T : Component
     {
         return gameObject.GetComponent<T>() != null;
+    }
+
+    public static bool HasInChildren<T>(this GameObject gameObject)
+        where T : Component
+    {
+        return gameObject.GetComponentInChildren<T>() != null;
+    }
+
+    public static bool HasInParent<T>(this GameObject gameObject)
+       where T : Component
+    {
+        return gameObject.GetComponentInParent<T>() != null;
     }
 
     public static T Add<T>(this GameObject gameObject)
@@ -115,10 +139,34 @@ public static class GameObjectExtensions
         return component.GetComponent<T>();
     }
 
+    public static T GetInChildren<T>(this Component component)
+      where T : Component
+    {
+        return component.GetComponentInChildren<T>();
+    }
+
+    public static T GetInParent<T>(this Component component)
+      where T : Component
+    {
+        return component.GetComponentInParent<T>();
+    }
+
     public static bool Has<T>(this Component component)
         where T : Component
     {
         return component.GetComponent<T>() != null;
+    }
+
+    public static bool HasInChildren<T>(this Component component)
+        where T : Component
+    {
+        return component.GetComponentInChildren<T>() != null;
+    }
+
+    public static bool HasInParent<T>(this Component component)
+       where T : Component
+    {
+        return component.GetComponentInParent<T>() != null;
     }
 
     public static T Add<T>(this Component component)
@@ -428,7 +476,7 @@ public static class GameObjectExtensions
             return parentTransform.gameObject;
         }
 
-        return null;
+        return null; 
     }
 
     public static GameObject GetParent(this Transform transform)
@@ -446,6 +494,8 @@ public static class GameObjectExtensions
     {
         gameObject.transform.parent = (parent == null) ? null : parent.transform;
     }
+
+
 
     public static void SetParent(this Transform transform, Transform parent)
     {
@@ -739,6 +789,21 @@ public static class GameObjectExtensions
         transform.position = new Vector3(transform.position.x, transform.position.y, value);
     }
 
+    public static void SetLocalPositionX(this Transform transform, float value)
+    {
+        transform.localPosition = new Vector3(value, transform.localPosition.y, transform.localPosition.z);
+    }
+
+    public static void SetLocalPositionY(this Transform transform, float value)
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, value, transform.localPosition.z);
+    }
+
+    public static void SetLocalPositionZ(this Transform transform, float value)
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, value);
+    }
+
     public static void SetRotationX(this Transform transform, float value)
     {
         transform.eulerAngles = new Vector3(value, transform.eulerAngles.y, transform.eulerAngles.z);
@@ -788,7 +853,7 @@ public static class GameObjectExtensions
         return (GameObject)GameObject.Instantiate(gameObject, position, rotation);
     }
 
-    public static GameObject Instantiate(this GameObject gameObject, Vector2 position, float rotation2D)
+    public static GameObject Instantiate(this GameObject gameObject, Vector2f position, float rotation2D)
     {
         return (GameObject)GameObject.Instantiate(gameObject, position, Quaternion.Euler(0, 0, rotation2D));
     }
@@ -829,7 +894,7 @@ public static class GameObjectExtensions
         return (GameObject)GameObject.Instantiate(gameObject, position, rotation);
     }
 
-    public static GameObject InstantiateIfNotNull(this GameObject gameObject, Vector2 position, float rotation2D)
+    public static GameObject InstantiateIfNotNull(this GameObject gameObject, Vector2f position, float rotation2D)
     {
         if (gameObject == null)
         {
@@ -849,6 +914,30 @@ public static class GameObjectExtensions
 
         return (T)UnityObject.Instantiate(obj);
     }
+
+    #region Network Instantiate
+
+    public static GameObject NetworkInstantiate(this GameObject gameObject)
+    {
+        return gameObject.NetworkInstantiate(Vector2f.Zero, 0, 0);
+    }
+
+    public static GameObject NetworkInstantiate(this GameObject gameObject, Vector2f position)
+    {
+        return gameObject.NetworkInstantiate(position, 0, 0);
+    }
+
+    public static GameObject NetworkInstantiate(this GameObject gameObject, Vector2f position, float rotation)
+    {
+        return gameObject.NetworkInstantiate(position, rotation, 0);
+    }
+
+    public static GameObject NetworkInstantiate(this GameObject gameObject, Vector2f position, float rotation, int group)
+    {
+        return (GameObject)Network.Instantiate(gameObject, position, Quaternion.Euler(0, 0, rotation), group);
+    }
+
+    #endregion
 
     #endregion
 
@@ -964,6 +1053,21 @@ public static class VectorExtensions
         return new Vector2f { X = v.x, Y = v.y };
     }
 
+    public static Vector2f ToVector2f(this Vector3 v)
+    {
+        return new Vector2f { X = v.x, Y = v.y };
+    }
+
+    public static Vector3 ToVector3(this Vector2 vector)
+    {
+        return vector;
+    }
+
+    public static Vector2 ToVector2(this Vector3 vector)
+    {
+        return vector;
+    }
+
     public static Vector2 Rotate(Vector2 point, float radians)
     {
         return Vector2f.Rotate(point.ToVector2f(), radians);
@@ -984,6 +1088,11 @@ public static class ColorExtensions
     public static int ToInt(this Color32 color)
     {
         return ColorHelper.ColorFToInt(color);
+    }
+
+    public static ColorF ToColorF(this Color color)
+    {
+        return color;
     }
 
     public static Color32[] ToColor32(this ColorF[] array)
@@ -1010,6 +1119,8 @@ public static class ColorExtensions
     {
         return new Color32(color.r, color.g, color.b, (byte)FlaiMath.Clamp(color.a * alpha, 0, 255));
     }
+
+   
 }
 
 #endregion
@@ -1099,6 +1210,26 @@ public static class PhysicsExtensions
     {
         bounds.Expand(amount);
         return bounds;
+    }
+
+    public static bool DidHit(this RaycastHit2D raycastHit)
+    {
+        return raycastHit.collider != null;
+    }
+}
+
+#endregion
+
+#region Camera Extensions
+
+public static class CameraExtensions
+{
+    public static RectangleF GetArea(this Camera camera)
+    {
+        Ensure.True(camera.orthographic);
+        float height = camera.orthographicSize*2;
+        float width = height*camera.aspect;
+        return RectangleF.CreateCentered(camera.transform.position, new SizeF(width, height));
     }
 }
 

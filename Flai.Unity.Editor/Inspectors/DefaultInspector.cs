@@ -1,4 +1,5 @@
-﻿using Flai.Diagnostics;
+﻿using System.Runtime.InteropServices;
+using Flai.Diagnostics;
 using Flai.Editor.Inspectors.Internal;
 using Flai.Inspector;
 using Flai.UI;
@@ -60,53 +61,53 @@ namespace Flai.Editor.Inspectors
                     var attribute = property.GetCustomAttribute<ShowInInspectorAttribute>();
                     if (attribute.IsVisible)
                     {
-                        this.DrawProperty(property, attribute);
+                        this.DrawMember(MemberReference.FromProperty(property), attribute);
                     }
                 }
             }
         }
 
-        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute)
+        private void DrawMember(MemberReference member, ShowInInspectorAttribute attribute)
         {
-            FlaiGUI.PushGuiEnabled(!attribute.IsReadOnly && (attribute.IsEditableWhenNotPlaying || Application.isPlaying) && property.CanWrite);
-            var propertyTyhpe = property.PropertyType;
-            if (!this.TryDrawProperty(property, attribute))
+            FlaiGUI.PushGuiEnabled(!attribute.IsReadOnly && (attribute.IsEditableWhenNotPlaying || Application.isPlaying) && member.CanWrite);
+            if (!this.TryDrawMember(member, attribute))
             {
                 DrawFunction drawFunction;
-                if (InternalPropertyDrawer.GetDrawFunction(property, attribute, out drawFunction))
+                if (InternalPropertyDrawer.GetDrawFunction(member, attribute, out drawFunction))
                 {
-                    this.DrawProperty(property, attribute, drawFunction);
-                    return;
-                }
-
-                var value = property.GetValue(this.Target, null);
-                if (value is UnityObject) // simple special case.. not sure what I needed this for though... :|
-                {
-                    this.DrawProperty(property, attribute, (n, v, o) => EditorGUILayout.ObjectField(n, (UnityObject)v, typeof(UnityObject), true));
+                    this.DrawMember(member, attribute, drawFunction);
                 }
                 else
                 {
-                    FlaiGUI.PushGuiEnabled(false);
-                    this.DrawProperty(property, attribute,
-                        (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
-                    FlaiGUI.PopGuiEnabled();
+                    var value = member.GetValue(this.Target);
+                    if (value is UnityObject) // simple special case.. not sure what I needed this for though... :|
+                    {
+                        this.DrawMember(member, attribute, (n, v, o) => EditorGUILayout.ObjectField(n, (UnityObject)v, typeof(UnityObject), true));
+                    }
+                    else
+                    {
+                        FlaiGUI.PushGuiEnabled(false);
+                        this.DrawMember(member, attribute,
+                            (n, v, o) => EditorGUILayout.TextField(n + " (unkown type)", (v == null) ? "" : v.ToString()), true);
+                        FlaiGUI.PopGuiEnabled();
+                    }
                 }
             }
             FlaiGUI.PopGuiEnabled();
         }
 
- 
-        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction)
+
+        private void DrawMember(MemberReference member, ShowInInspectorAttribute attribute, DrawFunction drawFunction)
         {
-            this.DrawProperty(property, attribute, drawFunction, false);
+            this.DrawMember(member, attribute, drawFunction, false);
         }
 
-        private void DrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute, DrawFunction drawFunction, bool forceReadOnly)
+        private void DrawMember(MemberReference memberReference, ShowInInspectorAttribute attribute, DrawFunction drawFunction, bool forceReadOnly)
         {
-            var newValue = drawFunction(this.GetName(property, attribute), property.GetValue(this.Target, null), null);
-            if (GUI.changed && property.CanWrite && !forceReadOnly)
+            var newValue = drawFunction(this.GetName(memberReference, attribute), memberReference.GetValue(this.Target), null);
+            if (GUI.changed && memberReference.CanWrite && !forceReadOnly)
             {
-                property.SetValue(this.Target, newValue, null);
+                memberReference.SetValue(this.Target, newValue);
             }
         }
 
@@ -144,7 +145,7 @@ namespace Flai.Editor.Inspectors
             }
 
             FlaiGUI.PushGuiEnabled(!attribute.IsReadOnly && (attribute.IsEditableWhenNotPlaying || Application.isPlaying));
-            if (GUILayout.Button(this.GetName(method, attribute)))
+            if (GUILayout.Button(this.GetName(method.Name, attribute)))
             {
                 method.Invoke(this.Target, null);
             }
@@ -153,12 +154,17 @@ namespace Flai.Editor.Inspectors
 
         #endregion
 
-        private string GetName(MemberInfo member, ShowInInspectorAttribute attribute)
+        private string GetName(MemberReference member, ShowInInspectorAttribute attribute)
         {
-            return attribute.Name ?? Common.AddSpaceBeforeCaps(member.Name);
+            return this.GetName(member.Name, attribute);
         }
 
-        protected virtual bool TryDrawProperty(PropertyInfo property, ShowInInspectorAttribute attribute)
+        private string GetName(string memberName, ShowInInspectorAttribute attribute)
+        {
+            return attribute.Name ?? Common.AddSpaceBeforeCaps(memberName);
+        }
+
+        protected virtual bool TryDrawMember(MemberReference memberReference, ShowInInspectorAttribute attribute)
         {
             return false;
         }
@@ -198,5 +204,70 @@ namespace Flai.Editor.Inspectors
         }
 
         #endregion
+    }
+
+    public struct MemberReference
+    {
+        public static readonly MemberReference Empty = new MemberReference();
+
+        private FieldInfo _fieldInfo;
+        private PropertyInfo _propertyInfo;
+
+        public bool HasValue
+        {
+            get { return this.MemberInfo != null; }
+        }
+
+        public MemberInfo MemberInfo
+        {
+            get { return (_fieldInfo != null) ? (MemberInfo)_fieldInfo : _propertyInfo; }
+        }
+
+        public bool IsProperty
+        {
+            get { return _propertyInfo != null; }
+        }
+
+        public bool CanWrite
+        {
+            get { return (_fieldInfo != null) ? _fieldInfo.IsInitOnly : _propertyInfo.CanWrite; }
+        }
+
+        public string Name
+        {
+            get { return this.MemberInfo.Name; }
+        }
+
+        public Type InnerType
+        {
+            get { return (_fieldInfo != null) ? _fieldInfo.FieldType : _propertyInfo.PropertyType; }
+        }
+
+        public static MemberReference FromField(FieldInfo fieldInfo)
+        {
+            return new MemberReference { _fieldInfo = fieldInfo };
+        }
+
+        public static MemberReference FromProperty(PropertyInfo propertyInfo)
+        {
+            return new MemberReference { _propertyInfo = propertyInfo };
+        }
+
+        public object GetValue(object source)
+        {
+            return (_fieldInfo == null) ? _propertyInfo.GetValue(source, null) : _fieldInfo.GetValue(source);
+        }
+
+        public void SetValue(object source, object value)
+        {
+            if (_fieldInfo != null)
+            {
+                _fieldInfo.SetValue(source, value);
+            }
+            else
+            {
+                _propertyInfo.SetValue(source, value, null);
+            }
+        }
     }
 }

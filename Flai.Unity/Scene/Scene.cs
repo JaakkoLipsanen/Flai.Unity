@@ -175,8 +175,15 @@ namespace Flai.Scene
 
         #region Load/Fade
 
+        // fades?
         public static void LoadScene(SceneDescription description)
         {
+            description.Load();
+        }
+
+        public static void ReloadCurrentScene()
+        {
+            Scene.LoadScene(Scene.CurrentSceneDescription);
         }
 
         #endregion

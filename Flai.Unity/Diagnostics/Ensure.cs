@@ -54,7 +54,7 @@ namespace Flai // do.not.care
             }
         }
 
-        public static void NotNull(object value)
+        public static void NotNull<T>(T value)
         {
             Ensure.NotNull(value, "");
         }
@@ -72,7 +72,7 @@ namespace Flai // do.not.care
             Ensure.NotNull(value3, "");
         }
 
-        public static void NotNull(object value, string message)
+        public static void NotNull<T>(T value, string message)
         {
             if (value == null)
             {
@@ -201,6 +201,20 @@ namespace Flai // do.not.care
         public static void NotEmpty<T>(IEnumerable<T> enumerable)
         {
             Ensure.True(enumerable.Any());
+        }
+
+        public static void IsChild(GameObject parent, GameObject child)
+        {
+            Ensure.True(child.transform.IsChildOf(parent.transform), "GameObject is not the parent of the other game object");
+        }
+    }
+
+    public static class EnsureExtensions
+    {
+        public static T EnsureNotNull<T>(this T obj)
+        {
+            Ensure.NotNull(obj);
+            return obj;
         }
     }
 }

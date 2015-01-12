@@ -45,7 +45,11 @@ namespace Flai.Input
 
         public static Vector2f PreviousMousePosition
         {
-            get { return _previousMousePosition ?? FlaiInput.MousePosition; }
+            get
+            {
+                FlaiInput.EnsureInstanceExists();
+                return _previousMousePosition ?? FlaiInput.MousePosition;
+            }
         }
 
         public static Vector2f MouseDelta
@@ -70,11 +74,6 @@ namespace Flai.Input
 
                 return FlaiInput.GetAxis(ScrollWheelInputName);
             }
-        }
-
-        public static Vector2f MousePositionInWorld2D
-        {
-            get { return Camera.main.ScreenToWorldPoint(FlaiInput.MousePosition); }
         }
 
         public static Ray MouseToWorldRay
@@ -260,6 +259,43 @@ namespace Flai.Input
         }
 
         #endregion
+
+        public static Vector2f GetMousePositionInWorld2D()
+        {
+            Ensure.NotNull(Camera.main, "Camera.main is null");
+            return FlaiInput.GetMousePositionInWorld2D(Camera.main);
+        }
+
+        public static Vector2f GetMousePositionInWorld2D(Camera camera)
+        {
+            Ensure.NotNull(camera, "Camera cannot be null");
+            return camera.ScreenToWorldPoint(FlaiInput.MousePosition);
+        }
+
+        public static Vector2f GetPreviousMousePositionInWorld2D()
+        {
+            Ensure.NotNull(Camera.main, "Camera.main is null");
+            return FlaiInput.GetPreviousMousePositionInWorld2D(Camera.main);
+        }
+
+        public static Vector2f GetPreviousMousePositionInWorld2D(Camera camera)
+        {
+            Ensure.NotNull(camera, "Camera cannot be null");
+            return camera.ScreenToWorldPoint(FlaiInput.PreviousMousePosition);
+        }
+
+
+        public static Vector2f GetMousePositionDeltaInWorld2D()
+        {
+            Ensure.NotNull(Camera.main, "Camera.main is null");
+            return FlaiInput.GetMousePositionDeltaInWorld2D(Camera.main);
+        }
+
+        public static Vector2f GetMousePositionDeltaInWorld2D(Camera camera)
+        {
+            Ensure.NotNull(camera, "Camera cannot be null");
+            return FlaiInput.GetMousePositionInWorld2D(camera) - FlaiInput.GetPreviousMousePositionInWorld2D(camera);
+        }
 
         #region Misc
 

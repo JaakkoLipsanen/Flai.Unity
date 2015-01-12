@@ -29,7 +29,7 @@ namespace Flai.Scripts.Character
 
         #region Properties
 
-        public virtual LayerMaskF IgnoreMask
+        public virtual LayerMaskF CollisionMask
         {
             get { return LayerMaskF.FromNames(this.IgnoredLayers).Inverse; }
         }
@@ -46,9 +46,9 @@ namespace Flai.Scripts.Character
 
                 const float MaxDistance = 0.01f;
                 Vector2f direction = this.GroundDirection.ToUnitVector();
-                return Physics2D.Raycast(center, direction, MaxDistance, this.IgnoreMask) || // three points to check ground
-                    Physics2D.Raycast(left, direction, MaxDistance, this.IgnoreMask) ||
-                    Physics2D.Raycast(right, direction, MaxDistance, this.IgnoreMask);
+                return Physics2D.Raycast(center, direction, MaxDistance, this.CollisionMask) || // three points to check ground
+                    Physics2D.Raycast(left, direction, MaxDistance, this.CollisionMask) ||
+                    Physics2D.Raycast(right, direction, MaxDistance, this.CollisionMask);
             }
         }
 

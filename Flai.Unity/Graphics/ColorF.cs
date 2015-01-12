@@ -318,6 +318,7 @@ namespace Flai
     }
 
     // fuck... byte vs float..
+    [Serializable]
     public struct ColorF : IEquatable<ColorF>, IEquatable<Color32>
     {
         #region Fields and Properties
@@ -377,6 +378,11 @@ namespace Flai
             this.G = value;
             this.B = value;
             this.A = 255;
+        }
+
+        public ColorF(Vector3 vector) :
+            this(vector.x, vector.y, vector.z)
+        {
         }
 
         public ColorF(byte r, byte g, byte b)

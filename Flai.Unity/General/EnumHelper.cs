@@ -58,6 +58,12 @@ namespace Flai.General
             return InnerHelper<TEnum>.Values[random.Next(0, InnerHelper<TEnum>.Values.Length)];
         }
 
+        public static int GetIndex<TEnum>(TEnum value)
+            where TEnum : struct, TSystemDotEnum
+        {
+            return InnerHelper<TEnum>.Values.IndexOf(value);
+        }
+
         #region InnerHelper
 
         private static class InnerHelper<T>

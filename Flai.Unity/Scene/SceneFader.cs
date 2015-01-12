@@ -32,6 +32,8 @@ namespace Flai.Scene
             get { return this.IsFadingIn || this.IsFadingOut; }
         }
 
+        public bool IsAffectedByTimeScaling { get; set; } // false by default
+
         private ColorF CurrentColor
         {
             get
@@ -84,6 +86,9 @@ namespace Flai.Scene
                 return;
             }
 
+            Ensure.NotNull(fadeIn, "'fadeIn' cannot be null. Use Fade.None instead");
+            Ensure.NotNull(fadeOut, "'fadeOut' cannot be null. Use Fade.None instead");
+
             _fadeIn = fadeIn;
             _fadeOut = fadeOut;
             _newScene = newScene;
@@ -91,39 +96,25 @@ namespace Flai.Scene
 
             if (!_fadeDelay.HasValue)
             {
-                if (_fadeIn.Time <= 0f)
-                {
-                    if (_fadeOut.Time <= 0f)
-                    {
-                        this.LoadLevel();
-                    }
-                    else
-                    {
-                        this.StartFade(_fadeOut, 0, 1);
-                    }
-
-                    _fadeIn = null;
-                    return;
-                }
-
-                this.StartFade(_fadeIn, 0, 1);
+                this.BeginFading(); 
             }
         }
 
         protected override void Update()
         {
+            float deltaTime = this.IsAffectedByTimeScaling ? Time.deltaTime : Time.unscaledDeltaTime;
             if (this.IsFadeDelayRunning)
             {
-                _fadeDelay -= Time.deltaTime;
+                _fadeDelay -= deltaTime;
                 if (_fadeDelay <= 0)
                 {
                     _fadeDelay = null;
-                    this.StartFade(_fadeIn, 0, 1);
+                    this.BeginFading(); 
                 }
             }
             else if (this.IsFading)
             {
-                _currentFadeTime += Time.deltaTime;
+                _currentFadeTime += deltaTime;
                 _alpha = FlaiMath.Min(1, _currentFadeTime / this.CurrentFade.Time);
                 _alpha = this.IsFadingIn ? _alpha : (1 - _alpha);
                 if (_currentFadeTime >= this.CurrentFade.Time)
@@ -134,7 +125,7 @@ namespace Flai.Scene
             }
         }
 
-        protected override void OnGUI()
+        private void OnGUI()
         {
             if (this.IsFading)
             {
@@ -142,7 +133,6 @@ namespace Flai.Scene
                 GUI.depth = -int.MaxValue;
 
                 GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), TextureHelper.BlankTexture);
-
                 if (_framesUntilLoad == 0)
                 {
                     _framesUntilLoad = -1;
@@ -156,8 +146,30 @@ namespace Flai.Scene
             }
         }
 
+        private void BeginFading()
+        {
+            if (_fadeIn.Time <= 0f)
+            {
+                if (_fadeOut.Time <= 0f)
+                {
+                    this.LoadLevel();
+                    _fadeOut = null;
+                }
+                else
+                {
+                    this.StartFade(_fadeOut, 0, 1);
+                }
+
+                _fadeIn = null;
+                return;
+            }
+
+            this.StartFade(_fadeIn, 0, 1);
+        }
+
         private void StartFade(Fade fade, float from, float to)
         {
+            Ensure.NotNull(fade);
             if (fade.Time <= 0f)
             {
                 _alpha = to;
@@ -173,7 +185,9 @@ namespace Flai.Scene
         {
             if (this.IsFadingIn)
             {
-                Ensure.NotNull(_fadeOut, _newScene);
+                Ensure.NotNull(_fadeOut, "_fadeOut is null");
+                Ensure.NotNull(_newScene, "_newScene is null");
+
                 _fadeIn = null;
                 _alpha = 1;
 

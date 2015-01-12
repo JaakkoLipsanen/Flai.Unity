@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Flai
 {
     // todo: atm supports only rotation. implement scale etc. also atm class, make it struct later
@@ -39,6 +41,17 @@ namespace Flai
         public Vector2f BottomLeft
         {
             get { return Vector2f.Rotate(_rectangle.BottomLeft, _rotation, _origin); }
+        }
+
+        public IEnumerable<Vector2f> CornerPoints
+        {
+            get
+            {
+                yield return this.TopLeft;
+                yield return this.TopRight;
+                yield return this.BottomRight;
+                yield return this.BottomLeft;
+            }
         }
 
         private TransformedRectangleF(RectangleF rectangle, Vector2f origin, float rotation)

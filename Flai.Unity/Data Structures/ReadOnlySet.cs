@@ -4,12 +4,10 @@ using System.Collections.Generic;
 
 namespace Flai.DataStructures
 {
-
-    // HashSet<T> doesn't implement any methods/properties that an ISet<T> wouldn't, so lets use ISet rather than HashSet<
     public class ReadOnlySet<T> : ISet<T>
     {
-        private readonly ISet<T> _innerSet;
-        public ReadOnlySet(ISet<T> innerSet)
+        private readonly HashSet<T> _innerSet;
+        public ReadOnlySet(HashSet<T> innerSet)
         {
             Ensure.NotNull(innerSet);
             _innerSet = innerSet;

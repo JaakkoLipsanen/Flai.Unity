@@ -144,3 +144,4 @@ UnityGenerated/
 Library/
 bin
 obj
+*.unitypackage

@@ -48,29 +48,36 @@ namespace Flai
             }
         }
 
+
+        public static double Scale(double input, double oldMin, double oldMax, double newMin, double newMax)
+        {
+            return newMin + ((newMax - newMin) * (input - oldMin)) /
+                (oldMax - oldMin);
+        }
+
         #endregion
 
         #region Vector to angle and angle to unit-vector
 
-        public static float GetAngle(Vector2 vector)
+        public static float GetAngle(Vector2f vector)
         {
-            return (float)Math.Atan2(vector.y, vector.x);
+            return (float)Math.Atan2(vector.Y, vector.X);
         }
 
-        public static float GetAngleDeg(Vector2 vector)
+        public static float GetAngleDeg(Vector2f vector)
         {
             return FlaiMath.ToDegrees(FlaiMath.GetAngle(vector));
         }
 
-        public static Vector2 GetAngleVector(float radians)
+        public static Vector2f GetAngleVector(float radians)
         {
-            Vector2 result = new Vector2((float) Math.Cos(radians), (float) Math.Sin(radians));
+            Vector2f result = new Vector2f((float) Math.Cos(radians), (float) Math.Sin(radians));
             result.Normalize();
 
             return result;
         }
 
-        public static Vector2 GetAngleVectorDeg(float degrees)
+        public static Vector2f GetAngleVectorDeg(float degrees)
         {
             return FlaiMath.GetAngleVector(FlaiMath.ToRadians(degrees));
         }
@@ -225,9 +232,25 @@ namespace Flai
         }
 
         // radians
-        public static float AngleDistance(float angle1, float angle2)
+        public static float AbsAngleDistance(float angle1, float angle2)
         {
             return FlaiMath.Min((2 * FlaiMath.Pi) - FlaiMath.Abs(angle1 - angle2), FlaiMath.Abs(angle1 - angle2));
+        }
+
+        // radians
+        public static float ShortestAngleDistance(float angle1, float angle2)
+        {
+            angle1 = FlaiMath.WrapAngle(angle1);
+            angle2 = FlaiMath.WrapAngle(angle2);
+
+            if (angle1 <= angle2)
+            {
+                return (angle2 - angle1) <= FlaiMath.Pi ? (angle2 - angle1) : (-angle1 - (FlaiMath.TwoPi - angle2));
+            }
+            else // angle1 > angle2
+            {
+                return (angle1 - angle2) <= FlaiMath.Pi ? -(angle1 - angle2) : (angle2 + (FlaiMath.TwoPi - angle1));
+            }
         }
 
         #endregion
@@ -1162,6 +1185,16 @@ namespace Flai
         }
 
         #endregion
+
+        public static bool EqualsApproximately(float value1, float value2)
+        {
+            return Mathf.Approximately(value1, value2);
+        }
+
+        public static bool EqualsApproximately(double value1, double value2)
+        {
+            return FlaiMath.Abs(value1 - value2) <= Mathf.Epsilon;
+        }
 
         public static float PingPong(float value, float step)
         {

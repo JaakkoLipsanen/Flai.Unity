@@ -38,6 +38,9 @@ namespace Flai
 
     public struct LayerMaskF
     {
+        public static readonly LayerMaskF Empty = new LayerMaskF();
+        public static readonly LayerMaskF All = new LayerMaskF(int.MaxValue);
+
         public readonly int Mask;
         public LayerMaskF Inverse
         {

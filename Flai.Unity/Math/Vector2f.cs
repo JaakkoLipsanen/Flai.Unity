@@ -1,10 +1,12 @@
-﻿using Flai.IO;
+﻿using System.Collections.Generic;
+using Flai.IO;
 using System;
 using System.IO;
 using UnityEngine;
 
 namespace Flai
 {
+    [Serializable]
     public struct Vector2f : IEquatable<Vector2f>, IEquatable<Vector2>, IBinarySerializable
     {
         public const float Epsilon = Vector2.kEpsilon; // just drop out "k" prefix
@@ -519,6 +521,11 @@ namespace Flai
 
         #endregion
 
+        public static bool Approximately(Vector2f v1, Vector2f v2)
+        {
+            return Mathf.Approximately(v1.X, v2.X) && Mathf.Approximately(v1.Y, v2.Y);
+        }
+
         #region IBinarySerializable Members
 
         void IBinarySerializable.Write(BinaryWriter writer)
@@ -531,6 +538,30 @@ namespace Flai
         {
             this.X = reader.ReadInt32();
             this.Y = reader.ReadInt32();
+        }
+
+        #endregion
+
+        private static readonly ApproximateComparerVector2f _approximateComparer = new ApproximateComparerVector2f();
+        public static IEqualityComparer<Vector2f> ApproximateComparer
+        {
+            get { return _approximateComparer; }
+        }
+
+        #region ApproximateComparerVector2f
+
+        private class ApproximateComparerVector2f : IEqualityComparer<Vector2f>
+        {
+            public bool Equals(Vector2f x, Vector2f y)
+            {
+                return Vector2f.Approximately(x, y);
+            }
+
+            public int GetHashCode(Vector2f obj)
+            {
+                // !!! This can give different value for very close values. for example 2.9999999999 vs 3.0000000001 etc
+                return Vector2i.Round(obj).GetHashCode();
+            }
         }
 
         #endregion

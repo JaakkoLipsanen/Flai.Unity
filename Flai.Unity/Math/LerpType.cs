@@ -5,5 +5,6 @@ namespace Flai
     {
         Lerp,
         SmoothStep,
+        Instant,
     }
 }

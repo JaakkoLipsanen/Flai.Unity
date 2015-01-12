@@ -40,7 +40,28 @@ namespace Flai
 
         public Rigidbody2D Rigidbody2D
         {
-            get { return this.Get<Rigidbody2D>(); }
+            get { return this.rigidbody2D; }
+        }
+
+        public Camera Camera
+        {
+            get { return this.camera; }
+        }
+
+        public NetworkView NetworkView
+        {
+            get
+            {
+                foreach (var view in this.GetComponents<NetworkView>())
+                {
+                    if (view.observed == this)
+                    {
+                        return view;
+                    }
+                }
+
+                return null;
+            }
         }
 
         #endregion
@@ -194,7 +215,6 @@ namespace Flai
         protected virtual void OnTriggerStay2D(Collider2D other) { }
         protected virtual void OnTriggerExit2D(Collider2D other) { }
 
-        protected virtual void OnDrawGizmos() { }
-        protected virtual void OnGUI() { }
+        protected virtual void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) { }
     }
 }

@@ -38,6 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentHelper.cs" />
+    <Compile Include="CoroutineRunner.cs" />
+    <Compile Include="Data Structures\SerializableDictionary.cs" />
     <Compile Include="FlaiScript.cs" />
     <Compile Include="General\Timer.cs" />
     <Compile Include="Graphics\CameraHelper.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Math\Segment2D.cs" />
     <Compile Include="Math\TransformedRectangleF.cs" />
     <Compile Include="Math\Vector2f.cs" />
+    <Compile Include="MessageCenter.cs" />
     <Compile Include="Mockups\Func.cs" />
     <Compile Include="Physics\Physics2Df.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="Scripts\ConstantSpeed2D.cs" />
     <Compile Include="Scripts\ConstantVelocity.cs" />
     <Compile Include="Scripts\CursorSetter.cs" />
+    <Compile Include="Scripts\FpsRenderer.cs" />
     <Compile Include="Scripts\LifeTime.cs" />
     <Compile Include="Scripts\DestroyOnTrigger2D.cs" />
     <Compile Include="Scripts\DestroyWhenParticleSystemFinished.cs" />

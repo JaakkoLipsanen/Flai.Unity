@@ -15,12 +15,13 @@ namespace Flai.Scripts
 
         public GameObject Target;
         public float Power = 1;
+        public Vector3 Offset;
 
-        protected override void Awake()
-        {
+        protected override void Awake() 
+        { 
             if (this.Target == null)
             {
-                FlaiDebug.LogErrorWithTypeTag<TargetFollower>("No target found!", this);
+             // FlaiDebug.LogErrorWithTypeTag<TargetFollower>("No target found!", this);
             }
         }
 
@@ -55,21 +56,22 @@ namespace Flai.Scripts
         {
             float deltaTime = delta ?? ((Time.deltaTime + Time.smoothDeltaTime) * 0.5f);
             Vector3 current = this.Position;
-            Vector3 target = this.Target.GetPosition();
+            Vector3 target = this.Target.GetPosition() + this.Offset;
+            float amount = FlaiMath.Clamp(deltaTime*this.Power, 0, 1);
 
             if (this.X)
             {
-                current.x = FlaiMath.Lerp(this.LerpType, current.x, target.x, deltaTime * this.Power);
+                current.x = FlaiMath.Lerp(this.LerpType, current.x, target.x, amount);
             }
 
             if (this.Y)
             {
-                current.y = FlaiMath.Lerp(this.LerpType, current.y, target.y, deltaTime * this.Power);
+                current.y = FlaiMath.Lerp(this.LerpType, current.y, target.y, amount);
             }
 
             if (this.Z)
             {
-                current.z = FlaiMath.Lerp(this.LerpType, current.z, target.z, deltaTime * this.Power);
+                current.z = FlaiMath.Lerp(this.LerpType, current.z, target.z, amount);
             }
 
             this.Position = current;

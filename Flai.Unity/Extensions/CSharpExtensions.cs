@@ -1031,13 +1031,11 @@ namespace Flai //.Extensions
 
     public static class StopwatchExtensions
     {
-#if WINDOWS_PHONE
         public static void Restart(this System.Diagnostics.Stopwatch sw)
         {
             sw.Reset();
             sw.Start();
         }
-#endif
     }
 
     #endregion
@@ -1646,6 +1644,18 @@ namespace Flai //.Extensions
             }
 
             return default(Y);
+        }
+
+        public static Y? TryGetValueOrNull<T, Y>(this IDictionary<T, Y> dictionary, T key)
+          where Y : struct // lets just make this class constraint, it's easier that way
+        {
+            Y value;
+            if (dictionary.TryGetValue(key, out value))
+            {
+                return value;
+            }
+
+            return null;
         }
 
         public static Y? TryGetValue<T, Y>(this Dictionary<T, Y?> dictionary, T key)

@@ -41,24 +41,24 @@ namespace Flai.Diagnostics
 
         #region Draw Ray
 
-        public static void DrawRay(Vector3 start, Vector3 end)
+        public static void DrawRay(Vector3 start, Vector3 direction)
         {
-            Debug.DrawRay(start, end);
+            Debug.DrawRay(start, direction);
         }
 
-        public static void DrawRay(Vector3 start, Vector3 end, Color color)
+        public static void DrawRay(Vector3 start, Vector3 direction, Color color)
         {
-            Debug.DrawRay(start, end, color);
+            Debug.DrawRay(start, direction, color);
         }
 
-        public static void DrawRay(Vector3 start, Vector3 end, Color color, float duration)
+        public static void DrawRay(Vector3 start, Vector3 direction, Color color, float duration)
         {
-            Debug.DrawRay(start, end, color, duration);
+            Debug.DrawRay(start, direction, color, duration);
         }
 
-        public static void DrawRay(Vector3 start, Vector3 end, Color color, float duration, bool depthTest)
+        public static void DrawRay(Vector3 start, Vector3 direction, Color color, float duration, bool depthTest)
         {
-            Debug.DrawRay(start, end, color, duration, depthTest);
+            Debug.DrawRay(start, direction, color, duration, depthTest);
         }
 
         #endregion
@@ -136,6 +136,14 @@ namespace Flai.Diagnostics
         public static void Log(object message)
         {
             Debug.Log(message);
+        }
+
+        public static void LogIf(bool shouldLog, object message)
+        {
+            if (shouldLog)
+            {
+                FlaiDebug.Log(message);
+            }
         }
 
         public static void Log(string format, params object[] parameters)

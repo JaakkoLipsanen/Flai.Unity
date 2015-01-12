@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Flai
     /// <summary>
     /// Two-dimensional rectangle using floating point coordinates
     /// </summary>
+    [Serializable]
     public struct RectangleF : IEquatable<RectangleF>, IEquatable<Rect>
     {
         #region Fields and Properties
@@ -91,6 +93,28 @@ namespace Flai
         public Vector2f Size
         {
             get { return new Vector2f(this.Width, this.Height); }
+        }
+
+        public IEnumerable<Vector2f> CornerPoints
+        {
+            get
+            {
+                yield return this.TopLeft;
+                yield return this.TopRight;
+                yield return this.BottomRight;
+                yield return this.BottomLeft;
+            }
+        }
+
+        public IEnumerable<Segment2D> SideSegments
+        {
+            get
+            {
+                yield return new Segment2D(this.TopLeft, this.TopRight);
+                yield return new Segment2D(this.TopRight, this.BottomRight);
+                yield return new Segment2D(this.BottomRight, this.BottomLeft);
+                yield return new Segment2D(this.BottomLeft, this.TopLeft);
+            }
         }
 
         #endregion

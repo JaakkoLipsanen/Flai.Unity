@@ -1,4 +1,6 @@
-﻿using Flai.Diagnostics;
+﻿using System.IO;
+using Flai.Diagnostics;
+using Flai.Graphics;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +20,59 @@ namespace Flai.Editor.Windows
             {
                 this.FindMissingScripts();
             }
+
+            if (GUILayout.Button("Create Blank Texture Asset"))
+            {
+                this.CreateBlankTexture();
+            }
+
+            if (GUILayout.Button("Create Circle Texture Asset"))
+            {
+                this.CreateCircleTexture(128);
+            }
+        }
+
+        private void CreateBlankTexture()
+        {
+            var blankTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false, true);
+            blankTexture.SetPixel(0, 0, ColorF.White);
+            blankTexture.Apply();
+
+            this.SaveTextureAsset("BlankTexture", blankTexture);
+            Object.DestroyImmediate(blankTexture);
+        }
+
+        private void CreateCircleTexture(int diameter)
+        {
+            float radius = diameter / 2f;
+            var blankTexture = new Texture2D(diameter, diameter, TextureFormat.RGBA32, false, true);
+            for (int y = 0; y < diameter; y++)
+            {
+                for (int x = 0; x < diameter; x++)
+                {
+                    bool isInside = Vector2f.Distance(new Vector2f(x, y), Vector2f.One * radius) < radius;
+                    blankTexture.SetPixel(x, y, isInside ? ColorF.White : ColorF.Transparent);
+                }
+            }
+
+            blankTexture.Apply();
+
+            this.SaveTextureAsset("BlankTexture", blankTexture);
+            Object.DestroyImmediate(blankTexture);
+        }
+
+        private void SaveTextureAsset(string fileName, Texture2D texture)
+        {
+            var pngBytes = texture.EncodeToPNG();
+
+            var assetsPath = Application.dataPath + "/";
+            if (!Directory.Exists(assetsPath + "Textures/"))
+            {
+                AssetDatabase.CreateFolder("Assets", "Textures");
+            }
+
+            File.WriteAllBytes(assetsPath + "/Textures/" + fileName + ".png", pngBytes);
+            AssetDatabase.Refresh();
         }
 
         private void FindMissingScripts()
