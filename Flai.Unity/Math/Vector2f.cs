@@ -336,6 +336,11 @@ namespace Flai
             };
         }
 
+        public static Vector2f Reflect(Vector2f direction, Vector2f normal)
+        {
+            return Vector3.Reflect(direction, normal);
+        }
+
         #endregion
 
         #region Operators

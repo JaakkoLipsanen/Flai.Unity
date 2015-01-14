@@ -57,6 +57,12 @@ namespace Flai
             this.Mask = layerMask;
         }
 
+
+        public bool Contains(string maskName)
+        {
+            return (this.Mask & LayerMaskF.FromName(maskName).Mask) != 0;
+        }
+
         public static LayerMaskF FromName(string name)
         {
             return new LayerMaskF(1 << LayerMask.NameToLayer(name));
@@ -118,6 +124,11 @@ namespace Flai
             return new LayerMaskF(a.Mask | b.Mask);
         }
 
+        public static LayerMaskF operator &(LayerMaskF a, LayerMaskF b)
+        {
+            return new LayerMaskF(a.Mask & b.Mask);
+        }
+
         public static implicit operator LayerMaskF(int mask)
         {
             return new LayerMaskF(mask);
@@ -137,5 +148,6 @@ namespace Flai
         {
             return new LayerMaskF(mask.value);
         }
+
     }
 }

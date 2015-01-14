@@ -96,6 +96,8 @@
     <Compile Include="Math\Vector2f.cs" />
     <Compile Include="MessageCenter.cs" />
     <Compile Include="Mockups\Func.cs" />
+    <Compile Include="Networking\INetworkState.cs" />
+    <Compile Include="Networking\NetworkStateQueue.cs" />
     <Compile Include="Physics\Physics2Df.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common.cs" />

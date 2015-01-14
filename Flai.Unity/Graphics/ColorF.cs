@@ -385,6 +385,11 @@ namespace Flai
         {
         }
 
+        public ColorF(Vector3 vector, float a) :
+            this(vector.x, vector.y, vector.z, a)
+        {
+        }
+
         public ColorF(byte r, byte g, byte b)
         {
             this.R = r;

@@ -10,6 +10,11 @@ namespace Flai
         private static T _instance;
         private static bool _applicationIsQuitting = false;
 
+        protected virtual bool IsVisibleInInspector
+        {
+            get { return false; }
+        }
+
         public static T Instance
         {
             get
@@ -51,6 +56,7 @@ namespace Flai
                                 GameObject singleton = new GameObject();
                                 _instance = singleton.AddComponent<T>();
                                 singleton.name = singletonName;
+                                singleton.hideFlags = singleton.Get<Singleton<T>>().IsVisibleInInspector ? HideFlags.None : HideFlags.HideInHierarchy;
 
                                 Singleton<T>.DontDestroyOnLoad(singleton);
                                 FlaiDebug.Log("[Singleton] Singleton<{0}> created.", typeof(T).Name);

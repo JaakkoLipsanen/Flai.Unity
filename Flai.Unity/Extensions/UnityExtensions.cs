@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using Flai;
 using Flai.Diagnostics;
 using Flai.Graphics;
+using Flai.Networking;
 using Flai.Scene;
 using UnityEngine;
 
@@ -495,7 +496,10 @@ public static class GameObjectExtensions
         gameObject.transform.parent = (parent == null) ? null : parent.transform;
     }
 
-
+    public static void SetParent(this GameObject gameObject, GameObject parent, bool worldPositionStays)
+    {
+        gameObject.transform.SetParent((parent != null) ? parent.transform : null, worldPositionStays);
+    }
 
     public static void SetParent(this Transform transform, Transform parent)
     {
@@ -1120,6 +1124,15 @@ public static class ColorExtensions
         return new Color32(color.r, color.g, color.b, (byte)FlaiMath.Clamp(color.a * alpha, 0, 255));
     }
 
+    public static Vector3 ToVector3(this Color color)
+    {
+        return color.ToColorF().ToVector3();
+    }
+
+    public static Vector4 ToVector4(this Color color)
+    {
+        return color.ToColorF().ToVector4();
+    }
    
 }
 
@@ -1234,3 +1247,26 @@ public static class CameraExtensions
 }
 
 #endregion
+
+public static class NetworkingExtensions
+{
+    public static void Serialize(this BitStream stream, ref Vector2f vector)
+    {
+        stream.Serialize(ref vector.X);
+        stream.Serialize(ref vector.Y);
+    }
+
+    // do i want separate Serialize and Deserialize methods..?
+    public static void Serialize<T>(this BitStream stream, NetworkMessageInfo info, T networkState)
+        where T : INetworkState<T>
+    {
+        networkState.Serialize(stream, info);
+    }
+
+    public static T Deserialize<T>(this BitStream stream, NetworkMessageInfo info)
+       where T : INetworkState<T>, new()
+    {
+        T state = default(T);
+        return state.Deserialize(stream, info);
+    }
+}

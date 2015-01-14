@@ -253,6 +253,12 @@ namespace Flai
             }
         }
 
+        // deg
+        public static float ShortestAngleDistanceDeg(float angle1, float angle2)
+        {
+            return FlaiMath.ToDegrees(FlaiMath.ShortestAngleDistance(FlaiMath.ToRadians(angle1), FlaiMath.ToRadians(angle2)));
+        }
+
         #endregion
 
         #region Clamp
@@ -365,6 +371,19 @@ namespace Flai
             return FlaiMath.SmoothStep(value1, value2, amount);
         }
 
+        // deg
+        public static float AngleLerp(float angle1, float angle2, float amount)
+        {
+            return angle1 + FlaiMath.ShortestAngleDistanceDeg(angle1, angle2) * amount;
+        }
+
+        // deg
+        public static float AngleSmoothstep(float angle1, float angle2, float amount)
+        {
+            amount = amount * amount * (3f - 2f * amount);
+            return angle1 + FlaiMath.ShortestAngleDistanceDeg(angle1, angle2) * amount;
+        }
+
         #endregion
 
         #region WrapAngle
@@ -384,6 +403,11 @@ namespace Flai
                 }
             }
             return angle;
+        }
+
+        public static float WrapAngleDeg(float angle)
+        {
+            return FlaiMath.ToDegrees(FlaiMath.WrapAngle(FlaiMath.ToRadians(angle)));
         }
 
         public static double WrapAngle(double angle)
@@ -1198,11 +1222,22 @@ namespace Flai
 
         public static float PingPong(float value, float step)
         {
+            HorizontalDirection direction;
+            return FlaiMath.PingPong(value, step, out direction);
+        }
+
+        public static float PingPong(float value, float step, out HorizontalDirection currentDirection)
+        {
             Ensure.False(step == 0);
             int count = (int)(value / step);
 
             float mod = value % step;
-            if (count % 2 == 0) return mod;
+            if (count%2 == 0)
+            {
+                currentDirection = HorizontalDirection.Right;
+                return mod;
+            }
+            currentDirection = HorizontalDirection.Left;
             return step - mod;
         }
 
