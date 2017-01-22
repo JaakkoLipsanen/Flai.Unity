@@ -28,6 +28,11 @@ namespace Flai
             get { return this.Get<BoxCollider2D>(); }
         }
 
+        public CircleCollider2D CircleCollider2D
+        {
+            get { return this.Get<CircleCollider2D>(); }
+        }
+
         public SpriteRenderer SpriteRenderer
         {
             get { return this.Get<SpriteRenderer>(); }

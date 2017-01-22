@@ -35,32 +35,42 @@ namespace Flai
 
         public float Top
         {
-            get { return this.Y; }
+            get { return this.Y + this.Height; }
             set { this.Y += value - this.Top; }
         }
 
         public float Bottom
         {
-            get { return this.Y + this.Height; }
+            get { return this.Y; }
             set { this.Y += value - this.Bottom; }
         }
 
         public Vector2f TopLeft
         {
-            get { return new Vector2f(this.X, this.Y); }
+            get { return new Vector2f(this.Left, this.Top); }
         }
 
         public Vector2f TopRight
         {
-            get { return new Vector2f(this.X + this.Width, this.Y); }
+            get { return new Vector2f(this.Right, this.Top); }
         }
 
         public Vector2f BottomLeft
         {
-            get { return new Vector2f(this.X, this.Y + this.Height); }
+            get { return new Vector2f(this.Left, this.Bottom); }
         }
 
         public Vector2f BottomRight
+        {
+            get { return new Vector2f(this.Right, this.Bottom); }
+        }
+
+        public Vector2f Min
+        {
+            get { return new Vector2f(this.X, this.Y); }
+        }
+
+        public Vector2f Max
         {
             get { return new Vector2f(this.X + this.Width, this.Y + this.Height); }
         }
@@ -110,11 +120,31 @@ namespace Flai
         {
             get
             {
-                yield return new Segment2D(this.TopLeft, this.TopRight);
-                yield return new Segment2D(this.TopRight, this.BottomRight);
-                yield return new Segment2D(this.BottomRight, this.BottomLeft);
-                yield return new Segment2D(this.BottomLeft, this.TopLeft);
+                yield return this.TopSegment;
+                yield return this.RightSegment;
+                yield return this.BottomSegment;
+                yield return this.LeftSegment;
             }
+        }
+
+        public Segment2D TopSegment
+        {
+            get { return new Segment2D(this.TopLeft, this.TopRight); }
+        }
+
+        public Segment2D RightSegment
+        {
+            get { return new Segment2D(this.TopRight, this.BottomRight); }
+        }
+
+        public Segment2D BottomSegment
+        {
+            get { return new Segment2D(this.BottomRight, this.BottomLeft); }
+        }
+
+        public Segment2D LeftSegment
+        {
+            get { return new Segment2D(this.BottomLeft, this.TopLeft); }
         }
 
         #endregion
@@ -286,6 +316,11 @@ namespace Flai
               (other.Y >= this.Y) &&
               ((other.X + other.Width) <= (this.X + this.Width)) &&
               ((other.Y + other.Height) <= (this.Y + this.Height));
+        }
+
+        public bool Contains(Segment2D segment)
+        {
+            return this.Contains(segment.Start) && this.Contains(segment.End);
         }
 
         #endregion
@@ -767,6 +802,11 @@ namespace Flai
         public static RectangleF FromPoints(Vector2f p1, Vector2f p2)
         {
             return new RectangleF(Vector2f.Min(p1, p2), Vector2f.Max(p1, p2));
+        }
+
+        public Rect ToRect()
+        {
+            return new Rect(this.X, this.Y, this.Width, this.Height);
         }
 
         #endregion

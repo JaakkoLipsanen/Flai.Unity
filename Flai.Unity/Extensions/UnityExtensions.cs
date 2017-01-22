@@ -72,6 +72,12 @@ public static class GameObjectExtensions
         return gameObject.GetComponent<T>();
     }
 
+    public static T GetInterface<T>(this GameObject gameObject)
+        where T : class
+    {
+        return gameObject.GetComponent(typeof(T)) as T;
+    }
+
     public static T GetInChildren<T>(this GameObject gameObject)
        where T : Component
     {
@@ -138,6 +144,12 @@ public static class GameObjectExtensions
         where T : Component
     {
         return component.GetComponent<T>();
+    }
+
+    public static T GetInterface<T>(this Component component)
+      where T : class
+    {
+        return component.GetComponent(typeof(T)) as T;
     }
 
     public static T GetInChildren<T>(this Component component)
@@ -477,7 +489,7 @@ public static class GameObjectExtensions
             return parentTransform.gameObject;
         }
 
-        return null; 
+        return null;
     }
 
     public static GameObject GetParent(this Transform transform)
@@ -1133,7 +1145,7 @@ public static class ColorExtensions
     {
         return color.ToColorF().ToVector4();
     }
-   
+
 }
 
 #endregion
@@ -1204,6 +1216,27 @@ public static class PhysicsExtensions
         throw new NotImplementedException("");
     }
 
+    // really hacked, collider2D.bounds is coming in Unity 4.5
+    public static RectangleF GetArea(this BoxCollider2D collider, out Vector2f rotationOrigin)
+    {
+        Ensure.NotNull(collider);
+        if (collider is BoxCollider2D)
+        {
+            float rotation = collider.transform.GetRotation2D();
+            BoxCollider2D boxCollider = collider as BoxCollider2D;
+
+            Vector2f size = collider.transform.lossyScale.ToVector2f() * boxCollider.size;
+            Vector2f center = boxCollider.center.ToVector2f() / boxCollider.size;
+            Vector2f origin = Vector2f.One * 0.5f - center;
+            Vector2f startPosition = collider.gameObject.GetPosition2D() - origin * size;
+
+            rotationOrigin = origin*size + startPosition;
+            return new RectangleF(startPosition.X, startPosition.Y, size.X, size.Y);
+        }
+
+        throw new NotImplementedException("");
+    }
+
     // really hacked, doesnt take rotation in account, collider2D.bounds is coming in Unity 4.5
     // doesn't work properly i think with rotations. trying to fix it for the GetBoundsHack
     public static Vector2 GetCenterHack(this Collider2D collider)
@@ -1229,6 +1262,11 @@ public static class PhysicsExtensions
     {
         return raycastHit.collider != null;
     }
+
+    public static RectangleF ToRectangleF(this Bounds bounds)
+    {
+        return new RectangleF(bounds.min.x, bounds.min.y, bounds.extents.x * 2, bounds.extents.y * 2);
+    }
 }
 
 #endregion
@@ -1240,8 +1278,8 @@ public static class CameraExtensions
     public static RectangleF GetArea(this Camera camera)
     {
         Ensure.True(camera.orthographic);
-        float height = camera.orthographicSize*2;
-        float width = height*camera.aspect;
+        float height = camera.orthographicSize * 2;
+        float width = height * camera.aspect;
         return RectangleF.CreateCentered(camera.transform.position, new SizeF(width, height));
     }
 }

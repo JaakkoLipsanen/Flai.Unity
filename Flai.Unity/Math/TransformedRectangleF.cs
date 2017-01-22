@@ -54,6 +54,39 @@ namespace Flai
             }
         }
 
+        public IEnumerable<Segment2D> SideSegments
+        {
+            get
+            {
+                yield return this.TopSegment;
+                yield return this.RightSegment;
+                yield return this.BottomSegment;
+                yield return this.LeftSegment;
+            }
+        }
+
+
+        public Segment2D TopSegment
+        {
+            get { return new Segment2D(this.TopLeft, this.TopRight); }
+        }
+
+        public Segment2D RightSegment
+        {
+            get { return new Segment2D(this.TopRight, this.BottomRight); }
+        }
+
+        public Segment2D BottomSegment
+        {
+            get { return new Segment2D(this.BottomRight, this.BottomLeft); }
+        }
+
+        public Segment2D LeftSegment
+        {
+            get { return new Segment2D(this.BottomLeft, this.TopLeft); }
+        }
+
+
         private TransformedRectangleF(RectangleF rectangle, Vector2f origin, float rotation)
         {
             _rectangle = rectangle;

@@ -311,8 +311,8 @@ namespace Flai
 
         public static Vector2f Rotate(Vector2f point, float radians)
         {
-            float cosRadians = FlaiMath.Cos(radians);
-            float sinRadians = FlaiMath.Sin(radians);
+            float cosRadians = FlaiMath.Cos(radians * Mathf.Deg2Rad);
+            float sinRadians = FlaiMath.Sin(radians * Mathf.Deg2Rad);
             return new Vector2(
                 point.X * cosRadians - point.Y * sinRadians,
                 point.X * sinRadians + point.Y * cosRadians);

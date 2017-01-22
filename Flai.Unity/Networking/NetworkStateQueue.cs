@@ -10,13 +10,27 @@ namespace Flai.Networking
         where T : IInterpolatableNetworkState<T>
     {
         private readonly float _delay;
-        private readonly Queue<Snapshot<T>> _snapshots = new Queue<Snapshot<T>>();
+        private readonly Deque<Snapshot<T>> _snapshots = new Deque<Snapshot<T>>(); // AddBack == Enqueue, RemoveFront == Dequeue, Front == Peek, Back == the last value added
         private Snapshot<T> _currentSnapshot;
         private Snapshot<T> _extrapolateSnapshot;
 
         public bool IsExtrapolating
         {
             get { return _snapshots.Count == 0; }
+        }
+
+        public T LastState
+        {
+            get
+            {
+                if (this.IsExtrapolating)
+                {
+                    double delayedTimestamp = this.GetCurrentTimestamp() - _delay;
+                    return _extrapolateSnapshot.Interpolate(_currentSnapshot, delayedTimestamp);
+                }
+
+                return _snapshots.Back.Value;
+            }
         }
 
         // todo: at the moment the timestamp is local time. that means that delay is "network ping + delay".
@@ -31,16 +45,16 @@ namespace Flai.Networking
 
         public void AddState(T state) // todo: add the "timestamp" parameter..!
         {
-            _snapshots.Enqueue(new Snapshot<T>(state, this.GetCurrentTimestamp()));
+            _snapshots.AddBack(new Snapshot<T>(state, this.GetCurrentTimestamp()));
         }
 
         public T GetCurrentState()
         {
             double delayedTimestamp = this.GetCurrentTimestamp() - _delay;
-            while (_snapshots.Count > 0 && _snapshots.Peek().Timestamp < delayedTimestamp) // dequeue passed states
+            while (_snapshots.Count > 0 && _snapshots.Front.Timestamp < delayedTimestamp) // dequeue passed states
             {
                 _extrapolateSnapshot = _currentSnapshot;
-                _currentSnapshot = _snapshots.Dequeue();
+                _currentSnapshot = _snapshots.RemoveFront();
             }
 
             if (_snapshots.Count == 0)
@@ -48,7 +62,7 @@ namespace Flai.Networking
                 return _extrapolateSnapshot.Interpolate(_currentSnapshot, delayedTimestamp);
             }
 
-            return _currentSnapshot.Interpolate(_snapshots.Peek(), delayedTimestamp);
+            return _currentSnapshot.Interpolate(_snapshots.Front, delayedTimestamp);
         }
 
         public void Reset(T state)

@@ -32,13 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>F:\Program Files %28x86%29\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\Program Files (x86)\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentHelper.cs" />
     <Compile Include="CoroutineRunner.cs" />
+    <Compile Include="Data Structures\Deque.cs" />
     <Compile Include="Data Structures\SerializableDictionary.cs" />
     <Compile Include="FlaiScript.cs" />
     <Compile Include="General\Timer.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Graphics\TextureHelper.cs" />
     <Compile Include="Math\Segment2D.cs" />
     <Compile Include="Math\TransformedRectangleF.cs" />
+    <Compile Include="Math\Vector2d.cs" />
     <Compile Include="Math\Vector2f.cs" />
     <Compile Include="MessageCenter.cs" />
     <Compile Include="Mockups\Func.cs" />

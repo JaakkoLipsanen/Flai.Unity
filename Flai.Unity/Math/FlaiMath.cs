@@ -77,7 +77,20 @@ namespace Flai
             return result;
         }
 
+        public static Vector2d GetAngleVector(double radians)
+        {
+            Vector2d result = new Vector2d(Math.Cos(radians), Math.Sin(radians));
+            result.Normalize();
+
+            return result;
+        }
+
         public static Vector2f GetAngleVectorDeg(float degrees)
+        {
+            return FlaiMath.GetAngleVector(FlaiMath.ToRadians(degrees));
+        }
+
+        public static Vector2d GetAngleVectorDeg(double degrees)
         {
             return FlaiMath.GetAngleVector(FlaiMath.ToRadians(degrees));
         }
@@ -330,9 +343,19 @@ namespace Flai
             return degrees * 0.0174532924f;
         }
 
+        public static double ToRadians(double degrees)
+        {
+            return degrees * 0.0174532925199432957692369076848861271344287188854172d;
+        }
+
         public static float ToDegrees(float radians)
         {
             return radians * 57.2957764f; // MathHelper.ToDegrees
+        }
+
+        public static double ToDegrees(double radians)
+        {
+            return radians * 57.295779513082320876798154814105170332405472466564321d;
         }
 
         #endregion
@@ -366,6 +389,10 @@ namespace Flai
             if (lerpType == LerpType.Lerp)
             {
                 return FlaiMath.Lerp(value1, value2, amount);
+            }
+            else if (lerpType == LerpType.Instant)
+            {
+                return value2;
             }
 
             return FlaiMath.SmoothStep(value1, value2, amount);

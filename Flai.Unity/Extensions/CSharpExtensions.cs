@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Flai.DataStructures;
 
 namespace Flai //.Extensions
 {
@@ -825,6 +826,11 @@ namespace Flai //.Extensions
             }
 
             return arr;
+        }
+
+        public static ReadOnlyArray<T> ToReadOnlyArray<T>(this IEnumerable<T> collection)
+        {
+            return new ReadOnlyArray<T>(collection.ToArray());
         }
     }
 

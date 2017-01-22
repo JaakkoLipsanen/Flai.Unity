@@ -165,6 +165,11 @@ namespace Flai
             }
         }
 
+        public Vector2f Center
+        {
+            get { return (this.Start + this.End) / 2.0f; }
+        }
+
         public float Length
         {
             get { return Vector2f.Distance(this.Start, this.End); }
@@ -196,7 +201,7 @@ namespace Flai
             this.Start = start;
             this.End = end;
         }
-       
+
         public bool Equals(Segment2D other)
         {
             return this.Start == other.Start && this.End == other.End;
@@ -251,12 +256,12 @@ namespace Flai
             /*  const float Epsilon = 0.00001f;
 
               Vector2 cmp = new Vector2(segment2.Start.X - segment1.Start.X, segment2.Start.Y - segment1.Start.Y);
-              Vector2 r = new Vector2(segment1.End.X - segment1.Start.X, segment1.End.Y - segment1.Start.Y);
+              Vector2 rectangle = new Vector2(segment1.End.X - segment1.Start.X, segment1.End.Y - segment1.Start.Y);
               Vector2 s = new Vector2(segment2.End.X - segment2.Start.X, segment2.End.Y - segment2.Start.Y);
 
-              float cmPxR = cmp.X * r.Y - cmp.Y * r.X;
+              float cmPxR = cmp.X * rectangle.Y - cmp.Y * rectangle.X;
               float cmPxS = cmp.X * s.Y - cmp.Y * s.X;
-              float RxS = r.X * s.Y - r.Y * s.X;
+              float RxS = rectangle.X * s.Y - rectangle.Y * s.X;
 
               if (Math.Abs(cmPxR) < Epsilon)
               {
@@ -276,7 +281,7 @@ namespace Flai
 
               if (t >= 0f && t <= 1f && u >= 0f && u <= 1f)
               {
-                  intersectionPoint = segment1.Start + r * t;
+                  intersectionPoint = segment1.Start + rectangle * t;
                   return true;
               }
 
@@ -320,6 +325,12 @@ namespace Flai
         // http://stackoverflow.com/a/100165/925777
         public static bool Intersects(Segment2D segment, RectangleF rectangle)
         {
+            return Segment2D.Intersects(segment, rectangle.LeftSegment) ||
+               Segment2D.Intersects(segment, rectangle.TopSegment) ||
+               Segment2D.Intersects(segment, rectangle.RightSegment) ||
+               Segment2D.Intersects(segment, rectangle.BottomSegment) ||
+              (rectangle.Contains(segment.Start) && rectangle.Contains(segment.End));
+
             float minX = Math.Min(segment.Start.X, segment.End.X);
             float maxX = Math.Max(segment.Start.X, segment.End.X);
 

@@ -5,10 +5,20 @@ using UnityEngine;
 namespace Flai
 {
     public struct Vector3i : IEquatable<Vector3i>
-    {
+    {  
         public int X;
         public int Y;
         public int Z;
+
+        public float LengthSquared
+        {
+            get {  return this.X * this.X + this.Y * this.Y + this.Z * this.Z; }
+        }
+
+        public float Length
+        {
+            get { return FlaiMath.Sqrt(this.LengthSquared); }
+        }
 
         public Vector3i(int value)
         {
